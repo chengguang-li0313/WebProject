@@ -10,27 +10,61 @@ import {Grid,Divider,Box,Button,
 
 export interface Props {
   t:(params: String) => String;
+  value?: any;
 }
 
 const initialState = { onContactUs: false };
-type State = Readonly<typeof initialState>;
+type State = {
+  onContactUs: Boolean;
+  submitSuccess?: boolean;
+};
 
 
 class Home extends React.Component<Props, State> {
-  readonly state: State = initialState;
+  state = initialState;
 
       private handleContactUs=()=>this.setState(onhandleContactUs)
-      private handleSubmitContactForm=()=>{
+      
+      private handleCloseContactUs=()=>this.setState(closeContactUs)
+      // private handleSubmit=async (
+      //   e: React.FormEvent<HTMLFormElement>
+      // ): Promise<void> => {
+      //   // console.log("handleSubmit",e)
+      //   e.preventDefault();
+      //   if (this.validateForm()) {
 
-      }
+      //     const submitSuccess: boolean = await this.submitForm();
+      //     this.setState({ submitSuccess });
+      //     this.handleContactUs()
+      //   }
+      // };
+
+      // private async submitForm(): Promise<boolean> {
+      //   // TODO - submit the form
+      //   return true;
+      // }
+      // private validateForm(): boolean {
+      //   // TODO - validate form
+      //   return true;
+      // }
       private handleSubmitEmailForm=()=>{
 
+      }
+      private handleSubmitContactForm=(e)=>{
+        // console.log("e",e)
+        // alert(toString(e))
+      }
+
+      private handleLogin = data => {
+        // console.log(errors)
+        // console.log(data)
+        // props.dispatch(actions.asyncLogin(data))
       }
 
       render() {
         const { onContactUs } = this.state;
         // console.log("props",this.props,this.state)
-        const {t} = this.props;
+        const {t,value} = this.props;
         return (
           <Layout
           t={t}
@@ -137,42 +171,43 @@ class Home extends React.Component<Props, State> {
 
             {onContactUs?
             <Box className={styles.contactForm_container}>
-              <div className={styles.contactForm_title_container}>
-                <div>
-                  <div className={styles.contactForm_title}>
-                    {t('landing.contactForm.title')}
+              <form noValidate={true}>
+                <div className={styles.contactForm_title_container}>
+                  <div>
+                    <div className={styles.contactForm_title}>
+                      {t('landing.contactForm.title')}
+                    </div>
+                    <div className={styles.contactForm_des}>
+                      {t('landing.contactForm.description')}
+                    </div>
                   </div>
-                  <div className={styles.contactForm_des}>
-                    {t('landing.contactForm.description')}
-                  </div>
+                  
+                  <Button  type="submit"  className={styles.section2_contactForm_bt}> 
+                    <div>{t('common.submit')}</div>
+                  </Button>
                 </div>
-                
-                <Button onClick={this.handleSubmitContactForm} className={styles.section2_contactForm_bt}> 
-                  <div>{t('common.submit')}</div>
-                </Button>
-              </div>
-              <form >
+              
                 <Grid container className={styles.contactForm_root} spacing={0}>
                   <Grid item xs={6} className={styles.contactForm_col1} >
                     <Grid container className={styles.contactForm_col1_rows} spacing={0}>
                       <div className={styles.contactForm_col1_row} >
-                        <TextField required className={styles.contactForm_input} id="outlined-basic" label={t('landing.contactForm.contactName')} variant="outlined" />
+                        <TextField value={value} name="contactName" required className={styles.contactForm_input} id="contactName" label={t('landing.contactForm.contactName')} variant="outlined" />
                       </div>
                       <div className={styles.contactForm_col1_row} >
-                        <TextField required className={styles.contactForm_input} id="outlined-basic" label={t('common.email')} variant="outlined" />
+                        <TextField value={value} required className={styles.contactForm_input} id="email" name="email" label={t('common.email')} variant="outlined" />
                       </div>
                       <div className={styles.contactForm_col1_row} >
-                        <TextField className={styles.contactForm_input} id="outlined-basic" label={t('landing.contactForm.companyName')} variant="outlined" />
+                        <TextField value={value} className={styles.contactForm_input} id="companyName" name="companyName" label={t('landing.contactForm.companyName')} variant="outlined" />
                       </div>
                       <div className={styles.contactForm_col1_row} >
-                        <TextField className={styles.contactForm_input} id="outlined-basic" label={t('landing.contactForm.companyNumber')} variant="outlined" />
+                        <TextField value={value} className={styles.contactForm_input} id="companyNumber" name="companyNumber" label={t('landing.contactForm.companyNumber')} variant="outlined" />
                       </div>
                     </Grid>
                     
                     
                   </Grid>
                   <Grid item xs={6} className={styles.contactForm_col2} >
-                    <TextField multiline rows="15" className={styles.input_message} id="outlined-basic" label={t('landing.contactForm.message')} variant="outlined" />
+                    <TextField multiline rows="15" className={styles.input_message} id="message" name="message" label={t('landing.contactForm.message')} variant="outlined" />
                   </Grid>
                 </Grid>
               </form>
@@ -241,8 +276,10 @@ class Home extends React.Component<Props, State> {
                     <div className={styles.card_des}>
                       {t('landing.section_4.receiveInfo')}
                     </div>
-                    <TextField className={styles.input_email} id="outlined-basic" label={t('common.email')} variant="outlined" />
-                    <Button onClick={this.handleSubmitEmailForm} className={styles.submit_bt} >{t('common.submit')}</Button>
+                    <form>
+                      <TextField className={styles.input_email} id="email" name="email"  label={t('common.email')} variant="outlined" />
+                      <Button onClick={this.handleSubmitEmailForm} className={styles.submit_bt} >{t('common.submit')}</Button>
+                    </form>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -267,6 +304,9 @@ class Home extends React.Component<Props, State> {
 
   const onhandleContactUs = (prevState: State) => ({
     onContactUs: !prevState.onContactUs,
+  });
+  const closeContactUs = (prevState: State) => ({
+    onContactUs: false,
   });
 
   export default Home
