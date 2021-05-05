@@ -33,8 +33,30 @@
     /* padding-bottom: 280px; */
 }
 .footer_right{
+    font-size: 1.25rem;
     text-align: right;
 }
 .footer_left{
+    font-size: 1.25rem;
     text-align: left;
+}
+.footer_content_title,.footer_content_content{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.125rem;
+    line-height: 21px;
+    color: #000000;
+    margin-bottom: 11px;
+}
+.footer_content_content{
+    font-weight: normal !important;
+    font-size:0.9375rem !important;
+    width: 40%;
+    min-width: 156px;
+
+}
+.footer_content_root{
+    height: fit-content;
+    margin-bottom: 36px;
 }

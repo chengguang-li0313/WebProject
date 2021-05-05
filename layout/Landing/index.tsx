@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import {Grid,Divider,Container,SvgIcon,Box} from '@material-ui/core';
-import Head from 'next/head';
+// import Head from 'next/head';
 import { useTranslation, Trans, Translation } from 'react-i18next';
 // import StarIcon from '../../public/img/BlankPageIMG/header_icon.svg';
 
@@ -18,7 +18,7 @@ class Layout extends React.Component<Props, object> {
       return (
         
           <div className={styles.container}>
-            <Head>
+            <div>
               <div className={styles.header}>
                 <div className={styles.logo_wrapper}>
                   <img src="/img/BlankPageIMG/Logo.svg"></img>
@@ -27,13 +27,31 @@ class Layout extends React.Component<Props, object> {
                   <img src="/img/BlankPageIMG/header_icon.svg"></img>
                 </div>
               </div>
-            </Head>
+            </div>
             <main>{children}</main>
             <footer>
               <div className={styles.footer}>
                 <div className={styles.footer_container}>
+                  <Grid container className={styles.footer_content_root} spacing={0}>
+                    <Grid item xs={3} className={styles.footer_content}>
+                      <div className={styles.footer_content_title}>{t('common.contactUs')}</div>
+                      <div className={styles.footer_content_content}>{t('common.number')}</div>
+                    </Grid>
+                    <Grid item xs={3} className={styles.footer_content} >
+                      <div className={styles.footer_content_title}>{t('footer.getInTouch')}</div>
+                      <div className={styles.footer_content_content}>{t('common.number')}</div>
+                    </Grid>
+                    <Grid item xs={3} className={styles.footer_content} >
+                      <div className={styles.footer_content_title}>{t('footer.openHour')}</div>
+                      <div className={styles.footer_content_content}>{t('footer.hour')}</div>
+                    </Grid>
+                    <Grid item xs={3} className={styles.footer_content} >
+                      <div className={styles.footer_content_title}>{t('footer.visitUs')}</div>
+                      <div className={styles.footer_content_content}>{t('footer.address')}</div>
+                    </Grid>
+                  </Grid>
                   <Divider/>
-                  <Grid container className={styles.footer_root} spacing={2}>
+                  <Grid container className={styles.footer_root} spacing={0}>
                     <Grid item xs={6} className={styles.footer_left}>
                       <div>{t('common.copyright')}</div>
                     </Grid>

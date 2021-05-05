@@ -1,18 +1,23 @@
-import type { AppProps /*, AppContext */ } from 'next/app'
+import type { AppProps , AppContext } from 'next/app'
 import App from "next/app";
 import './styles.css'
 import '../i18n'
-// import { addLocaleData, IntlProvider } from 'react-intl';
-// // import {appWithTranslation} from '../i18n';
-// import _EN from '../public/locales/en';
+import { useTranslation, Trans, Translation } from 'react-i18next';
+
 
 // let appLocale = { messages: { ...enMessages, }, locale: 'en', data: appLocaleData, };
 
-class MyApp extends App {
-  render() {
-    const { Component, pageProps } = this.props
-    return <Component {...pageProps} />
-  }
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const { t ,i18n} = useTranslation()
+  return <Component t={t} i18n={i18n} {...pageProps}/>
 }
+// MyApp.getInitialProps = async (appContext: AppContext) => {
+//   // calls page's `getInitialProps` and fills `appProps.pageProps`
+//   const appProps = await App.getInitialProps(appContext);
+
+//   return { ...appProps }
+// }
+
 
 export default MyApp
