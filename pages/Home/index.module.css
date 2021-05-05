@@ -1,0 +1,109 @@
+/* Banner */
+.banner_container{
+  padding-bottom: 45px;
+}
+.banner_left{
+  font-family: Bruno;
+  font-style: normal;
+  font-weight: normal;
+} 
+
+.banner_box{
+  /* width: 70%; */
+  min-width: 500px;
+  margin-top:110px;
+  margin-left: 69px;
+  
+}
+
+.banner_title{
+  /* margin-bottom: 32px; */
+  font-size: 2.5rem;
+  line-height: 48px;
+  font-family: Bruno;
+  color: #000000;
+  }
+
+  .banner_subtitle{
+    font-size: 0.9375rem;
+    margin: 43px 0;
+  }
+  .commonSoon{
+    font-size: 0.9375rem;
+    line-height: 18px;
+    color: #7499F0;
+    margin-bottom: 32px;
+    
+  }
+  .register_container{
+    height: 100px;
+  }
+  .banner_right{
+    position: relative;
+    align-content: center;
+  }
+  .banner_bg_wrapper{
+    width: 74%;
+    min-width: 150px;
+    margin: 0 auto;
+  }
+  /*  ==================footer======================  */
+
+.section2_container{
+  width: 100%;
+  background: #F9FBFF;
+  
+}
+
+.section2{
+  width: 90%;
+  padding: 36px 0;
+  margin:0 auto;
+}
+
+.section2_root{
+  margin: 33px 0;
+}
+.section2_title{
+  font-size:2.5rem;
+  color: #000000;
+}
+.section2_content_title{
+  font-size: 1.5625rem;
+  color: #000000;
+  line-height: 29px;
+  height: 50px;
+  margin-bottom: 23px;
+}
+.section2_description,.section2_content_des,.section2_order{
+  font-size: 1.125rem;
+  line-height: 21px;
+  color: #6A6969;
+}
+.section2_content_des{
+  width: 70%;
+}
+.section2_content_iNeed{
+  font-size: 2.1875rem;
+  line-height: 40px;
+  color: #B9CCF8;
+
+}
+.section2_content_bt{
+  width: 190px;
+  height: 56px;
+  background: #3464DC;
+  border-radius: 5px;
+  font-size: 1.25rem;
+  line-height: 23px;
+  color: #FFFFFF;
+}
+.section2_order{
+color: #3464DC;
+margin-bottom: 6px;
+}
+
+/* section3 */
+.section3_container{
+  background: #fff;
+}

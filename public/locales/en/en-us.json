@@ -1,0 +1,57 @@
+{
+    "common":{
+        "register":"Register",
+        "sigin":"Sigin",
+        "commonSoon":"App Coming Soon",
+        "contactUs":"Contact Us",
+        "email":"Email address",
+        "submit":"Submit",
+        "number":"1300 500 800",
+        "copyright":"@copyright 2021",
+        "sitemap":"sitemap"
+    },
+    "footer":{
+        "getInTouch":"Get in Touch",
+        "openHour":"Opening Hours",
+        "visitUs":"Visit Us",
+        "address":"Unit 5, 4 McGrath Road, Munster WA 6166"
+    },
+    "landing":{
+        "banner":{
+            "title_1": "Keep on track.",
+            "title_2": "Reach your Sales goal.",
+            "subTitle":"Never miss your referring and data. "
+        },
+        "section_2":{
+            "title": "What can you with our app?",
+            "description":"Your core business applications are now more important than ever. From process planning to CRM, when this data becomes connected, real-time insights allow you to build a smarter business. ",
+            "content_1":{
+                "title":"Optimize your investments",
+                "description":"From planning and design, to implementation and go-live, we can help you deploy on-time and on-budget,"
+            },
+            "content_2":{
+                "title":"Backbone of a smarter business",
+                "description":"From planning and design, to implementation and go-live, we can help you deploy on-time and on-budget,"
+            },
+            "content_3":{
+                "title":"Boost up your business",
+                "description":"From planning and design, to implementation and go-live, we can help you deploy on-time and on-budget,"
+            },
+            "iNeed":"Yes, I need this! Save my seat today."
+        },
+        "section_3":{
+            "title": "Track your progress with our app.",
+            "description":"Your core business applications are now more important than ever. From process planning to CRM, when this data becomes connected, real-time insights allow you to build a smarter business. ",
+            "option_1":"Optimize your investments",
+            "option_2":"Backbone of a smarter business",
+            "option_3":"Boost up your business"
+        },
+        "section_4":{
+            "location":"Melbourne.Australia",
+            "dontMiss":"Don't Miss Out!",
+            "receiveInfo":"Don't Miss Out!"
+            
+        }
+    }   
+    
+}
