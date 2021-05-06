@@ -12,8 +12,12 @@ export default function SignIn({ providers, csrfToken }) {
   return (
 
     <div className={styles.container}>
-
-      <div>
+      <div className={styles.content}>
+        <div className={styles.logoImgContainer}>
+          <div className={styles.logoImg}>
+              <img src="/img/HomeLayoutImg/Logo.svg"/>
+          </div>
+        </div>
         <div>
           {Object.values(providers).map((provider) => {
             if (provider.name === "Okta") {
@@ -21,11 +25,11 @@ export default function SignIn({ providers, csrfToken }) {
                 <Button 
                   color='primary' 
                   backgroundColor='primary' 
-                  style={{marginBottom:'20px',textTransform: 'none'}}
+                  style={{marginBottom:'20px',textTransform: 'none',width:'180px'}}
                   variant="contained" 
                   onClick={() => signIn(provider.id,{callbackUrl: SIGN_IN_REDIRECT_URL,}
                 )}>
-                  Sign in
+                  Continue to Sign in
                 </Button>
               )               
             }
@@ -34,7 +38,7 @@ export default function SignIn({ providers, csrfToken }) {
                 <Button 
                   color='primary' 
                   variant="contained" 
-                  style={{marginBottom:'20px',textTransform: 'none'}}
+                  style={{marginBottom:'20px',textTransform: 'none',width:'180px'}}
                   onClick={() => signIn(provider.id, {callbackUrl: SIGN_IN_REDIRECT_URL,}
                 )}>
                   Sign in with {provider.name}
