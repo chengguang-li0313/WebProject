@@ -3,6 +3,17 @@
 font-family: Bruno;
 src: url('../public/style/Bruno\ Ace\ 400.ttf')
 }
+@font-face
+{
+font-family: Roboto;
+src: url('../public/style/Roboto-Regular.ttf'),
+
+}
+@font-face {
+  font-family: Roboto_blod;
+  src: url('../public/style/Roboto-Bold.ttf');
+  font-weight: bold;
+}
 
 html{
     font-size: 16px;
