@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import {Grid,Divider,Container,SvgIcon,Box} from '@material-ui/core';
-// import Head from 'next/head';
+
 import { useTranslation, Trans, Translation } from 'react-i18next';
-// import StarIcon from '../../public/img/BlankPageIMG/header_icon.svg';
+
 
 
 export interface Props {
@@ -21,10 +21,10 @@ class Layout extends React.Component<Props, object> {
             <div>
               <div className={styles.header}>
                 <div className={styles.logo_wrapper}>
-                  <img src="/img/BlankPageIMG/Logo.svg"></img>
+                  <img src="/img/HomeLayoutImg/Logo.svg"></img>
                 </div>
                 <div className={styles.headerIcon_wrapper}>
-                  <img src="/img/BlankPageIMG/header_icon.svg"></img>
+                  <img src="/img/HomeLayoutImg/header_icon.svg"></img>
                 </div>
               </div>
             </div>

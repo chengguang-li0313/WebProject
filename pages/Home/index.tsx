@@ -3,9 +3,11 @@ import Link from 'next/link';
 import Router from 'next/router';
 import MediaQuery from 'react-responsive';
 import styles from './index.module.css';
-import Layout from '../../layout/Landing';
+import Layout from '../../layout/Home';
 import {Grid,Divider,Box,Button,
   Card,CardContent,Typography,TextField,FormControl} from '@material-ui/core';
+
+import Auth from './../Auth/index'
 
 
 export interface Props {
@@ -26,44 +28,21 @@ class Home extends React.Component<Props, State> {
       private handleContactUs=()=>this.setState(onhandleContactUs)
       
       private handleCloseContactUs=()=>this.setState(closeContactUs)
-      // private handleSubmit=async (
-      //   e: React.FormEvent<HTMLFormElement>
-      // ): Promise<void> => {
-      //   // console.log("handleSubmit",e)
-      //   e.preventDefault();
-      //   if (this.validateForm()) {
-
-      //     const submitSuccess: boolean = await this.submitForm();
-      //     this.setState({ submitSuccess });
-      //     this.handleContactUs()
-      //   }
-      // };
-
-      // private async submitForm(): Promise<boolean> {
-      //   // TODO - submit the form
-      //   return true;
-      // }
-      // private validateForm(): boolean {
-      //   // TODO - validate form
-      //   return true;
-      // }
+ 
       private handleSubmitEmailForm=()=>{
 
       }
       private handleSubmitContactForm=(e)=>{
-        // console.log("e",e)
-        // alert(toString(e))
+
       }
 
       private handleLogin = data => {
-        // console.log(errors)
-        // console.log(data)
-        // props.dispatch(actions.asyncLogin(data))
+
       }
 
       render() {
         const { onContactUs } = this.state;
-        // console.log("props",this.props,this.state)
+
         const {t,value} = this.props;
         return (
           <Layout
@@ -87,12 +66,14 @@ class Home extends React.Component<Props, State> {
                           {t('landing.banner.subTitle')}
                         </div>
                       </Box>
-                      <div className={styles.register_container}></div>
+                      <div className={styles.register_container}>
+                            <Auth />
+                      </div>
                       
                     </Grid>
                     <Grid item className={styles.banner_right} lg={6} xs={5}>
                       <div className={styles.banner_bg_wrapper}>
-                        <img src='/img/LandingIMG/banner_bg.svg'></img>
+                        <img src='/img/HomeLayoutImg/banner_bg.svg'></img>
                       </div>
                     </Grid>
                   </Grid>
@@ -218,14 +199,14 @@ class Home extends React.Component<Props, State> {
                 <Grid item xs={7} className={styles.section3_col1} >
                   <div className={styles.section3_phone_container}>
                     <div className={styles.section3_phone}>
-                      <img className={styles.section3_phone_img} src="/img/LandingIMG/PAYMENT.svg"></img>
+                      <img className={styles.section3_phone_img} src="/img/HomeLayoutImg/PAYMENT.svg"></img>
                     </div>
                    
                     <div className={styles.section3_phone_bg_grey}>
-                      <img src="/img/LandingIMG/Rectangle 29.svg"></img>
+                      <img src="/img/HomeLayoutImg/Rectangle 29.svg"></img>
                     </div>
                     <div className={styles.section3_phone_bg_blue}>
-                      <img src="/img/LandingIMG/Rectangle 28.svg"></img>
+                      <img src="/img/HomeLayoutImg/Rectangle 28.svg"></img>
                     </div>
                     
                   </div>
@@ -241,19 +222,19 @@ class Home extends React.Component<Props, State> {
                   <div className={styles.section3_content_container}>
                     <div className={styles.section3_content}>
                       <div className={styles.section3_content_vec_img_wrapper}>
-                        <img src="/img/LandingIMG/Vector.svg"></img>
+                        <img src="/img/HomeLayoutImg/Vector.svg"></img>
                       </div>
                       <div>{t('landing.section_3.option_1')}</div>
                     </div>
                     <div className={styles.section3_content}>
                       <div className={styles.section3_content_vec_img_wrapper}>
-                        <img src="/img/LandingIMG/Vector.svg"></img>
+                        <img src="/img/HomeLayoutImg/Vector.svg"></img>
                       </div>
                       <div>{t('landing.section_3.option_2')}</div>
                     </div>
                     <div className={styles.section3_content}>
                       <div className={styles.section3_content_vec_img_wrapper}>
-                        <img  src="/img/LandingIMG/Vector.svg"></img>
+                        <img  src="/img/HomeLayoutImg/Vector.svg"></img>
                       </div>
                       <div>{t('landing.section_3.option_3')}</div>
                     </div>
@@ -286,10 +267,10 @@ class Home extends React.Component<Props, State> {
                 <Grid item md={6} sm={5} className={styles.section4_col2} >
                   <div className={styles.section4_bg_container}>
                     <div className={styles.section4_bg_part_1}>
-                      <img src="/img/LandingIMG/Subtract.svg"></img>
+                      <img src="/img/HomeLayoutImg/Subtract.svg"></img>
                     </div>
                     <div className={styles.section4_bg_part_2}>
-                      <img src="/img/LandingIMG/Subtract-1.svg"></img>
+                      <img src="/img/HomeLayoutImg/Subtract-1.svg"></img>
                     </div>
                   </div>
                 </Grid>
