@@ -304,5 +304,7 @@ margin-bottom: 6px;
   
 }
 .section2_contactForm_bt{
+  float: right;
   margin-right: 6vw !important;
+  margin-top: 34px !important;
 }

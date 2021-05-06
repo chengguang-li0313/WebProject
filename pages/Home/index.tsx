@@ -162,10 +162,6 @@ class Home extends React.Component<Props, State> {
                       {t('landing.contactForm.description')}
                     </div>
                   </div>
-                  
-                  <Button  type="submit"  className={styles.section2_contactForm_bt}> 
-                    <div>{t('common.submit')}</div>
-                  </Button>
                 </div>
               
                 <Grid container className={styles.contactForm_root} spacing={0}>
@@ -189,8 +185,12 @@ class Home extends React.Component<Props, State> {
                   </Grid>
                   <Grid item xs={6} className={styles.contactForm_col2} >
                     <TextField multiline rows="15" className={styles.input_message} id="message" name="message" label={t('landing.contactForm.message')} variant="outlined" />
+                    <Button  type="submit"  className={styles.section2_contactForm_bt}> 
+                    <div>{t('common.submit')}</div>
+                  </Button>
                   </Grid>
                 </Grid>
+                
               </form>
             </Box>:[]}
 

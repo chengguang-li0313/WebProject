@@ -56,7 +56,7 @@ class Layout extends React.Component<Props, object> {
                       <div>{t('common.copyright')}</div>
                     </Grid>
                     <Grid item xs={6} className={styles.footer_right} >
-                      <div>{t('common.sitemap')}</div>
+                      {/* <div>{t('common.sitemap')}</div> */}
                     </Grid>
                   </Grid>
                 </div>
