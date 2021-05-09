@@ -93,37 +93,37 @@ class Account extends React.Component<Props, object> {
                     <TabPanel value={this.state.currentBoard} index={"companyInfo"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                     <TabPanel value={this.state.currentBoard} index={"paymentMethod"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                     <TabPanel value={this.state.currentBoard} index={"productScheme"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                     <TabPanel value={this.state.currentBoard} index={"sales"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                     <TabPanel value={this.state.currentBoard} index={"setting"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                     <TabPanel value={this.state.currentBoard} index={"more"}>
                         <CompanyInfo
                             t={t}
-                            testFunction={this.test}
+                            // testFunction={this.test}
                         />
                     </TabPanel>
                 </div>
