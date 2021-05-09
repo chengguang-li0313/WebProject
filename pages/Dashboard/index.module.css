@@ -1,0 +1,116 @@
+.container{
+    display: flex;
+    margin-top: 7px;
+    width: 100%;
+    position:relative;
+    min-height: 93vh;
+    background: #f2f4f7;
+    /* justify-content: space-between; */
+}
+
+/* =============side Bar============= */
+.sideBar_container{
+    /* width: 95px; */
+    height: 90vh;
+    min-height: 500px;
+    display:flex;
+    /* position: absolute; */
+    
+}
+
+.menuBarList_container{
+    width: 72px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 5px 0px 0px;
+}
+.menuBar_Item_container{
+    width: 20px;
+    margin: 0 auto;
+    margin-bottom: 4px;
+}
+
+.menuBar_Item_MenuItem{
+    margin: 28px 0 17px 0 !important;
+    padding: 0 !important;
+}
+
+.menuBar_Item_title{
+    
+}
+.menuBar_Item_MenuItem_cont{
+    margin: 0 auto;
+}
+.tab{
+    width: 72px !important;
+    min-width: 72px !important;
+    font-family: Roboto !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 0.6rem !important;
+    line-height: 12px !important;
+    /* identical to box height */
+    text-align: center !important;
+    color: #7D8597 !important;
+}
+.Mui-selected{
+    border: none !important;
+}
+.PrivateTabIndicator-colorSecondary-3{
+    background-color: transparent !important;
+}
+.indicator{
+    background-color: transparent !important;
+   
+    
+}
+.tabSelected{
+    color: #3464DC !important;
+}
+.tabRoot{
+    text-transform:none !important;
+}
+
+.selectePointer_icon{
+    position:absolute;
+    top:24px;
+    left:1px;
+    /* left: 0;
+    right: 0;
+    margin:0 auto; */
+    width: 10px !important;
+}
+.selectePointer_img{
+    height: 72px;
+    /* position: absolute; */
+}
+.selectePointer{
+    width: 16px;
+    height: 72px;
+    position:absolute;
+    left: -1px;
+    /* top:0; */
+    z-index: 999;
+}
+.selectePointer_container{
+    height: 100%;
+    width: 17px;
+    position:relative;
+}
+/*===================== dashboard body =====================*/
+.dashboard_body{
+    /* height: 90vh; */
+    width: 85%;
+    margin: 0 auto;
+    margin-bottom: 34px;
+    /* float: right; */
+    /* margin-right: 4.6vw;
+    margin-left: 2.4vw; */
+    /* height: 100px; */
+}
+.dashboard_body_extend{
+    margin-bottom: 34px;
+    width: 90%;
+    margin: 0 auto;
+}
