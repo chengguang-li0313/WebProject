@@ -8,7 +8,9 @@
         "submit":"SUBMIT",
         "number":"1300 500 800",
         "copyright":"@copyright BUBBLE8UP 2021",
-        "sitemap":"sitemap"
+        "sitemap":"sitemap",
+        "upload":"Upload",
+        "save":"Save"
     },
     "footer":{
         "getInTouch":"Get in Touch",
@@ -63,6 +65,47 @@
             "companyNumber":"Company Number",
             "message":"Message"
         }
-    }   
+
+
+    } ,
+
+    "dashboard":{
+        "home":"Home",
+        "sales":"Sales",
+        "account":"Account",
+        "products":"Products",
+        "policy":"Policy",
+        "support":"Support",
+        "acc":{
+            "companyInfo":"Company Info",
+            "paymentMethod":"Payment Method",
+            "productScheme":"Product Scheme",
+            "sales":"Sales",
+            "setting":"Setting",
+            "more":"More",
+            "company":{
+                "basicInfo":"Basic Information",
+                "logo":"Company Logo",
+                "CompanyAdress":"Company Address",
+                "ContactPerson":"Contact Person",
+                "ContactNumber":"Contact Number",
+                "email":"Email",
+                "Aboutyourbusiness":"About your business"
+            },
+            "certificate":{
+                "cert":"Certificate",
+                "BusinessAbn":"Business ABN",
+                "BusinessCertificate":"Business Certificate"
+            },
+            "finance":{
+                "fin":"Finance",
+                "BankAccount":"Bank Account",
+                "accountName":"Account Name",
+                "bsb":"BSB",
+                "accountNumber":"Account Number",
+                "notice":"We will verify your account within 48 hours."
+            }
+        }
+    }
     
 }
