@@ -58,19 +58,19 @@ export interface Props {
                 this.setState({pointPosition:"0"})
                 break;
             case "sales":
-                this.setState({pointPosition:"72px"})
+                this.setState({pointPosition:"92px"})
                 break;
             case "account":
-                this.setState({pointPosition:"144px"})
+                this.setState({pointPosition:"184px"})
                 break;
             case "products":
-                this.setState({pointPosition:"216px"})
+                this.setState({pointPosition:"276px"})
                 break;
             case "policy":
-                this.setState({pointPosition:"293px"})
+                this.setState({pointPosition:"373px"})
                 break;
             case "support":
-                this.setState({pointPosition:"360px"})
+                this.setState({pointPosition:"460px"})
                 break;
         }
 
