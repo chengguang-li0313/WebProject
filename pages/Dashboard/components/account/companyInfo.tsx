@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {InputLabel,InputBase,FormControl,TextField,Divider,Grid, Button} from '@material-ui/core';
 import styles from './index.module.css';
+import {submitCompanBasicInfo} from '../../../../api/account'
+import { Alert } from '@material-ui/lab';
 
 
 interface Props {
@@ -73,9 +75,33 @@ interface Props {
         // console.log(event.target.value)
       };
 
+    const handleSubmit=()=>{
+        
+        const data = {companyName:companyName,
+            companyAdress:companyAdress,
+            contactPerson:contactPerson,
+            contactNumber:contactNumber,
+            email:email,
+            aboutyourbusiness:aboutyourbusiness,
+            abn:abn,
+            bankAccount:bankAccount,
+            bsb:bsb,
+            accountNumber:accountNumber,
+            verify:verify
+        }
+        submitCompanBasicInfo(data)
+        .then(res =>{
+            console.log("res",res)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+        // console.log("data",data)
+    }
+
     return(
         <div className={styles.companyInfo_container}>
-             <form className={styles.companyInfo_form} noValidate autoComplete="off">
+             <form onSubmit={handleSubmit} className={styles.companyInfo_form} noValidate={false} autoComplete="off">
                 
                 <div className={styles.board_title_container}>
                     <div className={styles.board_title_img}><img src="/img/dashboard/building.svg"></img></div>
@@ -190,11 +216,11 @@ interface Props {
                     <Grid item xs={5}>
                     {/* <div  className={styles.cert_img}> */}
                     <InputBase placeholder="*We will verify your account within 48 hours." multiline={true} rows="5" classes={{root:styles.company_Form_input_verify,input:styles.company_base_input}} value={verify} onChange={handleChangeverify} />
-                    {/* </div> */}
+                    {/* </div> onClick={handleSubmit} */}
                     </Grid>
                 </Grid>
                 <div className={styles.saveButton_wrapper}>
-                    <Button className={styles.saveButton}>{t("common.save")}</Button>
+                    <Button type="submit" className={styles.saveButton}>{t("common.save")}</Button>
                 </div>
                 
             </form>

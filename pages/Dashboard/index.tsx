@@ -7,6 +7,8 @@ import TabPanel from './components/TabPanel';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
 import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
 import Account from './components/account';
+import MediaQuery from 'react-responsive'
+
 
 export interface Props {
     t:(params: String) => String;
@@ -18,14 +20,17 @@ export interface Props {
       menuBarList:[],
       currentPannel:"account",
       pointPosition:"0",
-      isFold:false
+      isFold:false,
+
+
     };
   type State = {
     userDate:{username:String},
     onFoldMenuBar:Boolean,
     currentPannel:String,
     pointPosition:String,
-    isFold:Boolean
+    isFold:Boolean,
+
   };
   
   
@@ -49,6 +54,7 @@ export interface Props {
         this.handlePointPosition(newValue)
     };
 
+    
     private handlePointPosition = (current:String) => {
         // console.log('event',event)
         // test(newValue)
@@ -161,14 +167,25 @@ export interface Props {
                         </div>
                     </div>
                 </div>
-
+                
+                
+                
                 <div className={!this.state.isFold?styles.dashboard_body:styles.dashboard_body_extend}>
                     
+                
+
                     <TabPanel value={this.state.currentPannel} index={"home"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"sales"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"account"}>
                         {/* <></div> */}
-                        <Account t={t}/>
+                        <MediaQuery minDeviceWidth={1440}>
+                            <Account lay={"flex"} t={t}/>
+                        </MediaQuery>
+                        <MediaQuery maxDeviceWidth={1440} >
+                            <Account lay={"grid"} t={t}/>
+                        </MediaQuery>
+                        
+
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"products"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"policy"}></TabPanel>

@@ -23,6 +23,7 @@
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@svgr/webpack": "^5.5.0",
     "@types/react-redux": "^7.1.16",
+    "axios": "^0.21.1",
     "i18next": "^20.2.2",
     "i18next-browser-languagedetector": "^6.1.0",
     "next": "^10.0.0",
