@@ -105,6 +105,30 @@
                 "accountNumber":"Account Number",
                 "notice":"We will verify your account within 48 hours."
             }
+        },
+
+        "sal":{
+            "SalesApplication":"Sales Application",
+            "Saleshistory":"Sales History",
+            "Staff":"Staff",
+            "Customer":"Customer",
+            "Salespolicy":"Sales Policy",
+            "MonthlyReport":"Monthly Report",
+            "YearlyReport":"Yearly Report",
+            "More":"More",
+            "Filter":"Filter",
+            "Date":"Date",
+            "Name":"Name",
+            "Emailaddress":"Email address:",
+            "Qualifications":"Qualifications",
+            "SpecialtyArea":"Specialty Area",
+            "Certificate":"Certificate",
+            "Status":"Status",
+            "View":"View",
+            "NEW":"NEW",
+            "PASS":"PASS",
+            "Declined":"Declined",
+            "Pending":"Pending"
         }
     }
     

@@ -51,13 +51,13 @@ class Account extends React.Component<Props, object> {
     render(){
         const {t,lay} = this.props
         return(
-            <div className={lay==="flex"?styles.account_container:styles.account_container_pad}>
+            <div className={lay==="flex"? this.state.card_1_state || this.state.card_2_state?styles.account_container:styles.account_container_pad:styles.account_container_pad}>
 
-                <div className={lay==="flex"?styles.card_group_container:styles.card_group_container_pad}>
+                <div className={lay==="flex"? this.state.card_1_state || this.state.card_2_state?styles.card_group_container:styles.card_group_container_hide:styles.card_group_container_pad}>
 
-                    <div className={styles.card_top_button_conner_cont}>
+                    <div className={this.state.card_1_state?styles.card_top_button_conner_cont:styles.card_top_button_conner_bubble}>
                         <div onClick={this.controlCard_1} className={this.state.card_1_state?styles.card_top_button_conner:styles.card_top_button_conner_hide}>
-                            <img src="/img/Dashboard/conner.svg"></img>
+                            <img src={this.state.card_1_state?"/img/Dashboard/conner.svg":"/img/Dashboard/pop.svg"}></img>
                         </div>
                         {this.state.card_1_state?
                         <CusCard
@@ -76,9 +76,9 @@ class Account extends React.Component<Props, object> {
                     }
                     </div>
 
-                    <div className={styles.card_top_button_conner_cont}>
+                    <div className={this.state.card_2_state?styles.card_top_button_conner_cont:styles.card_top_button_conner_bubble}>
                         <div  onClick={this.controlCard_2}  className={this.state.card_2_state?styles.card_top_button_conner:styles.card_top_button_conner_hide}>
-                            <img src="/img/Dashboard/conner.svg"></img>
+                            <img src={this.state.card_2_state?"/img/Dashboard/conner.svg":"/img/Dashboard/pop.svg"}></img>
                         </div>
                         {this.state.card_2_state?
                         <CusCard
@@ -101,7 +101,7 @@ class Account extends React.Component<Props, object> {
 
 
                 <div className={styles.account_body_container}>
-                    <div className={styles.account_tab_container}>
+                    <div className={this.state.card_1_state || this.state.card_2_state?styles.account_tab_container:styles.account_tab_container_hide}>
                     <Tabs
                         variant="scrollable"
                         scrollButtons="auto"

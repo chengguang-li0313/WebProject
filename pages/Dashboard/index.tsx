@@ -7,6 +7,7 @@ import TabPanel from './components/TabPanel';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
 import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
 import Account from './components/account';
+import Sales from './components/sales';
 import MediaQuery from 'react-responsive'
 
 
@@ -18,7 +19,7 @@ export interface Props {
       userData:{username:"Dava Wang"},
     //   onFoldMenuBar:false ,
       menuBarList:[],
-      currentPannel:"account",
+      currentPannel:"sales",
       pointPosition:"0",
       isFold:false,
 
@@ -175,7 +176,14 @@ export interface Props {
                 
 
                     <TabPanel value={this.state.currentPannel} index={"home"}></TabPanel>
-                    <TabPanel value={this.state.currentPannel} index={"sales"}></TabPanel>
+                    <TabPanel value={this.state.currentPannel} index={"sales"}>
+                        <MediaQuery minDeviceWidth={1440}>
+                            <Sales lay={"flex"} t={t}/>
+                        </MediaQuery>
+                        <MediaQuery maxDeviceWidth={1440} >
+                            <Sales lay={"grid"} t={t}/>
+                        </MediaQuery>
+                    </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"account"}>
                         {/* <></div> */}
                         <MediaQuery minDeviceWidth={1440}>
