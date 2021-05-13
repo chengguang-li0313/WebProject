@@ -128,7 +128,9 @@
             "NEW":"NEW",
             "PASS":"PASS",
             "Declined":"Declined",
-            "Pending":"Pending"
+            "Pending":"Pending",
+            "Contains":"Contains",
+            "Equals":"Equals"
         }
     }
     
