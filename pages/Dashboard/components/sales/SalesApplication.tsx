@@ -239,7 +239,7 @@ interface Props {
                        <MenuItem value="Name">{t("dashboard.sal.Name")} </MenuItem>
                        <MenuItem value="Emailaddress">{t("dashboard.sal.Emailaddress")} </MenuItem>
                        <MenuItem value="SpecialtyArea">{t("dashboard.sal.SpecialtyArea")} </MenuItem>
-                       <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem>
+                       {/* <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem> */}
                     </Select>
                 </MenuItem>
                 <MenuItem >
