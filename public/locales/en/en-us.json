@@ -10,7 +10,8 @@
         "copyright":"@copyright BUBBLE8UP 2021",
         "sitemap":"sitemap",
         "upload":"Upload",
-        "save":"Save"
+        "save":"Save",
+        "cancel":"Cancel"
     },
     "footer":{
         "getInTouch":"Get in Touch",
@@ -119,7 +120,7 @@
             "Filter":"Filter",
             "Date":"Date",
             "Name":"Name",
-            "Emailaddress":"Email address:",
+            "Emailaddress":"Email address",
             "Qualifications":"Qualifications",
             "SpecialtyArea":"Specialty Area",
             "Certificate":"Certificate",
@@ -130,7 +131,11 @@
             "Declined":"Declined",
             "Pending":"Pending",
             "Contains":"Contains",
-            "Equals":"Equals"
+            "Equals":"Equals",
+            "Edit":"Edit",
+            "Delete":"Delete",
+            "and":"AND",
+            "or":"OR"
         }
     }
     

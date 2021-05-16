@@ -19,7 +19,7 @@ export interface Props {
       userData:{username:"Dava Wang"},
     //   onFoldMenuBar:false ,
       menuBarList:[],
-      currentPannel:"sales",
+      currentPannel:"account",
       pointPosition:"0",
       isFold:false,
 

@@ -1,8 +1,14 @@
 import * as React from 'react';
-import {Tooltip,Chip,FormControl,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow,MenuItem,Select,Popper,TextField} from '@material-ui/core';
+import {Tooltip,Chip,FormControl,Table,TableBody,TableCell,
+        TableContainer,TableHead,TablePagination,TableRow,MenuItem,
+        Select,Popper,TextField} from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import styles from './index.module.css';
+import EditDialog from './EditDialog';
 // import { AppendKeys } from 'react-i18next';
 // import AddIcon from '@material-ui/icons/Add';
+
+
 
 interface Props {
     t:(params: String) => String;
@@ -15,17 +21,27 @@ interface Props {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [column, setColumn] = React.useState("Name"); 
-    const [ope, setOpe]= React.useState("Contains"); 
-    const [val,setVal] = React.useState(""); 
-    // const [value,setValue] = React.useState(""); 
-    // const [tagList, setTagList] = React.useState(["test"]); 
-    // const [valList, setFiltersList] = React.useState(["test"]); 
+    // const [column, setColumn] = React.useState("Name"); 
+    // const [ope, setOpe]= React.useState("Contains"); 
+    // const [val,setVal] = React.useState(""); 
+    const [state, setState] = React.useState(0);
+    const [seleValue, setSeleValue] = React.useState("");
+    const [editOpen,setEditOpen] = React.useState(false); 
+    const [editMenuListAnchorEl, setEditMenuListAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [currentEditRow,setCurrentEditRow] = React.useState({});
+    const [dialogOpen,setDialogOpen] = React.useState(false);
+    // const [logicOpe,setLogicOpe] = React.useState("and");
+    const [filterList,setFilterList] = React.useState([{column:"Date",ope:"Contains",val:"",logicOpe:"and"}]);
+    
 
     const {t} = props
 
+    const forceUpdate = () => {
+        setState(state + 1)
+    };  
+    
     const handleChangePage = (event:any, newPage:any) => {
-        console.log("page")
+        // console.log("page")
         setPage(newPage);
         // setOpen((prev) => !prev);
     };
@@ -35,10 +51,11 @@ interface Props {
         setPage(0);
     };
 
-    const handleSelectionChange =(event: React.ChangeEvent<{ value: string }>) =>{
-        console.log('event.target.value',event.target.value)
-        // setValue(event.target.value);
-        // console.log("svalue",svalue)
+    const handleSelectionChange =(event:any,row:any) =>{
+        // console.log('event.target.value',event.target.value)
+        setSeleValue(event.target.value);
+        row.Status = event.target.value
+        // console.log("row",row)
     }
 
     const handleFilter = (event:any) =>{
@@ -48,29 +65,8 @@ interface Props {
 
     }
     const handleClose = () => {
-        setOpen((prev) => false);
+        setOpen(false);
       };
-
-    
-    const status = (
-            <FormControl classes={{root:styles.outlined}}>
-                <Select
-                // labelId="status-label"
-                // id="status"
-                // value={value}
-                onChange={handleSelectionChange}
-                >
-                    <MenuItem className={styles.sales_opt} value={""}></MenuItem>
-                    <MenuItem className={styles.sales_new} value="NEW">{ t("dashboard.sal.NEW")}</MenuItem>
-                    <MenuItem className={styles.sales_PASS} value="PASS">{ t("dashboard.sal.PASS")}</MenuItem>
-                    <MenuItem className={styles.sales_Declined} value="Declined">{ t("dashboard.sal.Declined")}</MenuItem>
-                    <MenuItem className={styles.sales_Pending} value="Pending">{ t("dashboard.sal.Pending")}</MenuItem>
-                </Select>
-            </FormControl>
-            // classes={{root:styles.outlined}}
-        )
-    
-
     
 
     const columns = [
@@ -124,52 +120,77 @@ interface Props {
           },
       ];
 
-      
-
-      const setRow=()=>{
-
+      const onCloseActionMenu =()=>{
+        setEditOpen(false)
       }
 
+      
+     
+
       const handleView=(col:string,name:string)=>{
+        //   TODO
           console.log("click View",name,col)
       }
 
-      const createData=(Date:any, Name:string, Emailaddress:string, Qualifications:any,SpecialtyArea:any,Certificate:any,Status:any,more:any)=>{
+      const createData=(Date:any, Name:string, Emailaddress:string, Qualifications:any,SpecialtyArea:any,Certificate:any,Status:string,id:Number)=>{
         // const density = population / size;
      
-        return { Date, Name, Emailaddress, Qualifications, SpecialtyArea, Certificate,Status,more};
+        return { Date, Name, Emailaddress, Qualifications, SpecialtyArea, Certificate,Status,id};
       }
-      
-    //   const stateSelection=(
-    //       <div></div>
-    //   )
-
-      const more=()=>{return(
-        <div className={styles.sales_table_more_icon}>
-            <img src={"/img/Dashboard/more.svg"}></img>
-        </div>
-      )}
+      const handleItemEditMenuList=(event:any,row:any)=>{
+        // console.log("clicked",row)
+        if (row )setCurrentEditRow(row)
+        setEditOpen((prev) => !prev)
+        setEditMenuListAnchorEl(event.currentTarget)
+      }
 
       const setView =(col:any,row:any)=>{
           return (<a onClick={handleView.bind(this,col,row)} className={styles.a}>{t("dashboard.sal.View")}</a>)
       }
 
       const rows = [
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/05/21','Richard', "xx@gmail.com",setView("Qualifications","Richard"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/02/21','David', "xx@gmail.com",setView("Qualifications","David"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/05/21','Richard', "xx@gmail.com",setView("Qualifications","Richard"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/02/21','David', "xx@gmail.com",setView("Qualifications","David"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/05/21','Richard', "xx@gmail.com",setView("Qualifications","Richard"),"digital sale",setView("Certificate","Tom"),status,more()),
-        createData('20/02/21','David', "xx@gmail.com",setView("Qualifications","David"),"digital sale",setView("Certificate","Tom"),status,more()),
+        createData('20/08/21','Tom_remove', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",0),
+        createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",1),
+        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",2),
+        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",3),
+        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",4),
+        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",5),
+        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",6),
         
       ]
-  
+
+      const handleDelete=(row:any)=>{
+        //For front end Demo
+        rows.forEach((r,i)=>{
+            if(r.id == row.id){
+                rows.splice(i, 1)
+            }
+        })
+
+        // TODO send request to back to 
+        setFilterData(rows)
+
+    }
+
+      const handleAction=(event:any,action:string)=>{
+
+        console.log("action",action,currentEditRow)
+        onCloseActionMenu()
+        if(action){
+            switch(action){
+                case "Edit":
+                    setDialogOpen(true)
+                    break;
+                case "Delete":
+                    if(currentEditRow) handleDelete(currentEditRow)
+                    break;
+            }
+        }
+        //currentEditRow 
+        
+
+      }
+
 
     const [filterData,setFilterData] = React.useState(rows); 
 
@@ -191,77 +212,122 @@ interface Props {
         }else{
             filRow = rows
         }
+        
         setFilterData(filRow)
     }
 
-    const getValue=(event:any)=>{
+    const handAddCondition=()=>{
+        const newfilter = {column:"Date",ope:"Contains",val:"",logicOpe:"and"}
+        let temfilterList = filterList
+        temfilterList.push(newfilter)
+        setFilterList(temfilterList)
+        forceUpdate()
+        // console.log('filterList',filterList)
+    }
+    const handEditCondition=(editFilterPart:string,id:any,valu:any)=>{
+        
+        let temfilterList = filterList
+        temfilterList[id][editFilterPart] = valu
+        // temfilterList.push(newfilter)
+        setFilterList(temfilterList)
+        forceUpdate()
+        console.log('filterList',filterList)
+    }
 
-        setVal(event.target.value)
-        handleSetFilter(event.target.value,ope,column)
+    const getValue=(event:any,id:Number)=>{
+        handEditCondition('val',id,event.target.value)
+        // setVal(event.target.value)
+
+        // handleSetFilter(event.target.value,ope,column)
         // console.log(val,ope,column)
         
     }
 
-    const handleChangeFilterOpe=(event:any)=>{
-        console.log("event.target.value",event.target.value)
-        setOpe(event.target.value)
-        handleSetFilter(val,event.target.value,column)
+    const handleChangeFilterOpe=(event:any,id:Number)=>{
+        handEditCondition('ope',id,event.target.value)
+        // console.log("event.target.value",event.target.value)
+        // setOpe(event.target.value)
+        // handleSetFilter(val,event.target.value,column)
     }
 
-    const handleChangeFilterCol=(event: any)=>{
-        
-        setColumn(event.target.value)
-        handleSetFilter(val,ope,event.target.value)
+    const handleChangeFilterCol=(event: any,id:Number)=>{
+        handEditCondition('column',id,event.target.value)
+        // setColumn(event.target.value)
+        // handleSetFilter(val,ope,event.target.value)
     }
 
+    const handleChangeFilterLogicOpe=(event:any,id:Number)=>{
+        handEditCondition('logicOpe',id,event.target.value)
+        // setLogicOpe(event.target.value)
+    }
+
+    const handleDialogClose=(event:any,newRow:any)=>{
+        setDialogOpen(false)
+        // TODO on update need send request to the back
+        if(newRow){
+            rows.forEach((r,i)=>{
+                if(r.id==newRow.id){
+                    rows[i] = newRow
+                }
+            })
+            setFilterData(rows)
+        }
+    }
     return(
         <div className={styles.salesApplication_container}>
 
             <div  className={styles.filter_container}>
                 <div onClick={handleFilter} className={styles.filter_container_text}>{t("dashboard.sal.Filter")}</div>
                 <div onClick={handleFilter} className={styles.filter_container_img}><img src="/img/Dashboard/filter_more.svg"></img></div>
-                
-               {/* {tagList.map((tag,index) => 
-                   (<Chip key={index} label={tag} onDelete={handleDelete.bind(this,tag)}/>)
-               )} */}
+
             </div>
             <Popper className={styles.popper} open={open} anchorEl={anchorEl} placement="bottom-start" transition>
-                <div  className={styles.popper_content}>
-                <MenuItem >
-                    <Select
-                    value={column}
-                    onChange={handleChangeFilterCol}
-                    >
-                       {/* { filterList.map((ele:any,index:Number)=>{
-                           <MenuItem key={ele.id} value={ele.id}>{ele.value}</MenuItem>
-                       })} */}
-                       <MenuItem value="Date">{t("dashboard.sal.Date")} </MenuItem>
-                       <MenuItem value="Name">{t("dashboard.sal.Name")} </MenuItem>
-                       <MenuItem value="Emailaddress">{t("dashboard.sal.Emailaddress")} </MenuItem>
-                       <MenuItem value="SpecialtyArea">{t("dashboard.sal.SpecialtyArea")} </MenuItem>
-                       {/* <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem> */}
-                    </Select>
-                </MenuItem>
-                <MenuItem >
-                    <Select
-                        value={ope}
-                        onChange={handleChangeFilterOpe}
-                        >
-                       {/* { filterList.map((ele:any,index:Number)=>{
-                           <MenuItem key={ele.id} value={ele.id}>{ele.value}</MenuItem>
-                       })} */}
-                       <MenuItem value="Contains">{t("dashboard.sal.Contains")}</MenuItem>
-                       <MenuItem value="Equals">{t("dashboard.sal.Equals")}</MenuItem>
-                    </Select>
-                </MenuItem>
-                <MenuItem >
-                    <TextField onChange={getValue} value={val} id="value" />
-                </MenuItem>
-                {/* <div className={styles.addMoreFilter}>
-                    <Tooltip title="Add more conditions" aria-label="add">
-                        <AddIcon />
-                    </Tooltip>
-                </div> */}
+                <div className={styles.popper_content_container}>
+                    {filterList.map((filter,ind)=>(
+
+                    <div key={ind}>
+                        <div  className={styles.popper_content_line}>
+                        <MenuItem >
+                            <Select
+                            value={filter.column}
+                            onChange={(ev)=>handleChangeFilterCol(ev,ind)}
+                            >
+                            <MenuItem value="Date">{t("dashboard.sal.Date")} </MenuItem>
+                            <MenuItem value="Name">{t("dashboard.sal.Name")} </MenuItem>
+                            <MenuItem value="Emailaddress">{t("dashboard.sal.Emailaddress")} </MenuItem>
+                            <MenuItem value="SpecialtyArea">{t("dashboard.sal.SpecialtyArea")} </MenuItem>
+                            {/* <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem> */}
+                            </Select>
+                        </MenuItem>
+                        <MenuItem >
+                            <Select
+                                value={filter.ope}
+                                onChange={(ev)=>handleChangeFilterOpe(ev,ind)}
+                                >
+
+                            <MenuItem value="Contains">{t("dashboard.sal.Contains")}</MenuItem>
+                            <MenuItem value="Equals">{t("dashboard.sal.Equals")}</MenuItem>
+                            </Select>
+                        </MenuItem>
+                        <MenuItem >
+                            <TextField onChange={(ev)=>getValue(ev,ind)} value={filter.val} id="value" />
+                        </MenuItem>
+                        </div>
+                        <div className={styles.popper_content_line}>
+                            <MenuItem >
+                                <Select
+                                    value={filter.logicOpe}
+                                    onChange={(ev)=>handleChangeFilterLogicOpe(ev,ind)}
+                                    >
+                                    <MenuItem value="and">{t("dashboard.sal.and")}</MenuItem>
+                                    <MenuItem value="or">{t("dashboard.sal.or")}</MenuItem>
+                                </Select>
+                            </MenuItem>
+                            <MenuItem>
+                                <AddCircleIcon onClick={handAddCondition} classes={{root:styles.icon_root}} color="primary"/>
+                            </MenuItem>
+                        </div>
+                    </div>))}
                 </div>
             </Popper>
 
@@ -288,13 +354,45 @@ interface Props {
                             <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                             {columns.map((column) => {
                                 const value = row[column.id];
-                                return (
-                                    //  align={column.align}
-                                <TableCell key={column.id}>
-                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                </TableCell>
-                                );
+                                // console.log("row",row)
+                                if(column.id=="more"){
+                                    return(
+                                        <TableCell onClick={(ev) => {handleItemEditMenuList(ev,row)}}  key={index.toString()+"more"}>
+                                            <div id={index.toString()} className={styles.sales_table_more_icon}>
+                                                <img src={"/img/Dashboard/more.svg"}></img>
+                                            </div>
+                                    </TableCell>)
+                                }else if(column.id=="Status"){
+                                    return(
+                                        <TableCell onClick={onCloseActionMenu} key="Status">
+                                            <FormControl classes={{root:styles.outlined}}>
+                                                <Select
+                                                labelId={index+"label"}
+                                                id={index.toString()}
+                                                value={row.Status}
+                                                onChange={(ev) => {handleSelectionChange(ev, row)}}
+                                                >
+                                                    {/* <MenuItem className={styles.sales_opt} value={""}></MenuItem> */}
+                                                    <MenuItem className={styles.sales_new} value="NEW">{ t("dashboard.sal.NEW")}</MenuItem>
+                                                    <MenuItem className={styles.sales_PASS} value="PASS">{ t("dashboard.sal.PASS")}</MenuItem>
+                                                    <MenuItem className={styles.sales_Declined} value="Declined">{ t("dashboard.sal.Declined")}</MenuItem>
+                                                    <MenuItem className={styles.sales_Pending} value="Pending">{ t("dashboard.sal.Pending")}</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
+                                    )
+                                    
+                                }else{
+                                    return (
+                                        //  align={column.align}
+                                    <TableCell key={column.id}>
+                                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                                    </TableCell>
+                                    );
+                                }
+                                
                             })}
+                                
                             </TableRow>
                         );
                         })}
@@ -309,6 +407,19 @@ interface Props {
                     page={page}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+                <Popper className={styles.popper} open={editOpen} anchorEl={editMenuListAnchorEl} placement="bottom-start" transition>
+                    <div  className={styles.popper_content_more}>
+                        <MenuItem onClick={(ev)=>{handleAction(ev,"Edit")}} className={styles.sales_opt} value="Edit">{ t("dashboard.sal.Edit")}</MenuItem>
+                        <MenuItem onClick={(ev)=>{handleAction(ev,"Delete")}} className={styles.sales_opt} value="Delete">{ t("dashboard.sal.Delete")}</MenuItem>
+                    </div>
+                </Popper>
+
+                <EditDialog
+                    t={t}
+                    currentRow={currentEditRow}
+                    open={dialogOpen}
+                    handleClose={handleDialogClose}
                 />
             </div>
         </div>
