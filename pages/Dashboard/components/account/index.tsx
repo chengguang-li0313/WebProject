@@ -5,7 +5,7 @@ import TabPanel from '../TabPanel';
 import {Divider,Tabs,Tab} from '@material-ui/core';
 import CusCard from '../cusCard';
 import PaymentMethod from '../paymentMethod';
-
+import Delivery from '../delivery';
 
 export interface Props {
     t:(params: String) => String;
@@ -189,7 +189,7 @@ class Account extends React.Component<Props, object> {
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"setting"}>
-                            <CompanyInfo
+                            <Delivery
                                 t={t}
                                 // testFunction={this.test}
                             />

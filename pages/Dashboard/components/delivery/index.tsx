@@ -18,56 +18,56 @@ export interface Props {
 //   })
 
 const initialState = {
-    noPayment:false,
-    ownPayment:false,
-    bubPayment:true,
-    ownPaymentObj:[{name:"dashboard.acc.payment.Directbanktransfer",des:"dashboard.acc.payment.DBT_des",enable:false},
-            {name:"dashboard.acc.payment.Checkpayments",des:"dashboard.acc.payment.Checkpayments_des",enable:false},
-            {name:"dashboard.acc.payment.Cashondelivery",des:"dashboard.acc.payment.Cashondelivery_des",enable:false},],
-    bubPaymentObj:[
-        {icon:"",name:"dashboard.acc.payment.Directbanktransfer",des:"dashboard.acc.payment.DBT_des",enable:true},
-        {icon:"",name:"dashboard.acc.payment.PayPalStandard",des:"dashboard.acc.payment.PayPalStandard_des",enable:true},
-        {icon:"",name:"dashboard.acc.payment.CreditCard",des:"dashboard.acc.payment.CreditCard_des",enable:false},
-        {icon:"",name:"dashboard.acc.payment.Stripe",des:"dashboard.acc.payment.Stripe_des",enable:false}
+    noDelivery:false,
+    ownDelivery:false,
+    bubDelivery:true,
+    ownDeliveryObj:[{name:"dashboard.acc.delivery.Flatrate",des:"dashboard.acc.delivery.Flatrate_des",enable:false},
+            {name:"dashboard.acc.delivery.Post",des:"dashboard.acc.delivery.Post_des",enable:false},
+            {name:"dashboard.acc.delivery.Cashondelivery",des:"dashboard.acc.delivery.Cashondelivery_des",enable:false},],
+    bubDeliveryObj:[
+        {icon:"",name:"dashboard.acc.delivery.Advancezone",des:"dashboard.acc.delivery.Advancezone_des",enable:true},
+        {icon:"",name:"dashboard.acc.delivery.Freeproduct",des:"dashboard.acc.delivery.Freeproduct_des",enable:true},
+        {icon:"",name:"dashboard.acc.delivery.WeightShipping",des:"dashboard.acc.delivery.WeightShipping_des",enable:false},
+        {icon:"",name:"dashboard.acc.delivery.CustomDelivery",des:"dashboard.acc.delivery.CustomDelivery_des",enable:false}
     ]
 }
 
 type State = {
-    noPayment:boolean,
-    ownPayment:boolean,
-    bubPayment:boolean,
-    ownPaymentObj:any,
-    bubPaymentObj:any
+    noDelivery:boolean,
+    ownDelivery:boolean,
+    bubDelivery:boolean,
+    ownDeliveryObj:any,
+    bubDeliveryObj:any
 }
 
-class PaymentMethod extends React.Component<Props, object> {
+class Delivery extends React.Component<Props, object> {
 
     state= initialState
 
     private handleChangeNoPayment=()=>{
-        this.setState({noPayment:!this.state.noPayment})
+        this.setState({noDelivery:!this.state.noDelivery})
     }   
 
     private handleChangeBubPayment=()=>{
-        this.setState({bubPayment:!this.state.bubPayment})
+        this.setState({bubDelivery:!this.state.bubDelivery})
     }
 
     private handleChangeOwnPayment=()=>{
-        this.setState({ownPayment:!this.state.ownPayment})
+        this.setState({ownDelivery:!this.state.ownDelivery})
     }
     private handleContentChange =(event:any,i:any,tableName:string)=>{
         // console.log('event',i,tableName)
         let tempObj = null
         switch(tableName){
-            case "ownPaymentObj":
-                tempObj= this.state.ownPaymentObj
+            case "ownDeliveryObj":
+                tempObj= this.state.ownDeliveryObj
                 tempObj[i].enable = !tempObj[i].enable
-                this.setState({ownPaymentObj:tempObj})
+                this.setState({ownDeliveryObj:tempObj})
                 break;
-            case "bubPaymentObj":
-                tempObj = this.state.bubPaymentObj
+            case "bubDeliveryObj":
+                tempObj = this.state.bubDeliveryObj
                 tempObj[i].enable = !tempObj[i].enable
-                this.setState({bubPaymentObj:tempObj})
+                this.setState({bubDeliveryObj:tempObj})
                 break;
         }
     }
@@ -136,29 +136,29 @@ class PaymentMethod extends React.Component<Props, object> {
                     <div className={styles.paymentMethod_section_title_container}>
                         <div className={styles.paymentMethod_section_title_icon}><img src="/img/Dashboard/entypo_circle-with-cross.svg"></img></div>
                         <div className={styles.paymentMethod_section_title_tra}><img src="/img/Dashboard/Polygon_5.svg"></img></div>
-                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.payment.no")}</div>
+                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.delivery.NoDelivery")}</div>
                         <div className={styles.paymentMethod_section_title_switch}>
-                            <IOSSwitch checked={this.state.noPayment} onChange={this.handleChangeNoPayment} name="noPayment" />
+                            <IOSSwitch checked={this.state.noDelivery} onChange={this.handleChangeNoPayment} name="noDelivery" />
                         </div>
                     </div>
                     <Divider/>
                 </div>
                 <div className={styles.paymentMethod_section}>
                     <div className={styles.paymentMethod_section_title_container}>
-                        <div className={styles.paymentMethod_section_title_icon}><img src="/img/Dashboard/ic_sharp-payments.svg"></img></div>
+                        <div className={styles.paymentMethod_section_title_icon}><img src="/img/Dashboard/carbon_delivery-truck.svg"></img></div>
                         <div className={styles.paymentMethod_section_title_tra}><img src="/img/Dashboard/Polygon_5_blue.svg"></img></div>
-                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.payment.own")}</div>
+                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.delivery.OwnDelivery")}</div>
                         <div className={styles.paymentMethod_section_title_switch}>
-                            <IOSSwitch checked={this.state.ownPayment} onChange={this.handleChangeOwnPayment} name="own" />
+                            <IOSSwitch checked={this.state.ownDelivery} onChange={this.handleChangeOwnPayment} name="own" />
                         </div>
-                        <div className={styles.paymentMethod_section_title_des}>{t("dashboard.acc.payment.own_exp")}</div>
+                        <div className={styles.paymentMethod_section_title_des}>{t("dashboard.acc.delivery.OwnDelivery_des")}</div>
                     </div>
 
                     <div>
                         <MethodTable
                             t={t}
-                            tableName="ownPaymentObj"
-                            content={this.state.ownPaymentObj}
+                            tableName="ownDeliveryObj"
+                            content={this.state.ownDeliveryObj}
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
                         >
@@ -170,28 +170,26 @@ class PaymentMethod extends React.Component<Props, object> {
                 </div>
                 <div className={styles.paymentMethod_section}>
                     <div className={styles.paymentMethod_section_title_container}>
-                        <div className={styles.paymentMethod_section_title_icon}><img src="/img/Dashboard/ri_secure-payment-fill.svg"></img></div>
+                        <div className={styles.paymentMethod_section_title_icon}><img src="/img/Dashboard/carbon_delivery-parcel.svg"></img></div>
                         <div className={styles.paymentMethod_section_title_tra}><img src="/img/Dashboard/Polygon_5_blue.svg"></img></div>
-                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.payment.bubble8up")}</div>
+                        <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.delivery.BUBBLE8UPDelivery")}</div>
                         <div className={styles.paymentMethod_section_title_switch}>
-                            <IOSSwitch checked={this.state.bubPayment} onChange={this.handleChangeBubPayment} name="bubble8up" />
+                            <IOSSwitch checked={this.state.bubDelivery} onChange={this.handleChangeBubPayment} name="bubble8up" />
                         </div>
-                        <div className={styles.paymentMethod_section_title_des}>{t("dashboard.acc.payment.bubble8up_exp")}</div>
+                        <div className={styles.paymentMethod_section_title_des}>{t("dashboard.acc.delivery.BUBBLE8UPDelivery_des")}</div>
                     </div>
                     
                     <div>
                         <MethodTable
                             t={t}
-                            tableName="bubPaymentObj"
-                            content={this.state.bubPaymentObj}
+                            tableName="bubDeliveryObj"
+                            content={this.state.bubDeliveryObj}
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
                         >
                         </MethodTable>
                     </div>
                     {/* <Divider/> */}
-
-                    
                 </div>
                 <div className={styles.paymentMethod_update_bt}>
                     <Button classes={{root:styles.paymentMethod_update}}>{t("common.upload")}</Button>
@@ -201,4 +199,4 @@ class PaymentMethod extends React.Component<Props, object> {
     }
 }
 
-export default PaymentMethod
+export default Delivery
