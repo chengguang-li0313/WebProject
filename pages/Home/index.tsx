@@ -5,7 +5,7 @@ import MediaQuery from 'react-responsive';
 import styles from './index.module.css';
 import Layout from '../../layout/Home';
 import {Grid,Divider,Box,Button,
-  Card,CardContent,Typography,TextField,FormControl} from '@material-ui/core';
+  Card,CardContent,Typography,TextField,FormControl,InputBase} from '@material-ui/core';
 
 import Auth from './../Auth/index'
 
@@ -152,7 +152,7 @@ class Home extends React.Component<Props, State> {
 
             {onContactUs?
             <Box className={styles.contactForm_container}>
-              <form noValidate={true}>
+              <form noValidate={false}>
                 <div className={styles.contactForm_title_container}>
                   <div>
                     <div className={styles.contactForm_title}>
@@ -258,7 +258,9 @@ class Home extends React.Component<Props, State> {
                       {t('landing.section_4.receiveInfo')}
                     </div>
                     <form>
-                      <TextField className={styles.input_email} id="email" name="email"  label={t('common.email')} variant="outlined" />
+                      <input className={styles.input_email} type="email" placeholder={t('common.email')}></input>
+                    {/* <TextField value={value} classes={{root:styles.input_email}} id="email" name="email" label={t('common.email')} variant="outlined" /> */}
+                      {/* <TextField className={styles.input_email} id="email" name="email"  label={t('common.email')} variant="outlined" /> */}
                       <Button onClick={this.handleSubmitEmailForm} className={styles.submit_bt} >{t('common.submit')}</Button>
                     </form>
                     </CardContent>

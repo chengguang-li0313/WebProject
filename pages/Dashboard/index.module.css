@@ -102,16 +102,28 @@
 /*===================== dashboard body =====================*/
 .dashboard_body{
     /* height: 90vh; */
-    width: 85%;
+    min-width: 200px;
+    width: 89%;
     margin: 0 auto;
     margin-bottom: 34px;
-    /* float: right; */
-    /* margin-right: 4.6vw;
-    margin-left: 2.4vw; */
-    /* height: 100px; */
 }
+
+
 .dashboard_body_extend{
     margin-bottom: 34px;
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
 }
+
+/* 
+.account_container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    color: #000000;
+}
+.account_container_pad{
+    width: 100%;
+    height: 100%;
+    color: #000000;
+} */
