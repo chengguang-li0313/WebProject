@@ -37,7 +37,7 @@ export interface Props {
   
   
 
-  class Dashboard extends React.Component<Props, object> {
+class Dashboard extends React.Component<Props, object> {
     state= initialState
 
     componentDidMount(){
@@ -56,23 +56,6 @@ export interface Props {
     private handleFold = ()=>{
         this.setState({isFold:!this.state.isFold})
     }
-
-
-const initialState = {
-  userData: { username: "Dava Wang" },
-  //   onFoldMenuBar:false ,
-  menuBarList: [],
-  currentPannel: "account",
-  pointPosition: "0",
-  isFold: false,
-};
-type State = {
-  userDate: { username: String };
-  onFoldMenuBar: Boolean;
-  currentPannel: String;
-  pointPosition: String;
-  isFold: Boolean;
-};
 
     
   private handlePointPosition = (current:String) => {
@@ -99,47 +82,13 @@ type State = {
               this.setState({pointPosition:"460px"})
               break;
       }
-
-  componentDidMount() {
-    this.handlePointPosition(this.state.currentPannel);
-  }
-
-  private handleFold = () => {
-    this.setState({ isFold: !this.state.isFold });
-  };
-
-  private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
-    console.log("event", event);
-    // test(newValue)
-    this.setState({ currentPannel: newValue });
-    this.handlePointPosition(newValue);
-  };
-
-  private handlePointPosition = (current: String) => {
-    // console.log('event',event)
-    // test(newValue)
-    // this.setState({currentPannel:newValue})
-    switch (current) {
-      case "home":
-        this.setState({ pointPosition: "0" });
-        break;
-      case "sales":
-        this.setState({ pointPosition: "92px" });
-        break;
-      case "account":
-        this.setState({ pointPosition: "184px" });
-        break;
-      case "products":
-        this.setState({ pointPosition: "276px" });
-        break;
-      case "policy":
-        this.setState({ pointPosition: "373px" });
-        break;
-      case "support":
-        this.setState({ pointPosition: "460px" });
-        break;
     }
-  };
+      private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
+        // console.log("event", event);
+        // test(newValue)
+        this.setState({ currentPannel: newValue });
+        this.handlePointPosition(newValue);
+      };
 
   render() {
     const { t } = this.props;
@@ -259,7 +208,7 @@ type State = {
                         
                   </Tabs>
                     
-                </div>:[]}
+                </div>):[]}
                     <div className={styles.selectePointer_container}>
                         <div onClick={this.handleFold} className={styles.selectePointer} style={{top:this.state.pointPosition}} >
                             <img className={styles.selectePointer_img} src="/img/dashboard/pointout.svg"></img>
@@ -272,7 +221,7 @@ type State = {
                 
                 
                 
-                <div className={!this.state.isFold?styles.dashboard_body:styles.dashboard_body_extend}>
+            <div className={!this.state.isFold?styles.dashboard_body:styles.dashboard_body_extend}>
                     
                 
 
@@ -302,7 +251,7 @@ type State = {
                 </div>
 
           </div>
-        </div>
+        {/* </div> */}
       </DashboardLayout>
     );
   }

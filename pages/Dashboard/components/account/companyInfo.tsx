@@ -173,94 +173,31 @@ function CompanyInfo(props: Props) {
       setFileURL(s3res.url);
     }
   }
-  
-  function CompanyInfo(props: Props) {
 
-    const {t} = props
 
-    const [companyName, setCompanyName] = React.useState('');
-    const [companyAdress, setCompanyAdress] = React.useState('');
-    const [contactPerson, setContactPerson] = React.useState('');
-    const [contactNumber, setContactNumber] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [aboutyourbusiness, setAboutyourbusiness] = React.useState('');
-
-    const [abn, setABN] = React.useState('');
-
-    const [bankAccount, setBankAccount] = React.useState('');
-    const [bsb, setBsb] = React.useState('');
-    const [accountNumber, setAccountNumber] = React.useState('');
-    const [verify, setVerify] = React.useState('');
-
-    const handleChangebankAccount = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBankAccount(event.target.value);
-        // console.log(event.target.value)
-      };
-      const handleChangebsb = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBsb(event.target.value);
-        // console.log(event.target.value)
-      };
-      const handleChangeaccountNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAccountNumber(event.target.value);
-        // console.log(event.target.value)
-      };
-      const handleChangeabn = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setABN(event.target.value);
-        // console.log(event.target.value)
-      };
-    // const [test, setTest] = React.useState('test');
-    const handleChangeverify = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setVerify(event.target.value);
-        // console.log(event.target.value)
-      };
-    const handleChangeCompanyName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCompanyName(event.target.value);
-        // console.log(event.target.value)
-      };
-    const handleChangeContactPerson = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setContactPerson(event.target.value);
-        // console.log(event.target.value)
-      };
-    const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-        // console.log(event.target.value)
-    };
-    const handleChangeContactNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setContactNumber(event.target.value);
-        // console.log(event.target.value)
-    };
-    const handleChangeaboutyourbusiness = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAboutyourbusiness(event.target.value);
-        // console.log(event.target.value)
-    };
-    const handleChangecompanyAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCompanyAdress(event.target.value);
-        // console.log(event.target.value)
-      };
-
-    const handleSubmit=()=>{
+    // const handleSubmit=()=>{
         
-        const data = {companyName:companyName,
-            companyAdress:companyAdress,
-            contactPerson:contactPerson,
-            contactNumber:contactNumber,
-            email:email,
-            aboutyourbusiness:aboutyourbusiness,
-            abn:abn,
-            bankAccount:bankAccount,
-            bsb:bsb,
-            accountNumber:accountNumber,
-            verify:verify
-        }
-        submitCompanBasicInfo(data)
-        .then(res =>{
-            console.log("res",res)
-        })
-        .catch((err)=>{
-            alert(err)
-        })
-        // console.log("data",data)
-    }
+    //     const data = {companyName:companyName,
+    //         companyAdress:companyAdress,
+    //         contactPerson:contactPerson,
+    //         contactNumber:contactNumber,
+    //         email:email,
+    //         aboutyourbusiness:aboutyourbusiness,
+    //         abn:abn,
+    //         bankAccount:bankAccount,
+    //         bsb:bsb,
+    //         accountNumber:accountNumber,
+    //         verify:verify
+    //     }
+    //     submitCompanBasicInfo(data)
+    //     .then(res =>{
+    //         console.log("res",res)
+    //     })
+    //     .catch((err)=>{
+    //         alert(err)
+    //     })
+    //     // console.log("data",data)
+    // }
 
     return(
         <div className={styles.companyInfo_container}>
