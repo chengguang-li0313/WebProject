@@ -28,8 +28,10 @@ type State = {
     card_2_state:Boolean,
 }
 
+
 class Account extends React.Component<Props, object> {
-    state= initialState
+  state = initialState;
+
 
     private test() {
         console.log("this is test")
@@ -206,6 +208,7 @@ class Account extends React.Component<Props, object> {
             </div>
         )
     }
+
 }
 
-export default Account
+export default Account;

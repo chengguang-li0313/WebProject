@@ -1,7 +1,7 @@
-import * as React from 'react';
-import styles from './index.module.css';
-import DashboardLayout from '../../layout/Dashboard';
-import {MenuItem,MenuList,Tabs,Tab} from '@material-ui/core';
+import * as React from "react";
+import styles from "./index.module.css";
+import DashboardLayout from "../../layout/Dashboard";
+import { MenuItem, MenuList, Tabs, Tab } from "@material-ui/core";
 // import TabPanel from '@material-ui/lab/TabPanel';
 import TabPanel from './components/TabPanel';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
@@ -57,117 +57,209 @@ export interface Props {
         this.setState({isFold:!this.state.isFold})
     }
 
-    private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
-        console.log('event',event)
-        // test(newValue)
-        this.setState({currentPannel:newValue})
-        this.handlePointPosition(newValue)
-    };
+
+const initialState = {
+  userData: { username: "Dava Wang" },
+  //   onFoldMenuBar:false ,
+  menuBarList: [],
+  currentPannel: "account",
+  pointPosition: "0",
+  isFold: false,
+};
+type State = {
+  userDate: { username: String };
+  onFoldMenuBar: Boolean;
+  currentPannel: String;
+  pointPosition: String;
+  isFold: Boolean;
+};
 
     
-    private handlePointPosition = (current:String) => {
-        // console.log('event',event)
-        // test(newValue)
-        // this.setState({currentPannel:newValue})
-        switch(current){
-            case this.HOME:
-                this.setState({pointPosition:"0"})
-                break;
-            case this.SALES:
-                this.setState({pointPosition:"92px"})
-                break;
-            case this.ACCOUNT:
-                this.setState({pointPosition:"184px"})
-                break;
-            case this.PRODUCTS:
-                this.setState({pointPosition:"276px"})
-                break;
-            case this.POLICY:
-                this.setState({pointPosition:"373px"})
-                break;
-            case this.SUPPORT:
-                this.setState({pointPosition:"460px"})
-                break;
-        }
+  private handlePointPosition = (current:String) => {
+      // console.log('event',event)
+      // test(newValue)
+      // this.setState({currentPannel:newValue})
+      switch(current){
+          case this.HOME:
+              this.setState({pointPosition:"0"})
+              break;
+          case this.SALES:
+              this.setState({pointPosition:"92px"})
+              break;
+          case this.ACCOUNT:
+              this.setState({pointPosition:"184px"})
+              break;
+          case this.PRODUCTS:
+              this.setState({pointPosition:"276px"})
+              break;
+          case this.POLICY:
+              this.setState({pointPosition:"373px"})
+              break;
+          case this.SUPPORT:
+              this.setState({pointPosition:"460px"})
+              break;
+      }
 
-    };
-    
-    render() {
+  componentDidMount() {
+    this.handlePointPosition(this.state.currentPannel);
+  }
 
-        const {t} = this.props
-        // console.log("value",value)
-        
+  private handleFold = () => {
+    this.setState({ isFold: !this.state.isFold });
+  };
 
-        return(
-            <DashboardLayout
-            t={t}
-            userData={this.state.userData}
-            >
-              <div className={styles.container}>
-              
-                <div className={styles.sideBar_container}>
-                {!this.state.isFold?
-                    <div className={styles.menuBarList_container}>
-                    <Tabs
-                    orientation="vertical"
-                    classes={{ indicator: styles.indicator}}
-                    // classes={indicator:false}
-                    value={this.state.currentPannel}
-                    onChange={this.handleChange}
-                    // variant="scrollable"
-                    scrollButtons="off"
+  private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
+    console.log("event", event);
+    // test(newValue)
+    this.setState({ currentPannel: newValue });
+    this.handlePointPosition(newValue);
+  };
 
-                    >
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                                    <img className={styles.test} src="/img/Dashboard/home.svg"></img>
-                                </div>} 
-                            label={t("dashboard.home")}  
-                            value="home" 
-                            key="home" 
-                            className={styles.tab} />
+  private handlePointPosition = (current: String) => {
+    // console.log('event',event)
+    // test(newValue)
+    // this.setState({currentPannel:newValue})
+    switch (current) {
+      case "home":
+        this.setState({ pointPosition: "0" });
+        break;
+      case "sales":
+        this.setState({ pointPosition: "92px" });
+        break;
+      case "account":
+        this.setState({ pointPosition: "184px" });
+        break;
+      case "products":
+        this.setState({ pointPosition: "276px" });
+        break;
+      case "policy":
+        this.setState({ pointPosition: "373px" });
+        break;
+      case "support":
+        this.setState({ pointPosition: "460px" });
+        break;
+    }
+  };
+
+  render() {
+    const { t } = this.props;
+    // console.log("value",value)
+
+    return (
+      <DashboardLayout t={t} userData={this.state.userData}>
+        <div className={styles.container}>
+          <div className={styles.sideBar_container}>
+            {!this.state.isFold ? (
+              <div className={styles.menuBarList_container}>
+                <Tabs
+                  orientation="vertical"
+                  classes={{ indicator: styles.indicator }}
+                  // classes={indicator:false}
+                  value={this.state.currentPannel}
+                  onChange={this.handleChange}
+                  // variant="scrollable"
+                  scrollButtons="off"
+                >
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img
+                          className={styles.test}
+                          src="/img/Dashboard/home.svg"
+                        ></img>
+                      </div>
+                    }
+                    label={t("dashboard.home")}
+                    value="home"
+                    key="home"
+                    className={styles.tab}
+                  />
+
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="sales"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img
+                          src={
+                            this.state.currentPannel == "sales"
+                              ? "/img/Dashboard/sale_selected.svg"
+                              : "/img/Dashboard/sale.svg"
+                          }
+                        ></img>
+                      </div>
+                    }
+                    label={t("dashboard.sales")}
+                  />
+
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="account"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img
+                          src={
+                            this.state.currentPannel == "account"
+                              ? "/img/Dashboard/account_selected.svg"
+                              : "/img/Dashboard/account.svg"
+                          }
+                        ></img>
+                      </div>
+                    }
+                    label={t("dashboard.account")}
+                  />
+
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="products"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img src="/img/Dashboard/upload.svg"></img>
+                      </div>
+                    }
+                    label={t("dashboard.products")}
+                  />
+
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="policy"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img src="/img/Dashboard/policy.svg"></img>
+                      </div>
+                    }
+                    label={t("dashboard.policy")}
+                  />
+                  <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
+                      value="support" className={styles.tab} 
+                      icon={<div className={styles.menuBar_Item_container}>
+                      <img src="/img/Dashboard/Support.svg"></img>
+                      </div>} 
+                      label={t("dashboard.support")} />
                         
-
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            value="sales" className={styles.tab} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                                    <img src={this.state.currentPannel=="sales"?"/img/Dashboard/sale_selected.svg":"/img/Dashboard/sale.svg"}></img>
-                                </div>} 
-                            label={t("dashboard.sales")} />
-
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            value="account" 
-                            className={styles.tab} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                            <img src={this.state.currentPannel=="account"?"/img/Dashboard/account_selected.svg":"/img/Dashboard/account.svg"}></img>
-                            </div>} 
-                            label={t("dashboard.account")} />
-
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            value="products" 
-                            className={styles.tab} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                            <img src="/img/Dashboard/upload.svg"></img>
-                             </div>} 
-                            label={t("dashboard.products")} />
-
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            value="policy" className={styles.tab} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                            <img src="/img/Dashboard/policy.svg"></img>
-                            </div>} 
-                            label={t("dashboard.policy")} />
-
-                        <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
-                            value="support" className={styles.tab} 
-                            icon={<div className={styles.menuBar_Item_container}>
-                            <img src="/img/Dashboard/Support.svg"></img>
-                            </div>} 
-                            label={t("dashboard.support")} />
-                        
-                    </Tabs>
+                  </Tabs>
                     
-                    </div>:[]}
+                </div>:[]}
                     <div className={styles.selectePointer_container}>
                         <div onClick={this.handleFold} className={styles.selectePointer} style={{top:this.state.pointPosition}} >
                             <img className={styles.selectePointer_img} src="/img/dashboard/pointout.svg"></img>
@@ -209,10 +301,10 @@ export interface Props {
                     <TabPanel value={this.state.currentPannel} index={"support"}></TabPanel>
                 </div>
 
-              </div>
-          </DashboardLayout>
-            
-        )
-    }
+          </div>
+        </div>
+      </DashboardLayout>
+    );
   }
-  export default Dashboard
+}
+export default Dashboard;

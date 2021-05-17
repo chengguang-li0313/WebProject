@@ -117,7 +117,6 @@
     margin-right: 2.3vw;
     width: 110px;
     text-align: right;
-    
 }
 .company_Form_input,.company_Form_input_address,.company_Form_input_person,.company_Form_input_person_ContactNumber,.company_Form_input_bank{
     border-radius: 5px;
@@ -184,12 +183,14 @@
     height: 10vw;
     background-color: rgba(211, 211, 211, 0.6);
     border-radius: 5px;
+    display: none;
 }
 .cert_img{
     background: rgba(211, 211, 211, 0.6);
     border-radius: 10px;
     width: 14vw;
     height: 87px;
+    display: none;
 }
 .inputBase_group{
     display: grid;
