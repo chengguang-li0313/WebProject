@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import styles from "./index.module.css";
 
+
 import FileUpload from "./../../../Attachment/fileUpload/fileUpload.component";
 import LogoDragandDrop from "./../../../Attachment/imgDragandDrop/imgDragandDrop.component";
 
@@ -172,20 +173,108 @@ function CompanyInfo(props: Props) {
       setFileURL(s3res.url);
     }
   }
+  
+  function CompanyInfo(props: Props) {
 
-  return (
-    <div className={styles.companyInfo_container}>
-      <form className={styles.companyInfo_form} noValidate autoComplete="off">
-        <div className={styles.board_title_container}>
-          <div className={styles.board_title_img}>
-            <img src="/img/dashboard/building.svg"></img>
-          </div>
-          <div className={styles.board_title_down_icon}>
-            <img src={"/img/Dashboard/Polygon_5_blue.svg"}></img>
-          </div>
-          <div className={styles.board_title}>
-            {t("dashboard.acc.company.basicInfo")}
-          </div>
+    const {t} = props
+
+    const [companyName, setCompanyName] = React.useState('');
+    const [companyAdress, setCompanyAdress] = React.useState('');
+    const [contactPerson, setContactPerson] = React.useState('');
+    const [contactNumber, setContactNumber] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [aboutyourbusiness, setAboutyourbusiness] = React.useState('');
+
+    const [abn, setABN] = React.useState('');
+
+    const [bankAccount, setBankAccount] = React.useState('');
+    const [bsb, setBsb] = React.useState('');
+    const [accountNumber, setAccountNumber] = React.useState('');
+    const [verify, setVerify] = React.useState('');
+
+    const handleChangebankAccount = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBankAccount(event.target.value);
+        // console.log(event.target.value)
+      };
+      const handleChangebsb = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBsb(event.target.value);
+        // console.log(event.target.value)
+      };
+      const handleChangeaccountNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAccountNumber(event.target.value);
+        // console.log(event.target.value)
+      };
+      const handleChangeabn = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setABN(event.target.value);
+        // console.log(event.target.value)
+      };
+    // const [test, setTest] = React.useState('test');
+    const handleChangeverify = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setVerify(event.target.value);
+        // console.log(event.target.value)
+      };
+    const handleChangeCompanyName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCompanyName(event.target.value);
+        // console.log(event.target.value)
+      };
+    const handleChangeContactPerson = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setContactPerson(event.target.value);
+        // console.log(event.target.value)
+      };
+    const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+        // console.log(event.target.value)
+    };
+    const handleChangeContactNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setContactNumber(event.target.value);
+        // console.log(event.target.value)
+    };
+    const handleChangeaboutyourbusiness = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAboutyourbusiness(event.target.value);
+        // console.log(event.target.value)
+    };
+    const handleChangecompanyAdress = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCompanyAdress(event.target.value);
+        // console.log(event.target.value)
+      };
+
+    const handleSubmit=()=>{
+        
+        const data = {companyName:companyName,
+            companyAdress:companyAdress,
+            contactPerson:contactPerson,
+            contactNumber:contactNumber,
+            email:email,
+            aboutyourbusiness:aboutyourbusiness,
+            abn:abn,
+            bankAccount:bankAccount,
+            bsb:bsb,
+            accountNumber:accountNumber,
+            verify:verify
+        }
+        submitCompanBasicInfo(data)
+        .then(res =>{
+            console.log("res",res)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+        // console.log("data",data)
+    }
+
+    return(
+        <div className={styles.companyInfo_container}>
+             <form onSubmit={handleSubmit} className={styles.companyInfo_form} noValidate={false} autoComplete="off">
+                
+                <div className={styles.board_title_container}>
+                    <div className={styles.board_title_img}><img src="/img/dashboard/building.svg"></img></div>
+                    <div  className={styles.board_title_down_icon}>
+                        <img src={"/img/Dashboard/Polygon_5_blue.svg"}></img>
+                    </div>
+                    <div className={styles.board_title}>
+                        {t("dashboard.acc.company.basicInfo")}
+                    </div>
+
         </div>
         <Divider />
         <Grid className={styles.company_basic_for_row} container>
@@ -336,6 +425,30 @@ function CompanyInfo(props: Props) {
                         updateFilesCb={updateUploadedFiles}
                         getFile={setUploadedFiles}
                     />
+                </div>
+                <Divider/>
+                <Grid className={styles.company_basic_for_row} container>
+                    <Grid item xs={7}>
+                        <div  className={styles.formControl_Aboutyourbusiness}>
+                            <div className={styles.inputLabel_root} >{t("dashboard.acc.finance.BankAccount")}</div>
+                            <div className={styles.inputBase_group}>
+                                <InputBase placeholder="Bank Account" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={bankAccount} onChange={handleChangebankAccount} />
+                                <InputBase placeholder="BSB" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={bsb} onChange={handleChangebsb} />
+                                <InputBase placeholder="Account Name" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={accountNumber} onChange={handleChangeaccountNumber} />
+                            </div>
+                        </div> 
+                        
+                            
+                       
+                    </Grid>
+                    <Grid item xs={5}>
+                    {/* <div  className={styles.cert_img}> */}
+                    <InputBase placeholder="*We will verify your account within 48 hours." multiline={true} rows="5" classes={{root:styles.company_Form_input_verify,input:styles.company_base_input}} value={verify} onChange={handleChangeverify} />
+                    {/* </div> onClick={handleSubmit} */}
+                    </Grid>
+                </Grid>
+                <div className={styles.saveButton_wrapper}>
+                    <Button type="submit" className={styles.saveButton}>{t("common.save")}</Button>
                 </div>
               </div>
             </Grid>

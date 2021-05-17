@@ -221,8 +221,20 @@ margin-bottom: 6px;
 }
 .input_email{
   width: 30vw;
-  min-width: 200px;
-  margin-bottom: 58px;
+  height: 64px;
+  min-width: 200px !important;
+  margin-bottom: 58px !important;
+  font-family: Arial;
+font-style: normal;
+font-weight: normal;
+font-size: 1rem;
+line-height: 17px;
+color: #615F5F;
+background: rgba(197, 212, 249, 0.12);
+border: 1px solid #C5C5C5;
+box-sizing: border-box;
+border-radius: 5px;
+
 }
 .cardContent{
   display: grid;

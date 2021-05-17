@@ -19,10 +19,12 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
+    "@material-ui/data-grid": "^4.0.0-alpha.28",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@svgr/webpack": "^5.5.0",
     "@types/react-redux": "^7.1.16",
+    "axios": "^0.21.1",
     "gatsby-plugin-material-ui": "^3.0.1",
     "i18next": "^20.2.2",
     "i18next-browser-languagedetector": "^6.1.0",
