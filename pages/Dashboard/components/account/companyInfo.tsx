@@ -215,7 +215,7 @@ function CompanyInfo(props: Props) {
         </div>
         <Divider />
         <Grid className={styles.company_basic_for_row} container>
-          <Grid item md={9} sm={10}>
+          <Grid item md={12} >
             <div className={styles.formControl}>
               <div className={styles.inputLabel_root}>
                 {t("landing.contactForm.companyName")}
@@ -313,9 +313,18 @@ function CompanyInfo(props: Props) {
               />
             </div>
           </Grid>
-          <Grid item md={3} sm={2}>
-            <div className={styles.formControl_avatar}></div>
-          </Grid>
+          {/* <Grid item md={3} sm={2}> */}
+            {/* <div className={styles.formControl_avatar}> */}
+            {/* <div>
+                <LogoDragandDrop
+                    accept=".jpg,.png,.jpeg,"
+                    label="Profile Image(s)"
+                    updateFilesCb={updateUploadedFiles}
+                    getLogo={setUploadedLogo}
+                />
+              </div> */}
+            {/* </div> */}
+          {/* </Grid> */}
         </Grid>
 
         <div className={styles.board_title_container}>
@@ -363,30 +372,10 @@ function CompanyInfo(props: Props) {
                         getFile={setUploadedFiles}
                     />
                 </div>
-                <Divider/>
-                <Grid className={styles.company_basic_for_row} container>
-                    <Grid item xs={7}>
-                        <div  className={styles.formControl_Aboutyourbusiness}>
-                            <div className={styles.inputLabel_root} >{t("dashboard.acc.finance.BankAccount")}</div>
-                            <div className={styles.inputBase_group}>
-                                <InputBase placeholder="Bank Account" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={bankAccount} onChange={handleChangebankAccount} />
-                                <InputBase placeholder="BSB" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={bsb} onChange={handleChangebsb} />
-                                <InputBase placeholder="Account Name" required classes={{root:styles.company_Form_input_bank,input:styles.company_base_input}} value={accountNumber} onChange={handleChangeaccountNumber} />
-                            </div>
-                        </div> 
-                        
-                            
-                       
-                    </Grid>
-                    <Grid item xs={5}>
-                    {/* <div  className={styles.cert_img}> */}
-                    <InputBase placeholder="*We will verify your account within 48 hours." multiline={true} rows="5" classes={{root:styles.company_Form_input_verify,input:styles.company_base_input}} value={verify} onChange={handleChangeverify} />
-                    {/* </div> onClick={handleSubmit} */}
-                    </Grid>
-                </Grid>
-                <div className={styles.saveButton_wrapper}>
+                
+                {/* <div className={styles.saveButton_wrapper}>
                     <Button type="submit" className={styles.saveButton}>{t("common.save")}</Button>
-                </div>
+                </div> */}
               </div>
             </Grid>
             <Grid item xs={4}>

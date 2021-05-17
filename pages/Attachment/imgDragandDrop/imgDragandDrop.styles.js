@@ -17,7 +17,7 @@ export const BtnContainer = styled.section`
 
 export const FileUploadContainer = styled.section`
   position: relative;
-  margin: -6vh 0px 0px 40.6vw;
+  margin: -5vh 0px 0px 31.6vw;
   padding: 0px 5.6vw;
   display: flex;
   flex-direction: column;

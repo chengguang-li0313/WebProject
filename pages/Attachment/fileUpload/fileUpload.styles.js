@@ -16,7 +16,7 @@ export const Container = styled.section`
 
 export const FileUploadContainer = styled.section`
   position: relative;
-  margin: -6vh 0px 0px 31.8vw;
+  margin: -5vh 0px 0px 31.8vw;
   padding: 0px 3vw;
   display: flex;
   flex-direction: column;
