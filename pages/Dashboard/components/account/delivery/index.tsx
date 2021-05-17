@@ -3,19 +3,24 @@ import styles from './index.module.css';
 import {Divider,FormControlLabel,Grid,Button} from '@material-ui/core';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import MethodTable from '../MethodTable'
+import MethodTable from '../../methodTable'
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
   }
+
 export interface Props {
     t:(params: String) => String;
+    
+}
+
+interface CusSwitchProps{
+    checked?:any;
+    onChange?:any;
+    name?:any;
     classes?: Styles;
 }
 
-// const isDesktopOrLaptop = useMediaQuery({
-//     query: '(max-width: 1440px)'
-//   })
 
 const initialState = {
     noDelivery:false,
@@ -72,7 +77,7 @@ class Delivery extends React.Component<Props, object> {
         }
     }
     render(){
-        const {t,classes} = this.props
+        const {t} = this.props
 
         const IOSSwitch = withStyles((theme: Theme) =>
         createStyles({
@@ -112,7 +117,7 @@ class Delivery extends React.Component<Props, object> {
             checked: {},
             focusVisible: {},
         }),
-        )(({ classes, ...props }: Props) => {
+        )(({ classes, ...props }: CusSwitchProps) => {
         return (
             <Switch
             focusVisibleClassName={classes.focusVisible}
@@ -149,7 +154,7 @@ class Delivery extends React.Component<Props, object> {
                         <div className={styles.paymentMethod_section_title_tra}><img src="/img/Dashboard/Polygon_5_blue.svg"></img></div>
                         <div className={styles.paymentMethod_section_title}>{t("dashboard.acc.delivery.OwnDelivery")}</div>
                         <div className={styles.paymentMethod_section_title_switch}>
-                            <IOSSwitch checked={this.state.ownDelivery} onChange={this.handleChangeOwnPayment} name="own" />
+                            <IOSSwitch  name="own" onChange={this.handleChangeOwnPayment} checked={this.state.ownDelivery}  />
                         </div>
                         <div className={styles.paymentMethod_section_title_des}>{t("dashboard.acc.delivery.OwnDelivery_des")}</div>
                     </div>

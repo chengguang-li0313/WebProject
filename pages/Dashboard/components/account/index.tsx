@@ -4,8 +4,8 @@ import CompanyInfo from './companyInfo';
 import TabPanel from '../TabPanel';
 import {Divider,Tabs,Tab} from '@material-ui/core';
 import CusCard from '../cusCard';
-import PaymentMethod from '../paymentMethod';
-import Delivery from '../delivery';
+import PaymentMethod from './paymentMethod';
+import Delivery from './delivery';
 
 export interface Props {
     t:(params: String) => String;

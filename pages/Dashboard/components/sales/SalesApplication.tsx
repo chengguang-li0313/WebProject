@@ -12,7 +12,6 @@ import EditDialog from './EditDialog';
 
 interface Props {
     t:(params: String) => String;
-    // testFunction:() => void;
 
   }
   

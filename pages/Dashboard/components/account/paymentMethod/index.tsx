@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import {Divider,FormControlLabel,Grid,Button} from '@material-ui/core';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import MethodTable from '../MethodTable'
+import MethodTable from '../../methodTable'
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
@@ -13,6 +13,13 @@ export interface Props {
     classes?: Styles;
 }
 
+
+interface CusSwitchProps{
+    checked?:any;
+    onChange?:any;
+    name?:any;
+    classes?: Styles;
+}
 // const isDesktopOrLaptop = useMediaQuery({
 //     query: '(max-width: 1440px)'
 //   })
@@ -112,7 +119,7 @@ class PaymentMethod extends React.Component<Props, object> {
             checked: {},
             focusVisible: {},
         }),
-        )(({ classes, ...props }: Props) => {
+        )(({ classes, ...props }: CusSwitchProps) => {
         return (
             <Switch
             focusVisibleClassName={classes.focusVisible}
