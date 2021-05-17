@@ -11,6 +11,7 @@ import Sales from './components/sales';
 import MediaQuery from 'react-responsive'
 
 
+
 export interface Props {
     t:(params: String) => String;
   }
@@ -44,6 +45,14 @@ export interface Props {
         
     }
 
+
+    private HOME = "home"
+    private SALES = "sales"
+    private ACCOUNT = "account"
+    private PRODUCTS = "products"
+    private POLICY = "policy"
+    private SUPPORT = "support"
+
     private handleFold = ()=>{
         this.setState({isFold:!this.state.isFold})
     }
@@ -61,22 +70,22 @@ export interface Props {
         // test(newValue)
         // this.setState({currentPannel:newValue})
         switch(current){
-            case "home":
+            case this.HOME:
                 this.setState({pointPosition:"0"})
                 break;
-            case "sales":
+            case this.SALES:
                 this.setState({pointPosition:"92px"})
                 break;
-            case "account":
+            case this.ACCOUNT:
                 this.setState({pointPosition:"184px"})
                 break;
-            case "products":
+            case this.PRODUCTS:
                 this.setState({pointPosition:"276px"})
                 break;
-            case "policy":
+            case this.POLICY:
                 this.setState({pointPosition:"373px"})
                 break;
-            case "support":
+            case this.SUPPORT:
                 this.setState({pointPosition:"460px"})
                 break;
         }

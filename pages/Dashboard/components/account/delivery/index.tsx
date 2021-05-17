@@ -49,6 +49,9 @@ class Delivery extends React.Component<Props, object> {
 
     state= initialState
 
+    private OWNDELIVERYOBJ = "ownDeliveryObj"
+    private BUBDELIVERYOBJ = "bubDeliveryObj"
+
     private handleChangeNoPayment=()=>{
         this.setState({noDelivery:!this.state.noDelivery})
     }   
@@ -64,12 +67,12 @@ class Delivery extends React.Component<Props, object> {
         // console.log('event',i,tableName)
         let tempObj = null
         switch(tableName){
-            case "ownDeliveryObj":
+            case this.OWNDELIVERYOBJ:
                 tempObj= this.state.ownDeliveryObj
                 tempObj[i].enable = !tempObj[i].enable
                 this.setState({ownDeliveryObj:tempObj})
                 break;
-            case "bubDeliveryObj":
+            case this.BUBDELIVERYOBJ:
                 tempObj = this.state.bubDeliveryObj
                 tempObj[i].enable = !tempObj[i].enable
                 this.setState({bubDeliveryObj:tempObj})

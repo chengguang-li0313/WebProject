@@ -32,6 +32,8 @@ interface Props {
     // const [logicOpe,setLogicOpe] = React.useState("and");
     const [filterList,setFilterList] = React.useState([{column:"Date",ope:"Contains",val:"",logicOpe:"and"}]);
     
+    const EDIT = "Edit"
+    const DELETE = "Delete"
 
     const {t} = props
 
@@ -173,14 +175,14 @@ interface Props {
 
       const handleAction=(event:any,action:string)=>{
 
-        console.log("action",action,currentEditRow)
+        // console.log("action",action,currentEditRow)
         onCloseActionMenu()
         if(action){
             switch(action){
-                case "Edit":
+                case EDIT:
                     setDialogOpen(true)
                     break;
-                case "Delete":
+                case DELETE:
                     if(currentEditRow) handleDelete(currentEditRow)
                     break;
             }
@@ -193,27 +195,27 @@ interface Props {
 
     const [filterData,setFilterData] = React.useState(rows); 
 
-    const handleSetFilter = (val:any,ope:any,column:any)=>{
-        var filRow=[]
-        // console.log(val,ope,column)
-        if(val&&ope&&column){
-            rows.forEach((row,ind)=>{
-                switch(ope){
-                    case "Contains":
-                        if(row[column].includes(val)) filRow.push(row)
-                        break;
-                    case "Equals":
-                        if(row[column]==val) filRow.push(row)
-                        break;
-                }
+    // const handleSetFilter = (val:any,ope:any,column:any)=>{
+    //     var filRow=[]
+    //     // console.log(val,ope,column)
+    //     if(val&&ope&&column){
+    //         rows.forEach((row,ind)=>{
+    //             switch(ope){
+    //                 case "Contains":
+    //                     if(row[column].includes(val)) filRow.push(row)
+    //                     break;
+    //                 case "Equals":
+    //                     if(row[column]==val) filRow.push(row)
+    //                     break;
+    //             }
                 
-            })
-        }else{
-            filRow = rows
-        }
+    //         })
+    //     }else{
+    //         filRow = rows
+    //     }
         
-        setFilterData(filRow)
-    }
+    //     setFilterData(filRow)
+    // }
 
     const handAddCondition=()=>{
         const newfilter = {column:"Date",ope:"Contains",val:"",logicOpe:"and"}

@@ -51,6 +51,9 @@ class PaymentMethod extends React.Component<Props, object> {
 
     state= initialState
 
+    private OWNPAYMENTOBJ = "ownPaymentObj"
+    private BUBPAYMENTOBJ = "bubPaymentObj"
+
     private handleChangeNoPayment=()=>{
         this.setState({noPayment:!this.state.noPayment})
     }   
@@ -66,12 +69,12 @@ class PaymentMethod extends React.Component<Props, object> {
         // console.log('event',i,tableName)
         let tempObj = null
         switch(tableName){
-            case "ownPaymentObj":
+            case this.OWNPAYMENTOBJ:
                 tempObj= this.state.ownPaymentObj
                 tempObj[i].enable = !tempObj[i].enable
                 this.setState({ownPaymentObj:tempObj})
                 break;
-            case "bubPaymentObj":
+            case this.BUBPAYMENTOBJ:
                 tempObj = this.state.bubPaymentObj
                 tempObj[i].enable = !tempObj[i].enable
                 this.setState({bubPaymentObj:tempObj})
