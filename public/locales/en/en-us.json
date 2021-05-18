@@ -149,6 +149,36 @@
                 "WeightShipping_des":"Focused mainly on order weight (but not limited to) to calculate shipping cost. This allows you to add multiple rules based on various conditions.",
                 "CustomDelivery":"Custom Delivery",
                 "CustomDelivery_des":"Talk to us about your business and we can help you to set up your custom delivery method"
+            },
+            "productSche":{
+                "products":"Products",
+                "FeatureProducts":"Feature Products",
+                "ProductName":"Product Name",
+                "sku":"sku",
+                "Category":"Category",
+                "Price":"Price",
+                "Color":"Color",
+                "Sold":"Sold",
+                "Status":"Status",
+                "Add":"Add",
+                "Edit":"Edit",
+                "hideStatus":"Hide Status "
+            },
+            "sale":{
+                "StaffProfile":"Staff Profile",
+                "Staff(NEW)":"Staff (NEW)",
+                "MostsaleProduct":"Most sale Product",
+                "Ranking":"Ranking",
+                "YearlyCommisiion":"Yearly Commisiion",
+                "MonthlyCommisiion":"Monthly Commisiion",
+                "Customer":"Customer",
+                "Products_sale":"Products (sale)",
+                "TotalsolditemMonthly":"Total sold item Monthly",
+                "Products_New":"Products (New)",
+                "Status":"Status",
+                "AddStaff":"Add Staff",
+                "EditStaff":"Edit Staff",
+                "HideStatus":"Hide Status"
             }
         },
 

@@ -1,3 +1,184 @@
 .dataGrid_container{
     width: 100%;
 }
+.header_Text{
+    text-align: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.625rem;
+    line-height: 23px;
+    color: #0F0F0F;
+}
+.header_options{
+    text-align: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.75rem;
+    line-height: 14px;
+    color: #C4C4C4;
+}
+.header_Text_container{
+    display: flex;
+    min-height: 51px;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.header_Text_bt_container{
+    margin-left: 4px;
+    height: 23px;
+    display: grid;
+    align-self: center;
+    align-items: center;
+}
+
+.header_Text_bt{
+    width: 5px;
+    height: 5px;
+    /* margin-top: 5px;
+    margin-bottom: 5px; */
+}
+.tableRow_container{
+    min-height: 163px;   
+}
+.dataGrad_tableCell_img{
+    width: 40px;
+    height: 40px;  
+    margin:0 auto;
+}
+.dataGrad_stringGroup_black{
+    font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 0.625rem;
+line-height: 12px;
+color: #121212;
+}
+.dataGrad_stringGroup_grey{
+    font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 0.5rem;
+line-height: 12px;
+color: #595858;
+}
+.tableRow_root{
+    font-family: Roboto !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 0.625rem !important;
+    line-height: 12px !important;
+    color: #121212 !important;
+}
+.dataGrad_color{
+    display: flex;
+    justify-content: center;
+}
+.color_img{
+    margin: 0 2px;
+}
+.dataGrad_string_center{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.625rem;
+    line-height: 12px;
+    color: #121212;
+    text-align: center;
+}
+.status_button_Group{
+    display: flex;
+    margin:0 auto;
+    justify-content:flex-end;
+    align-items: center;
+}
+.status_button{
+    
+    background: #FFFFFF !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+    border-radius: 5px !important;
+    font-family: Roboto !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 0.75rem !important;
+    line-height: 14px !important;
+    color: #525866 !important;
+    text-transform: unset !important;
+    margin-right: 22px !important;
+
+}
+.status_button_more{
+    width: 3px;
+    height: 15px;
+}
+.popper{
+    z-index: 999 !important;
+}
+.popper_content_line{
+    display: flex;
+
+}
+.popper_content_container{
+    background: #fff;
+    min-height: 100px;
+    min-width: 100px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.popper_content_more{
+    display: grid;
+    text-align: center !important;
+    background: #fff;
+    border-radius: 5px;
+    color: #7499F0;
+    /* font-size: 0.625rem; */
+}
+.sales_opt{
+    text-align: center !important;
+    justify-self: center;
+}
+.dataGrad_ranking{
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 0.625rem;
+line-height: 12px;
+/* identical to box height */
+text-align: center;
+
+color: #3464DC;
+}
+.dataGrad_string_view{
+    
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.625rem;
+    line-height: 12px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top:3px ;
+    text-align: center;
+    color: #7499F0;
+    
+}
+.dataGrad_string_img_view{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.625rem;
+    line-height: 36px;
+    /* width: 100%; */
+    text-align: right;
+    color: #7499F0;
+}
+.dataGrad_tableCell_img_view_container{
+    display: flex;
+    justify-content: flex-end;
+
+}
