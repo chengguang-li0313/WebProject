@@ -10,27 +10,17 @@
 .productScheme_dataGrid_container{
     width: 87%;
     margin: 0 auto;
-    margin-top: 35px;
+    /* margin-top: 15px; */
 }
 
-.filter_container{
-    display: flex;
-    margin-bottom: 10px;
-}
-.filter_container_text{
-    margin-top: 13px;
-    margin-left: 15px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 10px;
-    line-height: 15px;
-    color: #000000;
-}
-
-.filter_container_img{
-    margin-top: 13px;
-    margin-left: 5px;
-    width: 3px;
-    height: 15px;
+.editDialog_button{
+    font-family: Roboto !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    line-height: 21px !important;
+    color: #FFFFFF !important;
+    background: #3464DC !important;
+    border-radius: 5px !important;
+    text-transform: capitalize !important;
 }

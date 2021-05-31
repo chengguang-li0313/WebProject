@@ -25,6 +25,8 @@ type State = {
     // card_2_state:Boolean,
 }
 
+
+
 class Sales extends React.Component<Props, object> {
     state= initialState
 
@@ -115,6 +117,7 @@ class Sales extends React.Component<Props, object> {
                         <TabPanel value={this.state.currentBoard} index={"SalesApplication"}>
                             <SalesApplication
                                 t={t}
+                                downloadOnly={true}
                             />
                           
                         </TabPanel>

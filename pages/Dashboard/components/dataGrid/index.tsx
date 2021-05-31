@@ -1,28 +1,33 @@
 import * as React from 'react';
 import styles from './index.module.css';
-import {Divider,FormControlLabel,Grid,Button,
+import {Divider,FormControlLabel,Grid,Checkbox,Button,
     Table,TableBody,TableCell,TableContainer,
-    TablePagination,TableRow,TableHead,Popper,MenuItem} from '@material-ui/core';
+    TablePagination,TableRow,TableHead,Popper,MenuItem,
+    Slider} from '@material-ui/core';
+import {TreeView,TreeItem} from '@material-ui/lab';
+import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 interface Props {
     t:(params: String) => String;
     columns:Array<any>;
     rows?:Array<any>;
-    handleEdit:(event: any,row:any) => void;
-    handleAction:(event: any,ope:any) => void;
-    editMenuListAnchorEl:any,
-    editOpen:boolean
+    handleEdit?:(event: any,row:any) => void;
+    handleAction?:(event: any,ope:any) => void;
+    editMenuListAnchorEl?:any;
+    editOpen?:boolean;
+    simpleMore?:boolean;
+    staffAction?:(event: any,row:any) => void;
+    singlePage?:any;
+    hide_x_overflow?:boolean,
+    weight?:any,
+    volume?:any,
+    onDatachange?:any,
+    treeData?:any
+    // onEditDialog:(addNew:boolean,row?:any)=>void;
 
 }
-// {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-// FeatureProducts:{item:"Feature Products",type:"string"},
-// ProductName:{item:"5500 Onboard Diagnostic",
-// des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-// Category:{item:"Onboard",type:"string"},
-// Price:{item:470,type:"Price"},
-// Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-// Sold:{item:120,tyle:"item"}
-// },
 
 function DataGrid(props: Props) {
     const {t,columns,rows,handleEdit,handleAction,editMenuListAnchorEl,editOpen=false} = props
@@ -30,11 +35,14 @@ function DataGrid(props: Props) {
     const [columnList, setColumnList] = React.useState(columns);
     const [states, setStates] = React.useState(0);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(props.singlePage?rows.length:10);
     const [rowsList, setRowsList] = React.useState(rows);
+    const [editOpen_2,setEditOpen_2] = React.useState(false);
+    const [popEditMenuListAnchorEl,setPopEditMenuListAnchorEl]= React.useState(null);
+    // console.log('rowsPerPage',rowsPerPage)
     // const [editOpen, setEditOpen] = React.useState(false);
     // const [editMenuListAnchorEl,setEditMenuListAnchorEl] = React.useState(null);
-
+    //  console.log('columnList',columnList)
     const IMG = "img"
     const STRING = "string"
     const GROUP_STRING="group_string"
@@ -46,13 +54,63 @@ function DataGrid(props: Props) {
     const RANKING = "ranking"
     const STRING_VIEW = "string_view"
     const IMG_VIEW = "img_view"
+    const QUALIIFICATION ="Qualifications"
+    const CERTIFICATE = "Certificate"
+    const SCOPE = "scope"
+    const SLIDER = "slider"
+
+
+    console.log('rowsList',rowsList)
+
+    const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (event:any) => {
+      console.log("event",event)
+    setChecked(event.target.checked);
+  };
+
+    const onSeteditOpen_2=(event:any)=>{
+        console.log("event.currentTarget",event.currentTarget)
+        setEditOpen_2((prev)=>!prev)
+        setPopEditMenuListAnchorEl(event.currentTarget)
+        forceUpdate()
+        console.log(editOpen_2,popEditMenuListAnchorEl)
+        
+    }
+    const handleSelect=(event: object, value: Array <string>)=>{
+        console.log(event,value)
+    }
+
+    const valuetext=(event:any,value:any,index:any,type:string)=> {
+        console.log(value,index,type)
+        let tempRowList = []
+        let save = false
+        if(rowsList){
+            
+            rowsList.forEach((r,i)=>{
+                if(i==index){
+                    if(r.vw.item[type] != value)save = true
+                    r.vw.item[type] = value
+                    
+                }
+               
+               tempRowList.push(r)
+            })
+        }
+        console.log('tempRowList',tempRowList)
+        if(save){
+            setRowsList(tempRowList)
+        }
+        // 
+        return `${value}`;
+      }
 
     const handleChangePage = (event:any, newPage:any) => {
         setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event:any) => {
-        setRowsPerPage(+event.target.value);
+        setRowsPerPage(event.target.value);
         setPage(0);
     };
 
@@ -80,11 +138,25 @@ function DataGrid(props: Props) {
         
     }
 
+    const popperUp =(props:any,nodeData:Array<any>,prefix:string)=>{
+        return nodeData.map((n,i)=>(
+                <TreeItem key={`${prefix}${i}`} nodeId={`${prefix}${i}`} label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                    onChange={(ev)=>handleChange(ev)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                    <div>{n.name}</div></div>}>
+                {n.children?
+                    popperUp(props,n.children,i.toString())
+                    :[]
+                }
+            </TreeItem>
+            ))
+            
+        
+    }
     
     return(
         <div className={styles.dataGrid_container}>
-             <TableContainer className={styles.TableContainer}>
-                <Table aria-label="sticky table">
+             <TableContainer classes={{root:props.hide_x_overflow?styles.dataGrid_TableBody_hide_x:styles.dataGrid_TableBody}} className={styles.TableContainer}>
+                <Table stickyHeader={!props.singlePage?false:true} aria-label="sticky table">
                     {/* stickyHeader */}
                     <TableHead>
                         <TableRow >
@@ -133,39 +205,105 @@ function DataGrid(props: Props) {
                                 </TableCell>))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                    {rowsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    <TableBody >
+                    {rowsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,i) => {
                         return (
-                            <TableRow classes={{root:styles.tableRow_root}} hover role="checkbox" tabIndex={-1} key={row.code}>
+                            <TableRow onClick={(ev) => {props.staffAction?props.staffAction(ev,row):[]}} classes={{root:styles.tableRow_root}} hover role="checkbox" tabIndex={-1} key={row.code}>
                             {columns.map((column) => {
                                 const value = row[column.id];
-                                // console.log('value.item',value)
+                                
                                 if(value){
-                                    switch( value.type){
+                                    switch(value.type){
+                                        case SLIDER:
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div className={styles.dataGrad_SLIDER}>
+                                                    {/* {value.item.volume? */}
+                                                    <div className={styles.slider_group}>
+                                                        <div className={styles.slider_text}>{t("common.volume")} </div>
+                                                        <Slider
+                                                            valueLabelDisplay="off"
+                                                            // defaultValue={props.volume}
+                                                            value={value.item.volume}
+                                                            // getAriaValueText={(val)=>valuetext(val,i,"volume")}
+                                                            onChange={(event,val)=>valuetext(event,val,i,"volume")}
+                                                            aria-labelledby={`${i}_volume`}
+                                                            key={`${i}_volume`}
+                                                            step={0.1}
+                                                            // marks
+                                                            // onChange=
+                                                            min={0}
+                                                            max={props.volume}
+                                                        />
+                                                        <div className={styles.slider_label}>
+                                                            {value.item.volume}
+                                                        </div>
+                                                    </div>
+                                                    {/* :[]} */}
+                                                    {/* {value.item.weight? */}
+                                                    <div className={styles.slider_group}>
+                                                        <div className={styles.slider_text}>{t("common.weight")} </div>
+                                                        <Slider
+                                                            key={`${i}_weight`}
+                                                            // defaultValue={props.weight}
+                                                            value={value.item.weight}
+                                                            onChange={(event,val)=>valuetext(event,val,i,"weight")}
+                                                            aria-labelledby={`${i}_weight`}
+                                                            valueLabelDisplay="off"
+                                                            step={1}
+                                                            // marks
+                                                            min={0}
+                                                            max={props.weight}
+                                                        />
+                                                        <div className={styles.slider_label}>
+                                                            {value.item.weight}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* :[]} */}
+                                                </div>
+                                                {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                            </TableCell>)
+
+                                        case SCOPE:
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div className={styles.dataGrad_scope_group}>
+                                                    <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
+                                                    <div className={styles.dataGrad_scope_bt}><Button onClick={onSeteditOpen_2} ><AddIcon classes={{root:styles.scope_bt}}/></Button></div>
+                                                </div>
+                                               
+                                                {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                            </TableCell>)
+                                        
                                         case IMG:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_tableCell_img}><img src={value.item}></img></div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
                                         case STRING:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            if(column.id == QUALIIFICATION || column.id == CERTIFICATE){
+                                                return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                    <a className={styles.a}>{t("dashboard.sal.View")}</a>
+                                                </TableCell>)
+                                            }
+                                            else{
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_string_center}>{value.item}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
-                                            </TableCell>)
+                                            </TableCell>)}
                                         case GROUP_STRING:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_stringGroup_black}>{value.item}</div>
                                                 <div className={styles.dataGrad_stringGroup_grey}>{value.des}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
                                         case NUM:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_stringGroup_black}>{value.item}</div>
                                                 <div className={styles.dataGrad_stringGroup_grey}>{value.des}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
                                         case COLOR:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_color}>
                                                     {value.item.map((c:any,i:any)=>(
                                                          <div key={i} className={styles.color_img}> <img src={c}></img></div>
@@ -176,25 +314,25 @@ function DataGrid(props: Props) {
                                             </TableCell>)
                                         case ITEM:
                                             // console.log("value.item",value.item)
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_string_center}>{value.item+value.type}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
                                         case PRICE:
-                                            return(<TableCell key={column.id} align={column.align}>
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_string_center}>{"$"+value.item}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
                                         case RANKING:
                                             return(
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_ranking}>{"NO "+value.item}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>
                                             )
                                         case STRING_VIEW:
                                             return(
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_string_center}>{value.item}</div>
                                                 <div  className={styles.dataGrad_string_view}>{t('dashboard.sal.View')}</div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
@@ -202,7 +340,7 @@ function DataGrid(props: Props) {
                                             )
                                         case IMG_VIEW:
                                             return(
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                     <div className={styles.dataGrad_tableCell_img_view_container}>
                                                         <div className={styles.dataGrad_tableCell_img}><img src={value.item}></img></div>
                                                         <div  className={styles.dataGrad_string_img_view}>{t('dashboard.sal.View')}</div>
@@ -215,10 +353,13 @@ function DataGrid(props: Props) {
                                 }
                                 else{
                                     // console.log('column.id',column.id==STATUS)
+                                    
                                     if(column.id==STATUS){
-                                    return (<TableCell key={column.id} align={column.align}>
+                                    return (<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+
                                         <div className={styles.status_button_Group}>
-                                            <Button classes={{root:styles.status_button}}>{t('dashboard.sal.Edit')}</Button>
+                                            {row.msg?<div className={styles.msg_count}>{row.msg.item}</div>:[]}
+                                            {!props.simpleMore?<Button classes={{root:styles.status_button}}>{t('dashboard.sal.Edit')}</Button>:[]}
                                             <div onClick={(ev)=>handleEdit(ev,row)} className={styles.status_button_more}><img src='/img/Dashboard/more.svg'></img></div>
                                         </div>
                                     </TableCell>) }
@@ -233,7 +374,7 @@ function DataGrid(props: Props) {
                     </TableBody>
                 </Table>
             </TableContainer>
-
+            {!props.singlePage?
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
@@ -243,11 +384,65 @@ function DataGrid(props: Props) {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
+            :[]
+            }
             <Popper className={styles.popper} open={editOpen} anchorEl={editMenuListAnchorEl} placement="bottom-end" transition>
                     <div  className={styles.popper_content_more}>
-                        <MenuItem onClick={(ev)=>{handleAction(ev,"Edit")}} classes={{root:styles.sales_opt}} value="Edit">{ t("dashboard.acc.productSche.Add")}</MenuItem>
-                        <MenuItem onClick={(ev)=>{handleAction(ev,"Delete")}} className={styles.sales_opt} value="Delete">{ t("dashboard.acc.productSche.Edit")}</MenuItem>
-                        <MenuItem onClick={(ev)=>{handleAction(ev,"Hide")}} className={styles.sales_opt} value="Hide">{ t("dashboard.acc.productSche.hideStatus")}</MenuItem>
+                        <MenuItem key={"Add"} onClick={(ev)=>{handleAction(ev,"Add")}} classes={{root:styles.sales_opt}} value="Add">{ t("dashboard.acc.productSche.Add")}</MenuItem>
+                        <MenuItem key={"Edit"} onClick={(ev)=>{handleAction(ev,"Edit")}} className={styles.sales_opt} value="Edit">{ t("dashboard.acc.productSche.Edit")}</MenuItem>
+                        <MenuItem key={"Hide"} onClick={(ev)=>{handleAction(ev,"Hide")}} className={styles.sales_opt} value="Hide">{ t("dashboard.acc.productSche.hideStatus")}</MenuItem>
+                    </div>
+                </Popper>
+            
+                <Popper className={styles.popper} open={editOpen_2} anchorEl={popEditMenuListAnchorEl} placement="bottom-end" transition>
+                    <div  className={styles.popper_content_tree}>
+                    <TreeView
+                        // className={classes.root}
+                        defaultCollapseIcon={<ExpandMoreIcon />}
+                        defaultExpandIcon={<ChevronRightIcon />}
+                        multiSelect
+                        onNodeSelect={handleSelect}
+                        // selected
+                        >   
+                        {props.treeData?
+                            popperUp(props,props.treeData,"")
+                            // props.treeData.map((node:any,index:any)=>{
+                            //     <TreeItem nodeId={`${index}`} label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                            //         onChange={(ev)=>handleChange(ev)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                            //         <div>{node}</div></div>}>
+                                    
+                            //         <TreeItem nodeId="2" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                            //             onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                            //             <div>P1</div></div>} />
+                            //     </TreeItem>
+                            // })
+                            :[]
+                        }
+                    </TreeView>
+                    {/* <TreeView
+                        // className={classes.root}
+                        defaultCollapseIcon={<ExpandMoreIcon />}
+                        defaultExpandIcon={<ChevronRightIcon />}
+                        multiSelect
+                        onNodeSelect={handleSelect}
+                        // selected
+                        >   
+                            <TreeItem nodeId="1" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                                    onChange={(ev)=>handleChange(ev,)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                                    <div>C1</div></div>}>
+                                <TreeItem nodeId="2" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                                    <div>P1</div></div>} />
+                            </TreeItem>
+                            <TreeItem nodeId="5" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                                    <div>C2</div></div>} >
+                                <TreeItem nodeId="6" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
+                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+                                    <div>P2</div></div>}  />
+                            </TreeItem>
+                        </TreeView> */}
+                        {/* <div className={styles.popper_tips}>Please use ctrl and shift to trigger multiselect</div> */}
                     </div>
                 </Popper>
         </div>

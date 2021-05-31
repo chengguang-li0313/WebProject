@@ -5,6 +5,8 @@ import {Tooltip,Chip,FormControl,Table,TableBody,TableCell,
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import styles from './index.module.css';
 import EditDialog from './EditDialog';
+import DataFilter from '../dataFilter';
+import {SalesApplicationRow} from '../../../../public/fakeData'
 // import { AppendKeys } from 'react-i18next';
 // import AddIcon from '@material-ui/icons/Add';
 
@@ -12,7 +14,7 @@ import EditDialog from './EditDialog';
 
 interface Props {
     t:(params: String) => String;
-
+    downloadOnly:boolean
   }
   
   function SalesApplication(props: Props) {
@@ -30,8 +32,14 @@ interface Props {
     const [currentEditRow,setCurrentEditRow] = React.useState({});
     const [dialogOpen,setDialogOpen] = React.useState(false);
     // const [logicOpe,setLogicOpe] = React.useState("and");
-    const [filterList,setFilterList] = React.useState([{column:"Date",ope:"Contains",val:"",logicOpe:"and"}]);
+    const [filterList,setFilterList] = React.useState({selectedFromDate:new Date('2021-08-18T21:11:54'),selectedtoDate:new Date('2021-08-18T21:11:54')});
     
+    const filteredItem = [{value:"Date",label:"dashboard.sal.Date"},
+    // {value:"Name",label:"dashboard.sal.Name"},
+    // {value:"Emailaddress",label:"dashboard.sal.Emailaddress"},
+    // {value:"SpecialtyArea",label:"dashboard.sal.SpecialtyArea"},
+]
+
     const EDIT = "Edit"
     const DELETE = "Delete"
 
@@ -69,7 +77,21 @@ interface Props {
         setOpen(false);
       };
     
+    const handleFromDateChange = (date: Date | null)=>{
+        let templist = filterList
+        templist.selectedFromDate = date
+        setFilterList(templist)
+        forceUpdate()
+        console.log(filterList)
+    }
 
+    const handletoDateChange = (date: Date | null)=>{
+        let templist = filterList
+        templist.selectedtoDate = date
+        setFilterList(templist)
+        forceUpdate()
+        console.log(filterList)
+    }
     const columns = [
         { id: 'Date', label: t("dashboard.sal.Date"), minWidth: 110 , align: "center",},
         { id: 'Name', label: t("dashboard.sal.Name"), minWidth: 110, align: "center", },
@@ -133,43 +155,57 @@ interface Props {
           console.log("click View",name,col)
       }
 
-      const createData=(Date:any, Name:string, Emailaddress:string, Qualifications:any,SpecialtyArea:any,Certificate:any,Status:string,id:Number)=>{
-        // const density = population / size;
-     
-        return { Date, Name, Emailaddress, Qualifications, SpecialtyArea, Certificate,Status,id};
+      const createData=(data:any)=>{
+          let rows=[]
+          data.forEach((element:any,index:any) => {
+            element.Qualifications=setView("Qualifications",element.Name)
+            element.Certificate=setView("Certificate",element.Name)
+            rows.push(element)
+          });
+          return rows
       }
+
+    //   const createData=(Date:any, Name:string, Emailaddress:string, Qualifications:any,SpecialtyArea:any,Certificate:any,Status:string,id:Number)=>{
+    //     // const density = population / size;
+     
+    //     return { Date, Name, Emailaddress, Qualifications, SpecialtyArea, Certificate,Status,id};
+    //   }
       const handleItemEditMenuList=(event:any,row:any)=>{
         // console.log("clicked",row)
-        if (row )setCurrentEditRow(row)
-        setEditOpen((prev) => !prev)
-        setEditMenuListAnchorEl(event.currentTarget)
+        if(!props.downloadOnly){
+            if (row )setCurrentEditRow(row)
+            setEditOpen((prev) => !prev)
+            setEditMenuListAnchorEl(event.currentTarget)
+        }
+        
       }
 
       const setView =(col:any,row:any)=>{
           return (<a onClick={handleView.bind(this,col,row)} className={styles.a}>{t("dashboard.sal.View")}</a>)
       }
 
-      const rows = [
-        createData('20/08/21','Tom_remove', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",0),
-        createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",1),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",2),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",3),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",4),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",5),
-        createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",6),
+    //   const rows = [
+    //     createData('20/08/21','Tom_remove', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",0),
+    //     createData('20/08/21','Jerry', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",1),
+    //     createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",2),
+    //     createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",3),
+    //     createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",4),
+    //     createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",5),
+    //     createData('20/08/21','Tom', "xx@gmail.com",setView("Qualifications","Tom"),"digital sale",setView("Certificate","Tom"),"",6),
         
-      ]
+    //   ]
+    //   console.log('SalesApplicationRow',SalesApplicationRow)
 
       const handleDelete=(row:any)=>{
         //For front end Demo
-        rows.forEach((r,i)=>{
+        SalesApplicationRow.forEach((r,i)=>{
             if(r.id == row.id){
-                rows.splice(i, 1)
+                SalesApplicationRow.splice(i, 1)
             }
         })
 
         // TODO send request to back to 
-        setFilterData(rows)
+        setFilterData(createData(SalesApplicationRow))
 
     }
 
@@ -193,8 +229,8 @@ interface Props {
       }
 
 
-    const [filterData,setFilterData] = React.useState(rows); 
-
+    const [filterData,setFilterData] = React.useState(createData(SalesApplicationRow)); 
+// console.log('filterData',filterData)
     // const handleSetFilter = (val:any,ope:any,column:any)=>{
     //     var filRow=[]
     //     // console.log(val,ope,column)
@@ -217,14 +253,14 @@ interface Props {
     //     setFilterData(filRow)
     // }
 
-    const handAddCondition=()=>{
-        const newfilter = {column:"Date",ope:"Contains",val:"",logicOpe:"and"}
-        let temfilterList = filterList
-        temfilterList.push(newfilter)
-        setFilterList(temfilterList)
-        forceUpdate()
-        // console.log('filterList',filterList)
-    }
+    // const handAddCondition=()=>{
+    //     const newfilter = {column:"Date",ope:"Contains",val:"",logicOpe:"and"}
+    //     let temfilterList = filterList
+    //     temfilterList.push(newfilter)
+    //     setFilterList(temfilterList)
+    //     forceUpdate()
+    //     // console.log('filterList',filterList)
+    // }
     const handEditCondition=(editFilterPart:string,id:any,valu:any)=>{
         
         let temfilterList = filterList
@@ -266,71 +302,35 @@ interface Props {
         setDialogOpen(false)
         // TODO on update need send request to the back
         if(newRow){
-            rows.forEach((r,i)=>{
+            SalesApplicationRow.forEach((r,i)=>{
                 if(r.id==newRow.id){
-                    rows[i] = newRow
+                    SalesApplicationRow[i] = newRow
                 }
             })
-            setFilterData(rows)
+            setFilterData(createData(SalesApplicationRow))
         }
+    }
+
+    const downloadPDF = ()=>{
+        // TODO
     }
     return(
         <div className={styles.salesApplication_container}>
 
-            <div  className={styles.filter_container}>
-                <div onClick={handleFilter} className={styles.filter_container_text}>{t("dashboard.sal.Filter")}</div>
-                <div onClick={handleFilter} className={styles.filter_container_img}><img src="/img/Dashboard/filter_more.svg"></img></div>
+                <DataFilter
+                    t={t}
+                    filterList={filterList}
+                    // handleChangeFilterCol={handleChangeFilterCol}
+                    // handleChangeFilterOpe={handleChangeFilterOpe}
+                    // getValue={getValue}
+                    // handleChangeFilterLogicOpe={handleChangeFilterLogicOpe}
+                    // handAddCondition={handAddCondition}
+                    filteredItem={filteredItem}
+                    downloadPDF={downloadPDF}
+                    handleFromDateChange={handleFromDateChange}
+                    handletoDateChange={handletoDateChange}
 
-            </div>
-            <Popper className={styles.popper} open={open} anchorEl={anchorEl} placement="bottom-start" transition>
-                <div className={styles.popper_content_container}>
-                    {filterList.map((filter,ind)=>(
-
-                    <div key={ind}>
-                        <div  className={styles.popper_content_line}>
-                        <MenuItem >
-                            <Select
-                            value={filter.column}
-                            onChange={(ev)=>handleChangeFilterCol(ev,ind)}
-                            >
-                            <MenuItem value="Date">{t("dashboard.sal.Date")} </MenuItem>
-                            <MenuItem value="Name">{t("dashboard.sal.Name")} </MenuItem>
-                            <MenuItem value="Emailaddress">{t("dashboard.sal.Emailaddress")} </MenuItem>
-                            <MenuItem value="SpecialtyArea">{t("dashboard.sal.SpecialtyArea")} </MenuItem>
-                            {/* <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem> */}
-                            </Select>
-                        </MenuItem>
-                        <MenuItem >
-                            <Select
-                                value={filter.ope}
-                                onChange={(ev)=>handleChangeFilterOpe(ev,ind)}
-                                >
-
-                            <MenuItem value="Contains">{t("dashboard.sal.Contains")}</MenuItem>
-                            <MenuItem value="Equals">{t("dashboard.sal.Equals")}</MenuItem>
-                            </Select>
-                        </MenuItem>
-                        <MenuItem >
-                            <TextField onChange={(ev)=>getValue(ev,ind)} value={filter.val} id="value" />
-                        </MenuItem>
-                        </div>
-                        <div className={styles.popper_content_line}>
-                            <MenuItem >
-                                <Select
-                                    value={filter.logicOpe}
-                                    onChange={(ev)=>handleChangeFilterLogicOpe(ev,ind)}
-                                    >
-                                    <MenuItem value="and">{t("dashboard.sal.and")}</MenuItem>
-                                    <MenuItem value="or">{t("dashboard.sal.or")}</MenuItem>
-                                </Select>
-                            </MenuItem>
-                            <MenuItem>
-                                <AddCircleIcon onClick={handAddCondition} classes={{root:styles.icon_root}} color="primary"/>
-                            </MenuItem>
-                        </div>
-                    </div>))}
-                </div>
-            </Popper>
+                />
 
             <div onClick={handleClose} className={styles.salesApplication_table_container}>
             
@@ -403,7 +403,7 @@ interface Props {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={rows.length}
+                    count={SalesApplicationRow.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}

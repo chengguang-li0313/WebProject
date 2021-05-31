@@ -1,8 +1,11 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import DataGrid from '../../dataGrid';
-import {Popper,MenuItem,Select,TextField} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+// import {Popper,MenuItem,Select,TextField} from '@material-ui/core';
+// import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DataFilter from '../../dataFilter';
+import EditDialog from './EditDialog';
+import {Products} from '../../../../../public/fakeData';
 
 export interface Props {
     t:(params: String) => String;
@@ -12,131 +15,44 @@ export interface Props {
 //     query: '(max-width: 1440px)'
 //   })
 
+const createDate = (product:any)=>{
+    let rows = []
+    product.forEach((element:any,index:any) => {
+        element.products = {item:element.products,type:"img" }
+        element.sku = {item:element.sku,type:"string" }
+        element.FeatureProducts = {item:element.FeatureProducts,type:"string" }
+        element.ProductName = {item:element.ProductName,type:"group_string",des:element.des}
+        element.Category = {item:element.Category,type:"string"}
+        element.Price = {item:element.Price,type:"price"}
+        element.Color={item:element.Color,type:"color"}
+        element.Sold={item:element.Sold,type:"item"}
+        rows.push(element)
+    });
+    // console.log
+    return rows
+}
+
 const initialState = {
-    columns:[{ id: 'products', label: ['dashboard.acc.productSche.products'], minWidth: 100 },  
-            { id: 'ProductName',idList:['FeatureProducts','ProductName','sku'], label: ["dashboard.acc.productSche.FeatureProducts","dashboard.acc.productSche.ProductName","dashboard.acc.productSche.sku"],currentLabel:1, minWidth: 100 },
+    columns:[{ id: 'products', label: ['dashboard.acc.productSche.products'], minWidth: 100},  
+            { id: 'ProductName',idList:['FeatureProducts','ProductName','sku'], 
+            label: ["dashboard.acc.productSche.FeatureProducts","dashboard.acc.productSche.ProductName","dashboard.acc.productSche.sku"],currentLabel:1, minWidth: 100 },
             { id: 'Category', label: ["dashboard.acc.productSche.Category"], minWidth: 100 },
             { id: 'Price', label: ["dashboard.acc.productSche.Price"], minWidth: 100 },
             { id: 'Color', label: ["dashboard.acc.productSche.Color"], minWidth: 100 },
             { id: 'Sold', label: ["dashboard.acc.productSche.Sold"], minWidth: 100 },
             { id: 'Status', label:["dashboard.acc.productSche.Status"], minWidth: 100 }],
-    rows:[
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-        {products:{item:"/img/Dashboard/product_test.svg",type:"img"},
-        sku:{item:"sku",type:"string"},
-        FeatureProducts:{item:"Feature Products",type:"string"},
-        ProductName:{item:"5500 Onboard Diagnostic",
-        des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
-        Category:{item:"Onboard",type:"string"},
-        Price:{item:470,type:"price"},
-        Color:{item:["/img/Dashboard/blue.svg","/img/Dashboard/black.svg","/img/Dashboard/orange.svg"],type:"color"},
-        Sold:{item:120,type:"item"}
-        },
-    ],
+    rows:createDate(Products),
     editMenuListAnchorEl:null,
     editOpen:false,
     anchorEl:null,
     open:false,
-    filterList:[{column:"products",ope:"Contains",val:"",logicOpe:"and"}]
+    filterList:[{column:"products",ope:"Contains",val:"",logicOpe:"and"}],
+    filteredItem:[{value:"products",label:"dashboard.acc.productSche.products"},
+    {value:"FeatureProducts",label:"dashboard.acc.productSche.FeatureProducts"},
+    {value:"ProductName",label:"dashboard.acc.productSche.ProductName"},
+    {value:"Category",label:"dashboard.acc.productSche.Category"},],
+    currentEditRow:null,
+    dialogOpen:false
 }
 
 
@@ -147,44 +63,69 @@ type State = {
     editOpen:boolean,
     anchorEl:any,
     open:boolean,
-    filterList:any
+    filterList:any,
+    filteredItem:Array<any>,
+    currentEditRow:any,
+    dialogOpen:boolean
 }
 
 class ProductScheme extends React.Component<Props, object> {
 
     state= initialState
+    private ope = {
+        EDIT:"Edit",
+        ADD:"Add",
+        HIDE:"Hide"
+    }
     
     private handleEdit=(event:any,row:any)=>{
         this.setState({editMenuListAnchorEl:event.currentTarget,
-            editOpen:!this.state.editOpen})
+            editOpen:!this.state.editOpen,
+            currentEditRow:row})
     }
     private handleAction=(event: any,ope:any) =>{
+        switch(ope){
+            case this.ope.EDIT:
+                this.setState({dialogOpen:true})
+                break;
+            case this.ope.ADD:
+                this.setState({dialogOpen:true,currentEditRow:null})
+                break;
+            case this.ope.HIDE:
+                break;
+        }
         this.setState({
             editOpen:!this.state.editOpen})
-    }
-    private handleFilter = (event:any) =>{
-        // console.log("event",event)
-        this.setState({anchorEl:event.currentTarget,
-            open:!this.state.open});
-        // setOpen((prev) => !prev);
+            // console.log("currentEditRow",this.state.currentEditRow)
+            
     }
 
+
     private handleChangeFilterCol = (event:any,ind:any) =>{
+        let tempList = this.state.filterList
+        tempList[ind].column = event.target.value
+        this.setState({filterList:tempList})
 
     }
 
     private handleChangeFilterOpe = (event:any,ind:any) =>{
-
+        let tempList = this.state.filterList
+        tempList[ind].ope = event.target.value
+        this.setState({filterList:tempList})
     }
     private getValue = (event:any,ind:any) =>{
-
+        let tempList = this.state.filterList
+        tempList[ind].val = event.target.value
+        this.setState({filterList:tempList})
     }
     private handleChangeFilterLogicOpe = (event:any,ind:any) =>{
-
+        let tempList = this.state.filterList
+        tempList[ind].logicOpe = event.target.value
+        this.setState({filterList:tempList})
     }
 
     private handAddCondition=()=>{
-        const newfilter = {column:"Date",ope:"Contains",val:"",logicOpe:"and"}
+        const newfilter = {column:"products",ope:"Contains",val:"",logicOpe:"and"}
         let temfilterList = this.state.filterList
         temfilterList.push(newfilter)
         this.setState({filterList:temfilterList})
@@ -193,64 +134,24 @@ class ProductScheme extends React.Component<Props, object> {
         // console.log('filterList',filterList)
     }
 
+    private handleDialogClose= ()=>{
+        this.setState({dialogOpen:false})
+    }
+
     render(){
         const {t} = this.props
         return (
             <div className={styles.productScheme_container}>
-                <div  className={styles.filter_container}>
-                <div onClick={this.handleFilter} className={styles.filter_container_text}>{t("dashboard.sal.Filter")}</div>
-                <div onClick={this.handleFilter} className={styles.filter_container_img}><img src="/img/Dashboard/filter_more.svg"></img></div>
-
-            </div>
-            <Popper className={styles.popper} open={this.state.open} anchorEl={this.state.anchorEl} placement="bottom-start" transition>
-                <div className={styles.popper_content_container}>
-                    {this.state.filterList.map((filter,ind)=>(
-
-                    <div key={ind}>
-                        <div  className={styles.popper_content_line}>
-                        <MenuItem >
-                            <Select
-                            value={filter.column}
-                            onChange={(ev)=>this.handleChangeFilterCol(ev,ind)}
-                            >
-                            <MenuItem value="Date">{t("dashboard.sal.Date")} </MenuItem>
-                            <MenuItem value="Name">{t("dashboard.sal.Name")} </MenuItem>
-                            <MenuItem value="Emailaddress">{t("dashboard.sal.Emailaddress")} </MenuItem>
-                            <MenuItem value="SpecialtyArea">{t("dashboard.sal.SpecialtyArea")} </MenuItem>
-                            {/* <MenuItem value="Status">{t("dashboard.sal.Status")} </MenuItem> */}
-                            </Select>
-                        </MenuItem>
-                        <MenuItem >
-                            <Select
-                                value={filter.ope}
-                                onChange={(ev)=>this.handleChangeFilterOpe(ev,ind)}
-                                >
-
-                            <MenuItem value="Contains">{t("dashboard.sal.Contains")}</MenuItem>
-                            <MenuItem value="Equals">{t("dashboard.sal.Equals")}</MenuItem>
-                            </Select>
-                        </MenuItem>
-                        <MenuItem >
-                            <TextField onChange={(ev)=>this.getValue(ev,ind)} value={filter.val} id="value" />
-                        </MenuItem>
-                        </div>
-                        <div className={styles.popper_content_line}>
-                            <MenuItem >
-                                <Select
-                                    value={filter.logicOpe}
-                                    onChange={(ev)=>this.handleChangeFilterLogicOpe(ev,ind)}
-                                    >
-                                    <MenuItem value="and">{t("dashboard.sal.and")}</MenuItem>
-                                    <MenuItem value="or">{t("dashboard.sal.or")}</MenuItem>
-                                </Select>
-                            </MenuItem>
-                            <MenuItem>
-                                <AddCircleIcon onClick={this.handAddCondition} classes={{root:styles.icon_root}} color="primary"/>
-                            </MenuItem>
-                        </div>
-                    </div>))}
-                </div>
-            </Popper>
+                <DataFilter
+                    t={t}
+                    filterList={this.state.filterList}
+                    handleChangeFilterCol={this.handleChangeFilterCol}
+                    handleChangeFilterOpe={this.handleChangeFilterOpe}
+                    getValue={this.getValue}
+                    handleChangeFilterLogicOpe={this.handleChangeFilterLogicOpe}
+                    handAddCondition={this.handAddCondition}
+                    filteredItem={this.state.filteredItem}
+                />
                 <div className={styles.productScheme_dataGrid_container}>
                     <DataGrid
                         t={t}
@@ -260,7 +161,14 @@ class ProductScheme extends React.Component<Props, object> {
                         handleAction={this.handleAction}
                         editMenuListAnchorEl={this.state.editMenuListAnchorEl}
                         editOpen={this.state.editOpen}
+                        // onEditDialog={this.onEditDialog}
                     />
+                    <EditDialog
+                    t={t}
+                    currentRow={this.state.currentEditRow}
+                    open={this.state.dialogOpen}
+                    handleClose={this.handleDialogClose}
+                />
                 </div>
             </div>
         )

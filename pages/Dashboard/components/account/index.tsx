@@ -19,7 +19,7 @@ export interface Props {
 //   })
 
 const initialState = {
-    currentBoard:"productScheme",//"companyInfo",
+    currentBoard:"setting",//"companyInfo",
     card_1_state:true,
     card_2_state:true,
 }

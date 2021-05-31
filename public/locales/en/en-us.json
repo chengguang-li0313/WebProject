@@ -1,5 +1,6 @@
 {
     "common":{
+        "blank":"",
         "register":"Register",
         "sigin":"Sigin",
         "commonSoon":"App Coming Soon",
@@ -11,7 +12,11 @@
         "sitemap":"sitemap",
         "upload":"Upload",
         "save":"Save",
-        "cancel":"Cancel"
+        "cancel":"Cancel",
+        "downloadPDF":"download the pdf report",
+        "volume":"Volume",
+        "weight":"Weight",
+        "edit":"Edit"
     },
     "footer":{
         "getInTouch":"Get in Touch",
@@ -77,6 +82,8 @@
         "products":"Products",
         "policy":"Policy",
         "support":"Support",
+        "staff":"Staff",
+        "OrderManagement":"Order Management",
         "acc":{
             "companyInfo":"Company Info",
             "paymentMethod":"Payment Method",
@@ -148,7 +155,34 @@
                 "WeightShipping":"Weight Based Shipping",
                 "WeightShipping_des":"Focused mainly on order weight (but not limited to) to calculate shipping cost. This allows you to add multiple rules based on various conditions.",
                 "CustomDelivery":"Custom Delivery",
-                "CustomDelivery_des":"Talk to us about your business and we can help you to set up your custom delivery method"
+                "CustomDelivery_des":"Talk to us about your business and we can help you to set up your custom delivery method",
+                "setDelivery":{
+                    "dontCare":"I don't care the product volume and weight.",
+                    "carepw":"I care about the product volume and weight.",
+                    "careVolume":"I care about the product volume (dimension)",
+                    "careWeight":"I care about the product weight",
+                    "volumeNotBig":"Volume not bigger than ",
+                    "weightNotBig":"Weight not bigger than ",
+                    "meter":" meter",
+                    "kg":" kg",
+                    "ProductOrientated":"Product Orientated",
+                    "customerorientated":"Customer Orientated",
+                    "orderOrientated":"Order Orientated",
+                    "couponOrientated":"Coupon Orientated",
+                    "distanceOrientated":"Distance Orientated",
+                    "postcodeOrientated":"Postcode Orientated",
+                    "index":"index",
+                    "Scope":"Product or Category Scope",
+                    "vol_wei_range":"Volume & Weight Range",
+                    "Rate":"Rate",
+                    "setRule":"Set Rules",
+                    "selectCustomer":"Select Customer",
+                    "businessCustomer":"Show business customers",
+                    "consumerCustomer":"Show consumer Customer",
+                    "both":"Show both",
+                    "orderbySale":"Order by sale amount",
+                    "selectPostcode":"Select areas / postcodes"
+                }
             },
             "productSche":{
                 "products":"Products",
@@ -179,6 +213,7 @@
                 "AddStaff":"Add Staff",
                 "EditStaff":"Edit Staff",
                 "HideStatus":"Hide Status"
+                
             }
         },
 
@@ -210,6 +245,12 @@
             "Delete":"Delete",
             "and":"AND",
             "or":"OR"
+        },
+        "Position":"Position",
+        "sta":{
+            "Messageapproval":"Message to Applicant before approval",
+            "aprove":"Aprove",
+            "Decline":"Decline"
         }
     }
     

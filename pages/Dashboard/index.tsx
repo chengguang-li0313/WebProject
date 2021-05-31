@@ -8,7 +8,10 @@ import AddSharpIcon from '@material-ui/icons/AddSharp';
 import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
 import Account from './components/account';
 import Sales from './components/sales';
-import MediaQuery from 'react-responsive'
+import Staff from './components/staff';
+
+import MediaQuery from 'react-responsive';
+
 
 
 
@@ -48,7 +51,9 @@ class Dashboard extends React.Component<Props, object> {
 
     private HOME = "home"
     private SALES = "sales"
+    private STAFF = "staff"
     private ACCOUNT = "account"
+    private ORDERMANAGEMENT = "OrderManagement"
     private PRODUCTS = "products"
     private POLICY = "policy"
     private SUPPORT = "support"
@@ -59,9 +64,7 @@ class Dashboard extends React.Component<Props, object> {
 
     
   private handlePointPosition = (current:String) => {
-      // console.log('event',event)
-      // test(newValue)
-      // this.setState({currentPannel:newValue})
+
       switch(current){
           case this.HOME:
               this.setState({pointPosition:"0"})
@@ -69,17 +72,23 @@ class Dashboard extends React.Component<Props, object> {
           case this.SALES:
               this.setState({pointPosition:"92px"})
               break;
-          case this.ACCOUNT:
-              this.setState({pointPosition:"184px"})
+          case this.STAFF:
+              this.setState({pointPosition:"174px"})
               break;
+          case this.ACCOUNT:
+            this.setState({pointPosition:"256px"})
+              break;
+          case this.ORDERMANAGEMENT:
+            this.setState({pointPosition:"343px"})
+            break;
           case this.PRODUCTS:
-              this.setState({pointPosition:"276px"})
+            this.setState({pointPosition:"420px"})
               break;
           case this.POLICY:
-              this.setState({pointPosition:"373px"})
+              this.setState({pointPosition:"503px"})
               break;
           case this.SUPPORT:
-              this.setState({pointPosition:"460px"})
+              this.setState({pointPosition:"580px"})
               break;
       }
     }
@@ -148,7 +157,27 @@ class Dashboard extends React.Component<Props, object> {
                     }
                     label={t("dashboard.sales")}
                   />
-
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="staff"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img
+                          src={
+                            this.state.currentPannel == "staff"
+                              ? "/img/Dashboard/bi_people-fill.svg"
+                              : "/img/Dashboard/bi_people-fill.svg"
+                          }
+                        ></img>
+                      </div>
+                    }
+                    label={t("dashboard.staff")}
+                  />
+{/* ant-design_shopping-cart-outlined */}
                   <Tab
                     classes={{
                       selected: styles.tabSelected,
@@ -169,7 +198,26 @@ class Dashboard extends React.Component<Props, object> {
                     }
                     label={t("dashboard.account")}
                   />
-
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
+                    value="OrderManagement"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img
+                          src={
+                            this.state.currentPannel == "OrderManagement"
+                              ? "/img/Dashboard/ant-design_shopping-cart-outlined.svg"
+                              : "/img/Dashboard/ant-design_shopping-cart-outlined.svg"
+                          }
+                        ></img>
+                      </div>
+                    }
+                    label={t("dashboard.OrderManagement")}
+                  />
                   <Tab
                     classes={{
                       selected: styles.tabSelected,
@@ -232,6 +280,14 @@ class Dashboard extends React.Component<Props, object> {
                         </MediaQuery>
                         <MediaQuery maxDeviceWidth={1440} >
                             <Sales lay={"grid"} t={t}/>
+                        </MediaQuery>
+                    </TabPanel>
+                    <TabPanel value={this.state.currentPannel} index={"staff"}>
+                        <MediaQuery minDeviceWidth={1440}>
+                            <Staff lay={"flex"} t={t}/>
+                        </MediaQuery>
+                        <MediaQuery maxDeviceWidth={1440} >
+                            <Staff lay={"grid"} t={t}/>
                         </MediaQuery>
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"account"}>
