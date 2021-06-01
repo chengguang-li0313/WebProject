@@ -39,6 +39,7 @@ function DataGrid(props: Props) {
     const [rowsList, setRowsList] = React.useState(rows);
     const [editOpen_2,setEditOpen_2] = React.useState(false);
     const [popEditMenuListAnchorEl,setPopEditMenuListAnchorEl]= React.useState(null);
+    const [currentRow,setCurrentRow] = React.useState(rowsList[0]);
     // console.log('rowsPerPage',rowsPerPage)
     // const [editOpen, setEditOpen] = React.useState(false);
     // const [editMenuListAnchorEl,setEditMenuListAnchorEl] = React.useState(null);
@@ -60,21 +61,87 @@ function DataGrid(props: Props) {
     const SLIDER = "slider"
 
 
-    console.log('rowsList',rowsList)
+    // console.log('rowsList',rowsList)
 
     const [checked, setChecked] = React.useState(false);
 
-  const handleChange = (event:any) => {
-      console.log("event",event)
-    setChecked(event.target.checked);
+  const handleChange = (event:any,key:any) => {
+    const {prefix,i} = key
+    if(prefix==""){
+        currentRow.scope.treeList[i].checked = !currentRow.scope.treeList[i].checked
+        setparent(currentRow.scope.treeList[i],i)
+    }else{
+        currentRow.scope.treeList[Number(prefix)].children[i].checked = !currentRow.scope.treeList[Number(prefix)].children[i].checked
+        // currentRow.scope.treeList[Number(prefix)][i].checked = !currentRow.scope.treeList[Number(prefix)][i].checked
+    }
+    
+    forceUpdate()
+    let result = getCurrentList(currentRow.scope.treeList,"")
+    let temp = []
+    if(rowsList){
+            
+        rowsList.forEach((r,i)=>{
+            if(r.index.item==currentRow.index.item){
+                r.scope.item = result
+                console.log(rowsList)
+                console.log(r)
+            }
+            temp.push(r)
+            
+           
+            
+        })
+        // console.log("temp",temp)
+        // setRowsList(temp)
+        
+    }
   };
 
-    const onSeteditOpen_2=(event:any)=>{
-        console.log("event.currentTarget",event.currentTarget)
+  const setparent=(node:any,i:any)=>{
+    if(node.checked){
+        if(node.children){
+            node.children.forEach(element => {
+                element.checked = true
+                setparent(element,i)
+            });
+        }
+    }else{
+        if(node.children){
+            node.children.forEach(element => {
+                element.checked = false
+                setparent(element,i)
+            });
+        }
+    }
+  }
+
+  const getCurrentList=(nodeList:any,list:string)=>{
+    let temp = ""
+    //   let st = list
+    nodeList.forEach((node:any) => {
+        if(node.checked){
+            temp+=node.name+","
+            // console.log(node.name)
+        }
+        if(node.children){
+            if(list!=getCurrentList(node.children,list)){
+                list+=getCurrentList(node.children,list)
+            }
+        }
+        
+    });
+   return temp+list
+        
+    // }else{return ""}
+    
+  }
+
+    const onSeteditOpen_2=(event:any,row:any)=>{
+        
+        setCurrentRow(row)
         setEditOpen_2((prev)=>!prev)
         setPopEditMenuListAnchorEl(event.currentTarget)
         forceUpdate()
-        console.log(editOpen_2,popEditMenuListAnchorEl)
         
     }
     const handleSelect=(event: object, value: Array <string>)=>{
@@ -97,7 +164,7 @@ function DataGrid(props: Props) {
                tempRowList.push(r)
             })
         }
-        console.log('tempRowList',tempRowList)
+        // console.log('tempRowList',tempRowList)
         if(save){
             setRowsList(tempRowList)
         }
@@ -140,14 +207,19 @@ function DataGrid(props: Props) {
 
     const popperUp =(props:any,nodeData:Array<any>,prefix:string)=>{
         return nodeData.map((n,i)=>(
-                <TreeItem key={`${prefix}${i}`} nodeId={`${prefix}${i}`} label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                    onChange={(ev)=>handleChange(ev)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+            n.children?
+                <TreeItem key={`${prefix}${i}`} nodeId={`${prefix}${i}`} label={<div className={styles.checkedBox}><Checkbox checked={n.checked} color="primary" 
+                    onChange={(ev)=>handleChange(ev,{prefix,i})} inputProps={{ 'aria-label': 'primary checkbox' }}/>
                     <div>{n.name}</div></div>}>
-                {n.children?
-                    popperUp(props,n.children,i.toString())
-                    :[]
-                }
-            </TreeItem>
+                
+                    {popperUp(props,n.children,i.toString())}
+                    
+                
+                </TreeItem>:
+            <TreeItem key={`${prefix}${i}`} nodeId={`${prefix}${i}`} label={<div className={styles.checkedBox}><Checkbox checked={n.checked} color="primary" 
+            onChange={(ev)=>handleChange(ev,{prefix,i})} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+            <div>{n.name}</div></div>}/>
+          
             ))
             
         
@@ -268,7 +340,7 @@ function DataGrid(props: Props) {
                                             return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_scope_group}>
                                                     <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
-                                                    <div className={styles.dataGrad_scope_bt}><Button onClick={onSeteditOpen_2} ><AddIcon classes={{root:styles.scope_bt}}/></Button></div>
+                                                    <div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>onSeteditOpen_2(ev,row)} ><AddIcon classes={{root:styles.scope_bt}}/></Button></div>
                                                 </div>
                                                
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
@@ -397,7 +469,7 @@ function DataGrid(props: Props) {
                 <Popper className={styles.popper} open={editOpen_2} anchorEl={popEditMenuListAnchorEl} placement="bottom-end" transition>
                     <div  className={styles.popper_content_tree}>
                     <TreeView
-                        // className={classes.root}
+
                         defaultCollapseIcon={<ExpandMoreIcon />}
                         defaultExpandIcon={<ChevronRightIcon />}
                         multiSelect
@@ -405,44 +477,11 @@ function DataGrid(props: Props) {
                         // selected
                         >   
                         {props.treeData?
-                            popperUp(props,props.treeData,"")
-                            // props.treeData.map((node:any,index:any)=>{
-                            //     <TreeItem nodeId={`${index}`} label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                            //         onChange={(ev)=>handleChange(ev)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                            //         <div>{node}</div></div>}>
-                                    
-                            //         <TreeItem nodeId="2" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                            //             onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                            //             <div>P1</div></div>} />
-                            //     </TreeItem>
-                            // })
+                            popperUp(props,currentRow.scope.treeList,"")
                             :[]
                         }
                     </TreeView>
-                    {/* <TreeView
-                        // className={classes.root}
-                        defaultCollapseIcon={<ExpandMoreIcon />}
-                        defaultExpandIcon={<ChevronRightIcon />}
-                        multiSelect
-                        onNodeSelect={handleSelect}
-                        // selected
-                        >   
-                            <TreeItem nodeId="1" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                                    onChange={(ev)=>handleChange(ev,)} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                                    <div>C1</div></div>}>
-                                <TreeItem nodeId="2" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                                    <div>P1</div></div>} />
-                            </TreeItem>
-                            <TreeItem nodeId="5" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                                    <div>C2</div></div>} >
-                                <TreeItem nodeId="6" label={<div className={styles.checkedBox}><Checkbox checked={checked} color="primary" 
-                                    onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/>
-                                    <div>P2</div></div>}  />
-                            </TreeItem>
-                        </TreeView> */}
-                        {/* <div className={styles.popper_tips}>Please use ctrl and shift to trigger multiselect</div> */}
+                   
                     </div>
                 </Popper>
         </div>

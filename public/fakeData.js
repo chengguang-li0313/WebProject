@@ -245,17 +245,30 @@ const deliveryProductOrientatedData=[
 ]
 
 const treeData=[
-    {name:"C1",
-    checked:false,
+    {name:"c1",
     children:[
-        {name:"P1",checked:false},
-        {name:"P2",checked:false}
+        {name:"p1"},
+        {name:"p2"}
     ]},
-    {name:"C2",
-    checked:false,
+    {name:"c2",
     children:[
-        {name:"P1",checked:false},
-        {name:"P2",checked:false}
+        {name:"p1"},
+        {name:"p2"}
+    ]},
+    {name:"c11",
+    children:[
+        {name:"p11"},
+        {name:"p2"}
+    ]},
+    {name:"c21",
+    children:[
+        {name:"p21"},
+        {name:"p2"}
+    ]},
+    {name:"c111",
+    children:[
+        {name:"p211"},
+        {name:"p2"}
     ]}
 ]
 

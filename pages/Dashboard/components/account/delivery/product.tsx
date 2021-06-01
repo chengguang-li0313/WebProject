@@ -44,52 +44,44 @@ function Product(props: Props){
         let tempList = []
         rows.map((row,index)=>(
             tempList.push({index:{item:row.index,type:"string"},
-            scope:{item:row.scope,type:"scope"},rate:{item:row.rate,type:"price"},
+            scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:row.rate,type:"price"},
             vw:{item:{volume:row.vw.volume,weight:row.vw.weight},type:"slider"}})
             // tempList.push()
         ))
         // console.log('tempList',tempList)
         return tempList
     }
+    const setScope = (scope:any) =>{    
+        let scopeList = scope.split(',')
+        
+        let tempNode = JSON.parse(JSON.stringify(treeData));
+        let nodesList = setnode(tempNode,scopeList)
+        return nodesList
+    }
+    const setnode = (nodes:any,scopeList:any) =>{
+        // let tempNodesList = []
+        nodes.forEach((n,i) => {
+            scopeList.forEach(element => {
+                if(element==n.name){
+                    n.checked = true
+                }else if(n.children){
+                    n.checked = false
+                    console.log("setnode(treeData,scope)",n.name)
+                    n.children=setnode(n.children,scopeList)
+                }else{
+                    n.checked = false
+                }
+            });
+            
+        });
+
+        return nodes
+        
+    }
+
     const [productOrientatedRow ,setProductOrientatedRow] = React.useState(createData(deliveryProductOrientatedData));
 
 
-    const handleflatRateConditionChange =(event:any) =>{
-        setFlatRateCondition(event.target.value)
-        setState((prov)=> prov+1)
-        switch (event.target.value){
-            case FLATCONDITION[0].id:
-                setIsSetVolume(false)
-                setIsSetWeight(false)
-                break
-            case FLATCONDITION[1].id:
-                setIsSetVolume(true)
-                setIsSetWeight(true)
-                break
-            case FLATCONDITION[2].id:
-                setIsSetVolume(true)
-                setIsSetWeight(false)
-                break
-            case FLATCONDITION[3].id:
-                setIsSetVolume(false)
-                setIsSetWeight(true)
-                break
-        }
-    }
-
-    const handleVolumechange=(event:any)=>{
-        setVolume(event.target.value)
-        setState((prov)=> prov+1)
-    }
-    
-    const handleWeightchange=(event:any)=>{
-        setWeight(event.target.value)
-        setState((prov)=> prov+1)
-    }
-    
-    const onDatachange=(rows:any)=>{
-
-    }
 
     return(
         // <div>
