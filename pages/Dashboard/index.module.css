@@ -12,14 +12,14 @@
 .sideBar_container{
     /* width: 95px; */
     height: 90vh;
-    min-height: 500px;
+    min-height: 656px;
     display:flex;
     /* position: absolute; */
     
 }
 
 .menuBarList_container{
-    width: 72px;
+    width: 79px;
     height: 100%;
     background: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -43,12 +43,12 @@
     margin: 0 auto;
 }
 .tab{
-    width: 72px !important;
+    width: 79px !important;
     min-width: 72px !important;
     font-family: Roboto !important;
     font-style: normal !important;
     font-weight: 500 !important;
-    font-size: 0.6rem !important;
+    font-size: 0.35rem !important;
     line-height: 12px !important;
     /* identical to box height */
     text-align: center !important;
@@ -70,7 +70,7 @@
 }
 .tabRoot{
     text-transform:none !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 10px !important;
 }
 
 .selectePointer_icon{

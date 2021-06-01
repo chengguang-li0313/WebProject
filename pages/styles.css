@@ -18,24 +18,24 @@ src: url('../public/style/Roboto-Regular.ttf'),
 html{
     font-size: 16px;
 }
-@media screen and (max-width:720px){
+@media screen and (max-width:820px){
     html{
-        font-size:12px;
+        font-size:12px !important;
     }
   }
-  @media screen and (min-width:720px) {
+  @media screen and (min-width:820px) {
     html{
-        font-size:12px;
-    }
-  }
-  @media screen and (min-width:1200px) {
-    html{
-        font-size:14px;
+        font-size:12px !important;
     }
   }
   @media screen and (min-width:1200px) {
     html{
-        font-size:16px;
+        font-size:14px !important;
+    }
+  }
+  @media screen and (min-width:1200px) {
+    html{
+        font-size:16px !important;
     }
   }
 body {

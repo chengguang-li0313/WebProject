@@ -4,6 +4,7 @@ import {Divider,FormControlLabel,Grid,Button} from '@material-ui/core';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MethodTable from '../../methodTable'
+import DeliveryEditDialog from './deliveryEditDialog'
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
@@ -11,6 +12,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
 
 export interface Props {
     t:(params: String) => String;
+
     
 }
 
@@ -19,6 +21,7 @@ interface CusSwitchProps{
     onChange?:any;
     name?:any;
     classes?: Styles;
+    
 }
 
 
@@ -28,13 +31,15 @@ const initialState = {
     bubDelivery:true,
     ownDeliveryObj:[{name:"dashboard.acc.delivery.Flatrate",des:"dashboard.acc.delivery.Flatrate_des",enable:false},
             {name:"dashboard.acc.delivery.Post",des:"dashboard.acc.delivery.Post_des",enable:false},
-            {name:"dashboard.acc.delivery.Cashondelivery",des:"dashboard.acc.delivery.Cashondelivery_des",enable:false},],
+            {name:"dashboard.acc.delivery.Cashondelivery",des:"dashboard.acc.delivery.Cashondelivery_des",enable:false},
+            {icon:"",name:"dashboard.acc.delivery.Advancezone",des:"dashboard.acc.delivery.Advancezone_des",enable:true},
+            {icon:"",name:"dashboard.acc.delivery.Freeproduct",des:"dashboard.acc.delivery.Freeproduct_des",enable:true},
+            {icon:"",name:"dashboard.acc.delivery.WeightShipping",des:"dashboard.acc.delivery.WeightShipping_des",enable:false}],
     bubDeliveryObj:[
-        {icon:"",name:"dashboard.acc.delivery.Advancezone",des:"dashboard.acc.delivery.Advancezone_des",enable:true},
-        {icon:"",name:"dashboard.acc.delivery.Freeproduct",des:"dashboard.acc.delivery.Freeproduct_des",enable:true},
-        {icon:"",name:"dashboard.acc.delivery.WeightShipping",des:"dashboard.acc.delivery.WeightShipping_des",enable:false},
         {icon:"",name:"dashboard.acc.delivery.CustomDelivery",des:"dashboard.acc.delivery.CustomDelivery_des",enable:false}
-    ]
+    ],
+    open:false,
+    currentDialogName:""
 }
 
 type State = {
@@ -42,7 +47,9 @@ type State = {
     ownDelivery:boolean,
     bubDelivery:boolean,
     ownDeliveryObj:any,
-    bubDeliveryObj:any
+    bubDeliveryObj:any,
+    open:boolean,
+    currentDialogName:string
 }
 
 class Delivery extends React.Component<Props, object> {
@@ -54,17 +61,43 @@ class Delivery extends React.Component<Props, object> {
 
     private handleChangeNoPayment=()=>{
         this.setState({noDelivery:!this.state.noDelivery})
+        this.setState({bubDelivery:false})
+        this.setState({ownDelivery:false})
+        this.setOwnDeliveryContent()
     }   
 
     private handleChangeBubPayment=()=>{
+        this.setState({noDelivery:false})
         this.setState({bubDelivery:!this.state.bubDelivery})
+        this.setState({ownDelivery:false})
+        this.setOwnDeliveryContent()
     }
 
     private handleChangeOwnPayment=()=>{
         this.setState({ownDelivery:!this.state.ownDelivery})
+        this.setState({noDelivery:false})
+        this.setState({bubDelivery:false})
     }
+
+    private handleClose =()=>{
+        this.setState({open:!this.state.open})
+    }
+
+    private handleSetupDialogOpen =(item: string)=>{
+        this.setState({open:true,currentDialogName:item})
+        // console.log("item",item)
+
+    }
+
+    private setOwnDeliveryContent=()=>{
+        const tempObj = this.state.ownDeliveryObj
+        tempObj.forEach(item=>{
+            item.enable = false
+        })
+        this.setState({ownDeliveryObj:tempObj})
+    }
+
     private handleContentChange =(event:any,i:any,tableName:string)=>{
-        // console.log('event',i,tableName)
         let tempObj = null
         switch(tableName){
             case this.OWNDELIVERYOBJ:
@@ -79,6 +112,12 @@ class Delivery extends React.Component<Props, object> {
                 break;
         }
     }
+
+    // onDialotOpen()
+    // private handleSwitchLogic=()=>{
+
+    // }
+
     render(){
         const {t} = this.props
 
@@ -169,6 +208,8 @@ class Delivery extends React.Component<Props, object> {
                             content={this.state.ownDeliveryObj}
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
+                            handleSetupDialogOpen={this.handleSetupDialogOpen}
+                            // handleClose={this.handleClose}
                         >
                             
                         </MethodTable>
@@ -194,6 +235,8 @@ class Delivery extends React.Component<Props, object> {
                             content={this.state.bubDeliveryObj}
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
+                            handleSetupDialogOpen={this.handleSetupDialogOpen}
+                            // handleClose={this.handleClose}
                         >
                         </MethodTable>
                     </div>
@@ -202,6 +245,13 @@ class Delivery extends React.Component<Props, object> {
                 <div className={styles.paymentMethod_update_bt}>
                     <Button classes={{root:styles.paymentMethod_update}}>{t("common.upload")}</Button>
                 </div>
+
+                <DeliveryEditDialog
+                    t={t}
+                    open={this.state.open}
+                    handleClose={this.handleClose}
+                    dialogName={this.state.currentDialogName}
+                />
             </div>
         )
     }

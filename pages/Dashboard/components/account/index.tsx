@@ -6,6 +6,8 @@ import {Divider,Tabs,Tab} from '@material-ui/core';
 import CusCard from '../cusCard';
 import PaymentMethod from './paymentMethod';
 import Delivery from './delivery';
+import Sales from './sales';
+import ProductScheme from './productScheme'
 
 export interface Props {
     t:(params: String) => String;
@@ -17,7 +19,7 @@ export interface Props {
 //   })
 
 const initialState = {
-    currentBoard:"paymentMethod",//"companyInfo",
+    currentBoard:"setting",//"companyInfo",
     card_1_state:true,
     card_2_state:true,
 }
@@ -179,13 +181,13 @@ class Account extends React.Component<Props, object> {
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"productScheme"}>
-                            <CompanyInfo
+                            <ProductScheme
                                 t={t}
                                 // testFunction={this.test}
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"sales"}>
-                            <CompanyInfo
+                            <Sales
                                 t={t}
                                 // testFunction={this.test}
                             />

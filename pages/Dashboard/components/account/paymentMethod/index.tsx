@@ -11,6 +11,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
 export interface Props {
     t:(params: String) => String;
     classes?: Styles;
+    
 }
 
 
@@ -36,7 +37,7 @@ const initialState = {
         {icon:"",name:"dashboard.acc.payment.PayPalStandard",des:"dashboard.acc.payment.PayPalStandard_des",enable:true},
         {icon:"",name:"dashboard.acc.payment.CreditCard",des:"dashboard.acc.payment.CreditCard_des",enable:false},
         {icon:"",name:"dashboard.acc.payment.Stripe",des:"dashboard.acc.payment.Stripe_des",enable:false}
-    ]
+    ],
 }
 
 type State = {
@@ -65,6 +66,7 @@ class PaymentMethod extends React.Component<Props, object> {
     private handleChangeOwnPayment=()=>{
         this.setState({ownPayment:!this.state.ownPayment})
     }
+
     private handleContentChange =(event:any,i:any,tableName:string)=>{
         // console.log('event',i,tableName)
         let tempObj = null

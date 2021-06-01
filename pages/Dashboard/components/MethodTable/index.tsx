@@ -9,14 +9,16 @@ interface MethodTableProps {
     IOSSwitch:any;
     tableName:string;
     handleChange:(ev: any,i:any,tableName:string) => void;
+    handleSetupDialogOpen?:(item: string) => void;
     // index: any;
     // value: any;
   }
   
   function MethodTable(props: MethodTableProps) {
-    const { children,t,content,IOSSwitch,handleChange,tableName, ...other } = props;
-    console.log('content',content)
+    const { children,t,content,IOSSwitch,handleChange,tableName,handleSetupDialogOpen, ...other } = props;
+    // console.log('content',content)
     
+    const handleClick = () =>{}
     return (
         <div className={styles.methodTable_container}>
           <div>
@@ -43,7 +45,7 @@ interface MethodTableProps {
                     <div><IOSSwitch checked={method.enable} onChange={(ev)=>handleChange(ev,i,tableName)} name="own" /></div>
                   </Grid>
                   <Grid item xs={6}>{t(method.des)}</Grid>
-                  <Grid classes={{root:styles.grid_item_body_root}} item xs={2}><Button classes={{root:styles.methodTable_setUp_button}}>{t("dashboard.acc.payment.setup")}</Button></Grid>
+                  <Grid classes={{root:styles.grid_item_body_root}} item xs={2}><Button onClick={(ev)=>handleSetupDialogOpen(method.name)} classes={{root:styles.methodTable_setUp_button}}>{t("dashboard.acc.payment.setup")}</Button></Grid>
               </Grid>
             ))}
               
