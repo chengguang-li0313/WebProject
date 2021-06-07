@@ -1,179 +1,240 @@
-import * as React from 'react';
-import styles from './index.module.css';
-import DataGrid from '../../dataGrid';
-// import {Popper,MenuItem,Select,TextField} from '@material-ui/core';
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
-import DataFilter from '../../dataFilter';
-import EditDialog from './EditDialog';
-import {Products} from '../../../../../public/fakeData';
+import * as React from "react";
+import { useState } from "react";
+import styles from "./index.module.css";
+import { Divider, FormControlLabel, Grid, Button } from "@material-ui/core";
+import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
+import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import MethodTable from "../../methodTable";
 
-export interface Props {
-    t:(params: String) => String;
-}
+import FileUpload from "./fileUpload/fileUpload.component";
 
-// const isDesktopOrLaptop = useMediaQuery({
-//     query: '(max-width: 1440px)'
-//   })
+function ProductScheme(props: Props) {
+  const [manualInput, setManualInput] = useState(false);
+  const [uploadFile, setUploadFile] = useState(false);
+  const [websiteScrape, setWebsiteScrape] = useState(false);
+  const [file, setFile] = useState();
+  const [fileUrl, setFileURL] = useState();
 
-const createDate = (product:any)=>{
-    let rows = []
-    product.forEach((element:any,index:any) => {
-        element.products = {item:element.products,type:"img" }
-        element.sku = {item:element.sku,type:"string" }
-        element.FeatureProducts = {item:element.FeatureProducts,type:"string" }
-        element.ProductName = {item:element.ProductName,type:"group_string",des:element.des}
-        element.Category = {item:element.Category,type:"string"}
-        element.Price = {item:element.Price,type:"price"}
-        element.Color={item:element.Color,type:"color"}
-        element.Sold={item:element.Sold,type:"item"}
-        rows.push(element)
+  function handleChangeManualInput() {
+    setManualInput(!manualInput);
+  }
+  function handleChangeUploadFile() {
+    setUploadFile(!uploadFile);
+  }
+  function handleChangeWebsiteScrape() {
+    setWebsiteScrape(!websiteScrape);
+  }
+
+  const [newUserInfo, setNewUserInfo] = useState({
+    profileImages: [],
+  });
+
+  const updateUploadedFiles = (files) =>
+    setNewUserInfo({ ...newUserInfo, profileImages: files });
+
+  function setUploadedFiles(myfile) {
+    setFileURL(myfile);
+  }
+
+  async function handleSubmit() {
+    handleSubmitFile();
+  }
+
+  async function handleSubmitFile() {
+    let presignedUploadUrl =
+      "https://0tgg0ho3x2.execute-api.ap-southeast-2.amazonaws.com/default/getPresignedURL";
+    const res = await fetch(presignedUploadUrl, {
+      method: "GET",
     });
-    // console.log
-    return rows
-}
+    let json = await res.json();
+    let uploadUrl = json.uploadURL;
 
-const initialState = {
-    columns:[{ id: 'products', label: ['dashboard.acc.productSche.products'], minWidth: 100},  
-            { id: 'ProductName',idList:['FeatureProducts','ProductName','sku'], 
-            label: ["dashboard.acc.productSche.FeatureProducts","dashboard.acc.productSche.ProductName","dashboard.acc.productSche.sku"],currentLabel:1, minWidth: 100 },
-            { id: 'Category', label: ["dashboard.acc.productSche.Category"], minWidth: 100 },
-            { id: 'Price', label: ["dashboard.acc.productSche.Price"], minWidth: 100 },
-            { id: 'Color', label: ["dashboard.acc.productSche.Color"], minWidth: 100 },
-            { id: 'Sold', label: ["dashboard.acc.productSche.Sold"], minWidth: 100 },
-            { id: 'Status', label:["dashboard.acc.productSche.Status"], minWidth: 100 }],
-    rows:createDate(Products),
-    editMenuListAnchorEl:null,
-    editOpen:false,
-    anchorEl:null,
-    open:false,
-    filterList:[{column:"products",ope:"Contains",val:"",logicOpe:"and"}],
-    filteredItem:[{value:"products",label:"dashboard.acc.productSche.products"},
-    {value:"FeatureProducts",label:"dashboard.acc.productSche.FeatureProducts"},
-    {value:"ProductName",label:"dashboard.acc.productSche.ProductName"},
-    {value:"Category",label:"dashboard.acc.productSche.Category"},],
-    currentEditRow:null,
-    dialogOpen:false
-}
-
-
-type State = {
-    columns:Array<any>,
-    rows:Array<any>,
-    editMenuListAnchorEl:any,
-    editOpen:boolean,
-    anchorEl:any,
-    open:boolean,
-    filterList:any,
-    filteredItem:Array<any>,
-    currentEditRow:any,
-    dialogOpen:boolean
-}
-
-class ProductScheme extends React.Component<Props, object> {
-
-    state= initialState
-    private ope = {
-        EDIT:"Edit",
-        ADD:"Add",
-        HIDE:"Hide"
+    const s3res = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "image/jpeg",
+      },
+      body: file,
+    });
+    if (s3res.status == 200) {
+      setFileURL(s3res.url);
     }
-    
-    private handleEdit=(event:any,row:any)=>{
-        this.setState({editMenuListAnchorEl:event.currentTarget,
-            editOpen:!this.state.editOpen,
-            currentEditRow:row})
-    }
-    private handleAction=(event: any,ope:any) =>{
-        switch(ope){
-            case this.ope.EDIT:
-                this.setState({dialogOpen:true})
-                break;
-            case this.ope.ADD:
-                this.setState({dialogOpen:true,currentEditRow:null})
-                break;
-            case this.ope.HIDE:
-                break;
-        }
-        this.setState({
-            editOpen:!this.state.editOpen})
-            // console.log("currentEditRow",this.state.currentEditRow)
-            
-    }
+  }
 
+  const IOSSwitch = withStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        width: 51,
+        height: 22,
+        padding: 0,
+        margin: theme.spacing(1),
+      },
+      switchBase: {
+        padding: 1,
+        "&$checked": {
+          transform: "translateX(29px)",
+          color: theme.palette.common.white,
+          "& + $track": {
+            backgroundColor: "#3464DC",
+            opacity: 1,
+            border: "none",
+          },
+        },
+        "&$focusVisible $thumb": {
+          color: "#3464DC",
+        },
+      },
+      thumb: {
+        width: 20,
+        height: 20,
+      },
+      track: {
+        borderRadius: 26 / 2,
+        backgroundColor: "#B4B6BA",
+        opacity: 1,
+        transition: theme.transitions.create(["background-color", "border"]),
+      },
+      checked: {},
+      focusVisible: {},
+    })
+  )(({ classes, ...props }: CusSwitchProps) => {
+    return (
+      <Switch
+        focusVisibleClassName={classes.focusVisible}
+        disableRipple
+        classes={{
+          root: classes.root,
+          switchBase: classes.switchBase,
+          thumb: classes.thumb,
+          track: classes.track,
+          checked: classes.checked,
+        }}
+        {...props}
+      />
+    );
+  });
 
-    private handleChangeFilterCol = (event:any,ind:any) =>{
-        let tempList = this.state.filterList
-        tempList[ind].column = event.target.value
-        this.setState({filterList:tempList})
-
-    }
-
-    private handleChangeFilterOpe = (event:any,ind:any) =>{
-        let tempList = this.state.filterList
-        tempList[ind].ope = event.target.value
-        this.setState({filterList:tempList})
-    }
-    private getValue = (event:any,ind:any) =>{
-        let tempList = this.state.filterList
-        tempList[ind].val = event.target.value
-        this.setState({filterList:tempList})
-    }
-    private handleChangeFilterLogicOpe = (event:any,ind:any) =>{
-        let tempList = this.state.filterList
-        tempList[ind].logicOpe = event.target.value
-        this.setState({filterList:tempList})
-    }
-
-    private handAddCondition=()=>{
-        const newfilter = {column:"products",ope:"Contains",val:"",logicOpe:"and"}
-        let temfilterList = this.state.filterList
-        temfilterList.push(newfilter)
-        this.setState({filterList:temfilterList})
-        // setFilterList(temfilterList)
-        // forceUpdate()
-        // console.log('filterList',filterList)
-    }
-
-    private handleDialogClose= ()=>{
-        this.setState({dialogOpen:false})
-    }
-
-    render(){
-        const {t} = this.props
-        return (
-            <div className={styles.productScheme_container}>
-                <DataFilter
-                    t={t}
-                    filterList={this.state.filterList}
-                    handleChangeFilterCol={this.handleChangeFilterCol}
-                    handleChangeFilterOpe={this.handleChangeFilterOpe}
-                    getValue={this.getValue}
-                    handleChangeFilterLogicOpe={this.handleChangeFilterLogicOpe}
-                    handAddCondition={this.handAddCondition}
-                    filteredItem={this.state.filteredItem}
-                />
-                <div className={styles.productScheme_dataGrid_container}>
-                    <DataGrid
-                        t={t}
-                        columns={this.state.columns}
-                        rows={this.state.rows}
-                        handleEdit={this.handleEdit}
-                        handleAction={this.handleAction}
-                        editMenuListAnchorEl={this.state.editMenuListAnchorEl}
-                        editOpen={this.state.editOpen}
-                        // onEditDialog={this.onEditDialog}
-                    />
-                    <EditDialog
-                    t={t}
-                    currentRow={this.state.currentEditRow}
-                    open={this.state.dialogOpen}
-                    handleClose={this.handleDialogClose}
-                />
-                </div>
+  return (
+    <div className={styles.productScheme_container}>
+      <div className={styles.productScheme_section}>
+        <div className={styles.productScheme_section_title_container}>
+          <div className={styles.productScheme_section_title_icon}>
+            <img src="/img/Dashboard/entypo_circle-with-cross.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title_tra}>
+            <img src="/img/Dashboard/Polygon_5.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title}>
+            <p>Manual input</p>
+          </div>
+          <div className={styles.manualInput_section_title_switch}>
+            <IOSSwitch
+              checked={manualInput}
+              onChange={handleChangeManualInput}
+              name="Manual input"
+            />
+          </div>
+        </div>
+        <Divider />
+      </div>
+      <div className={styles.productScheme_section}>
+        <div className={styles.productScheme_section_title_container}>
+          <div className={styles.productScheme_section_title_icon}>
+            <img src="/img/Dashboard/grommet-icons_document-upload.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title_tra}>
+            <img src="/img/Dashboard/Polygon_5.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title}>
+            <p>Upload file</p>
+          </div>
+          <div className={styles.uploadFile_section_title_switch}>
+            <IOSSwitch
+              checked={uploadFile}
+              onChange={handleChangeUploadFile}
+              name="Upload file"
+            />
+          </div>
+          <div className={styles.productScheme_section_title_des}>
+            <p>*Upload your own product or datafeed file</p>
+          </div>
+        </div>
+        <div className={styles.productScheme_section_title_container}>
+          <div className={styles.productScheme_section_upload_container}>
+            <FileUpload
+              accept=".xml,.json,.xls,.csv,.txt"
+              label="Profile Image(s)"
+              updateFilesCb={updateUploadedFiles}
+              getFile={setUploadedFiles}
+            />
+          </div>
+          <div className={styles.productScheme_section_content}>
+            <p>
+              *Please download the{" "}
+              <span style={{ textDecoration: "underline", color: "blue" }}>
+                pdf
+              </span>{" "}
+              example and prepare your file according to the example.
+            </p>
+          </div>
+        </div>
+        <Divider />
+      </div>
+      <div className={styles.productScheme_section}>
+        <div className={styles.productScheme_section_title_container}>
+          <div className={styles.productScheme_section_title_icon}>
+            <img src="/img/Dashboard/dashicons_cloud-upload.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title_tra}>
+            <img src="/img/Dashboard/Polygon_5.svg"></img>
+          </div>
+          <div className={styles.productScheme_section_title}>
+            <p>Website scrape</p>
+          </div>
+          <div className={styles.websiteScrape_section_title_switch}>
+            <IOSSwitch
+              checked={websiteScrape}
+              onChange={handleChangeWebsiteScrape}
+              name="Website scrape"
+            />
+          </div>
+          <div className={styles.productScheme_section_title_des}>
+            <p>*use BUBBLE8UP provided web scrape facilities</p>
+          </div>
+        </div>
+        <div className={styles.productScheme_section_title_container}>
+          <div className={styles.productScheme_section_title_rectLarge}>
+            <div className={styles.productScheme_section_title_rectMedium}>
+              <div className={styles.productScheme_section_title_rectSmall}>
+                <img
+                  style={{ height: "30px" }}
+                  src="/img/Dashboard/vector.svg"
+                ></img>
+              </div>
             </div>
-        )
-    }
+          </div>
+          <div className={styles.productScheme_section_content}>
+            <p>
+              *BUBBLE8UP will auto update your product files for you. Contact us
+              for more information about our upload gateway.
+            </p>
+          </div>
+          <div className={styles.productScheme_section_imgContainer}>
+            <div className={styles.productScheme_section_contact}>
+              <img
+                style={{ height: "42.5px" }}
+                src="/img/Dashboard/contact_icon.svg"
+              ></img>
+              <p>0466 687 787</p>
+            </div>
+          </div>
+        </div>
+        <div
+          className={styles.productScheme_section_title_container_bottom}
+        ></div>
+      </div>
+    </div>
+  );
 }
 
-export default ProductScheme
- 
+export default ProductScheme;
