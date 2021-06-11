@@ -11,6 +11,8 @@ import { Provider } from 'next-auth/client'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { t ,i18n} = useTranslation()
+  const test = { a: 1 };
+  test.a ??= 2;
   return (
     <Provider session={pageProps.session}>
       <Component t={t} i18n={i18n} {...pageProps} />

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './index.module.css';
-import {Divider,FormControlLabel,Grid,Checkbox,Button,
+import {Divider,FormControl,TextField,Checkbox,Button,
     Table,TableBody,TableCell,TableContainer,
     TablePagination,TableRow,TableHead,Popper,MenuItem,
     Slider} from '@material-ui/core';
@@ -8,6 +8,21 @@ import {TreeView,TreeItem} from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { DateRangePicker } from 'react-date-range';
+import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { addDays } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
+import {
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker
+  } from '@material-ui/pickers';
 
 interface Props {
     t:(params: String) => String;
@@ -24,26 +39,61 @@ interface Props {
     weight?:any,
     volume?:any,
     onDatachange?:any,
-    treeData?:any
+    treeData?:any,
+    delivery?:boolean,
+    checkedLine?:boolean,
+    handleCheckBoxChanged?:(event: any,i:any) => void;
+    onCusSeteditOpen?:(event: any,row:any) => void;
+    onEditValue?:(ev:any,commend:string,row:any) => void;
     // onEditDialog:(addNew:boolean,row?:any)=>void;
 
 }
 
 function DataGrid(props: Props) {
-    const {t,columns,rows,handleEdit,handleAction,editMenuListAnchorEl,editOpen=false} = props
+    const {t,columns,rows,handleEdit,handleAction,editMenuListAnchorEl,editOpen=false,onDatachange} = props
 
     const [columnList, setColumnList] = React.useState(columns);
     const [states, setStates] = React.useState(0);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(props.singlePage?rows.length:10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(props.singlePage?props.rows.length:10);
     const [rowsList, setRowsList] = React.useState(rows);
     const [editOpen_2,setEditOpen_2] = React.useState(false);
+    // popEditTimePickerAnchorEl
+    const [editOpen_timePicker,setEditOpen_timePicker] = React.useState(false);
     const [popEditMenuListAnchorEl,setPopEditMenuListAnchorEl]= React.useState(null);
-    const [currentRow,setCurrentRow] = React.useState(rowsList[0]);
+    const [popEditTimePickerAnchorEl,setPopEditTimePickerAnchorEl]= React.useState(null);
+    const [currentRow,setCurrentRow] = React.useState(rows[0]);
+    // const [selectedRow,setCelectedRow] = React.useState([]);
+    const [timeRange,setTimeRange] = React.useState({
+        selection: {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+          }
+        //   compare: {
+        //     startDate: new Date(),
+        //     endDate: addDays(new Date(), 3),
+        //     key: 'compare'
+        //   }
+      });
+    const [timeRangeData,setTimeRangeData] = React.useState({
+        from_time:new Date(),
+        to_time:new Date()
+    })
+    // const [DateTimeRangePickervalue, onDateTimeRangePickerChange] = React.useState([new Date(), new Date()]);
     // console.log('rowsPerPage',rowsPerPage)
     // const [editOpen, setEditOpen] = React.useState(false);
     // const [editMenuListAnchorEl,setEditMenuListAnchorEl] = React.useState(null);
-    //  console.log('columnList',columnList)
+    const isItemSelected=(event:any)=>{
+
+    } 
+    console.log('rows',props.rows)
+// 
+    React.useEffect(() => {
+        props.delivery?setRowsPerPage(props.singlePage?props.rows.length:10):[]
+    });
+    // setRowsPerPage(props.singlePage?props.rows.length:10)
+
     const IMG = "img"
     const STRING = "string"
     const GROUP_STRING="group_string"
@@ -59,11 +109,13 @@ function DataGrid(props: Props) {
     const CERTIFICATE = "Certificate"
     const SCOPE = "scope"
     const SLIDER = "slider"
+    const SLIDER_SINGLE = "slider_single"
+    const DATERANGE ="Daterange"
+    const RATE = "rate"
+    const CUS_SCOPE = "cus-scope"
+    const MAP = "map"
 
-
-    // console.log('rowsList',rowsList)
-
-    const [checked, setChecked] = React.useState(false);
+    // const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event:any,key:any) => {
     const {prefix,i} = key
@@ -74,16 +126,17 @@ function DataGrid(props: Props) {
         currentRow.scope.treeList[Number(prefix)].children[i].checked = !currentRow.scope.treeList[Number(prefix)].children[i].checked
         // currentRow.scope.treeList[Number(prefix)][i].checked = !currentRow.scope.treeList[Number(prefix)][i].checked
     }
-    
+
+
     forceUpdate()
     let result = getCurrentList(currentRow.scope.treeList,"")
     let temp = []
-    if(rowsList){
+    if(rows){
             
-        rowsList.forEach((r,i)=>{
+        rows.forEach((r,i)=>{
             if(r.index.item==currentRow.index.item){
                 r.scope.item = result
-                console.log(rowsList)
+                console.log(rows)
                 console.log(r)
             }
             temp.push(r)
@@ -116,23 +169,19 @@ function DataGrid(props: Props) {
   }
 
   const getCurrentList=(nodeList:any,list:string)=>{
-    let temp = ""
-    //   let st = list
+
     nodeList.forEach((node:any) => {
         if(node.checked){
-            temp+=node.name+","
-            // console.log(node.name)
+            list==""?list+=node.name:list+=","+node.name
         }
         if(node.children){
-            if(list!=getCurrentList(node.children,list)){
-                list+=getCurrentList(node.children,list)
+            if(list!=getCurrentList(node.children,list)&&!list.includes(getCurrentList(node.children,list))){
+                list=getCurrentList(node.children,list)
             }
         }
         
     });
-   return temp+list
-        
-    // }else{return ""}
+        return list
     
   }
 
@@ -144,30 +193,47 @@ function DataGrid(props: Props) {
         forceUpdate()
         
     }
+    const onSeteditOpen_3=(event:any,row:any)=>{
+        setEditOpen_timePicker((prev)=>!prev)
+        setPopEditTimePickerAnchorEl(event.currentTarget)
+        setCurrentRow(row)
+        forceUpdate()
+    }
     const handleSelect=(event: object, value: Array <string>)=>{
         console.log(event,value)
     }
 
+    
     const valuetext=(event:any,value:any,index:any,type:string)=> {
-        console.log(value,index,type)
+        // console.log(value,index,type)
         let tempRowList = []
         let save = false
-        if(rowsList){
+        // if(type!="distance"){
+            if(rows){
+                
+                rows.forEach((r,i)=>{
+                    if(i==index){
+                        if(type!="distance"){
+                            if(r.vw.item[type] != value)save = true
+                            r.vw.item[type] = value
+                        }else{
+                            if(r.item != value)save = true
+                            r[type].item = value
+                        }
+                    }
+                
+                tempRowList.push(r)
+                })
+            }
+            // console.log('tempRowList',tempRowList)
+            if(save){
+                setRowsList(tempRowList)
+                if(type=="distance"){onDatachange("distance",value,rows[index])}
+            }
             
-            rowsList.forEach((r,i)=>{
-                if(i==index){
-                    if(r.vw.item[type] != value)save = true
-                    r.vw.item[type] = value
-                    
-                }
-               
-               tempRowList.push(r)
-            })
-        }
-        // console.log('tempRowList',tempRowList)
-        if(save){
-            setRowsList(tempRowList)
-        }
+        // }else{
+
+        // }
         // 
         return `${value}`;
       }
@@ -205,6 +271,24 @@ function DataGrid(props: Props) {
         
     }
 
+    const onDateTimeRangePickerChange=(item:any)=>{
+        console.log(item);
+        setTimeRange({ ...timeRange, ...item })
+        setRange(item,timeRangeData)
+        
+      }
+      const onTimeRangePickerChange=(event:any,id:string)=>{
+          let temp = {from_time:timeRangeData.from_time,to_time:timeRangeData.to_time}
+          temp[id] = event
+        setTimeRangeData(temp)
+        setRange(timeRange,temp)
+      }
+
+    const setRange=(dateData:any,timeData:any)=>{
+        let dateTimeRange = `${dateData.selection.startDate.getFullYear()}-${dateData.selection.startDate.getMonth()+1}-${dateData.selection.startDate.getDate()} ${timeData.from_time.getHours()}:${timeData.from_time.getMinutes()}, ${dateData.selection.endDate.getFullYear()}-${dateData.selection.endDate.getMonth()+1}-${dateData.selection.endDate.getDate()} ${timeData.to_time.getHours()}:${timeData.to_time.getMinutes()}`
+        onDatachange("dateTimeRange",dateTimeRange,currentRow)
+    }
+
     const popperUp =(props:any,nodeData:Array<any>,prefix:string)=>{
         return nodeData.map((n,i)=>(
             n.children?
@@ -224,7 +308,16 @@ function DataGrid(props: Props) {
             
         
     }
-    
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+  const handleDateChange = (date:any) => {
+    setSelectedDate(date);
+  };
+  const onCheckBoxChanged = (ev:any,i:any) =>{
+    props.handleCheckBoxChanged(ev,i)
+    // console.log('props.handleCheckBoxChanged',props.handleCheckBoxChanged)
+  }
+    // const maxDate = moment(start).add(24, "hour")
     return(
         <div className={styles.dataGrid_container}>
              <TableContainer classes={{root:props.hide_x_overflow?styles.dataGrid_TableBody_hide_x:styles.dataGrid_TableBody}} className={styles.TableContainer}>
@@ -238,7 +331,9 @@ function DataGrid(props: Props) {
                                 key={column.id}
                                 align={column.align}
                                 style={{ minWidth: column.minWidth }}
+                                padding={props.delivery?"checkbox":"default"}
                                 >
+                                   
                                     {/* <div> */}
                                     { column.label.length>1?
                                         (<div className={styles.header_Text_container}>
@@ -278,20 +373,64 @@ function DataGrid(props: Props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                    {rowsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,i) => {
+                    {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,i) => {
                         return (
                             <TableRow onClick={(ev) => {props.staffAction?props.staffAction(ev,row):[]}} classes={{root:styles.tableRow_root}} hover role="checkbox" tabIndex={-1} key={row.code}>
-                            {columns.map((column) => {
+                            {columns.map((column,colIndex) => {
                                 const value = row[column.id];
-                                
+                                // console.log('value',value)
                                 if(value){
                                     switch(value.type){
+                                        case MAP:
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div className={styles.dataGrad_scope_group}>
+                                                    <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
+                                                    {row.editable?<div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>props.onCusSeteditOpen(ev,row)} ><CenterFocusStrongIcon classes={{root:styles.scope_bt}}/></Button></div>:[]}
+                                                </div>
+                                               
+                                                {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                            </TableCell>)
+                                        case RATE:
+                                            return(
+                                                <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                
+                                                     <div className={styles.dataGrad_string_center}>
+                                                     <TextField disabled={!row.editable} onChange ={(ev)=>props.onEditValue(ev,column.id,row)} value={value.item} />
+                                                     </div>
+                                                </TableCell>
+                                            );
+                                        case SLIDER_SINGLE:
+                                            return(
+                                                <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                    <div className={styles.slider_group}>
+                                                        <div className={styles.slider_text}>{t("dashboard.acc.delivery.setDelivery.distance")} </div>
+                                                        {row.editable?<Slider
+                                                            valueLabelDisplay="off"
+                                                            // defaultValue={props.volume}
+                                                            value={Number(value.item)}
+                                                            // getAriaValueText={(val)=>valuetext(val,i,"volume")}
+                                                            onChange={(event,val)=>valuetext(event,val,i,"distance")}
+                                                            aria-labelledby={`${i}distance`}
+                                                            key={`${i}distance`}
+                                                            step={1}
+                                                            // marks
+                                                            // onChange=
+                                                            min={0}
+                                                            max={100}
+                                                        />:[]}
+                                                        <div className={styles.slider_label}>
+                                                            {value.item+"km"}
+                                                        </div>
+                                                    </div>
+                                                </TableCell>
+                                            )
                                         case SLIDER:
                                             return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_SLIDER}>
                                                     {/* {value.item.volume? */}
                                                     <div className={styles.slider_group}>
                                                         <div className={styles.slider_text}>{t("common.volume")} </div>
+                                                        {row.editable?
                                                         <Slider
                                                             valueLabelDisplay="off"
                                                             // defaultValue={props.volume}
@@ -305,7 +444,7 @@ function DataGrid(props: Props) {
                                                             // onChange=
                                                             min={0}
                                                             max={props.volume}
-                                                        />
+                                                        />:[]}
                                                         <div className={styles.slider_label}>
                                                             {value.item.volume}
                                                         </div>
@@ -314,6 +453,7 @@ function DataGrid(props: Props) {
                                                     {/* {value.item.weight? */}
                                                     <div className={styles.slider_group}>
                                                         <div className={styles.slider_text}>{t("common.weight")} </div>
+                                                        {row.editable?
                                                         <Slider
                                                             key={`${i}_weight`}
                                                             // defaultValue={props.weight}
@@ -325,7 +465,7 @@ function DataGrid(props: Props) {
                                                             // marks
                                                             min={0}
                                                             max={props.weight}
-                                                        />
+                                                        />:[]}
                                                         <div className={styles.slider_label}>
                                                             {value.item.weight}
                                                         </div>
@@ -340,26 +480,55 @@ function DataGrid(props: Props) {
                                             return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_scope_group}>
                                                     <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
-                                                    <div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>onSeteditOpen_2(ev,row)} ><AddIcon classes={{root:styles.scope_bt}}/></Button></div>
+                                                    {row.editable?<div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>onSeteditOpen_2(ev,row)} ><CenterFocusStrongIcon classes={{root:styles.scope_bt}}/></Button></div>:[]}
                                                 </div>
                                                
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
-                                        
+                                        case CUS_SCOPE:
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div className={styles.dataGrad_scope_group}>
+                                                    <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
+                                                    {row.editable?<div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>props.onCusSeteditOpen(ev,row)} ><CenterFocusStrongIcon classes={{root:styles.scope_bt}}/></Button></div>:[]}
+                                                </div>
+                                               
+                                                {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                            </TableCell>)
+                                        case DATERANGE:
+                                            return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div className={styles.dataGrad_scope_group}>
+                                                    <div className={styles.dataGrad_string_center_scope}>{value.item}</div>
+                                                    {row.editable?<div className={styles.dataGrad_scope_bt}><Button onClick={(ev)=>onSeteditOpen_3(ev,row)} ><CenterFocusStrongIcon classes={{root:styles.scope_bt}}/></Button></div>:[]}
+                                                </div>
+                                                {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                            </TableCell>)
+
                                         case IMG:
                                             return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div className={styles.dataGrad_tableCell_img}><img src={value.item}></img></div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
+                                        default:
                                         case STRING:
                                             if(column.id == QUALIIFICATION || column.id == CERTIFICATE){
                                                 return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                    
                                                     <a className={styles.a}>{t("dashboard.sal.View")}</a>
                                                 </TableCell>)
                                             }
                                             else{
                                             return(<TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
-                                                <div className={styles.dataGrad_string_center}>{value.item}</div>
+                                                
+                                                <div className={styles.dataGrad_string_center}>
+                                                    {props.checkedLine&&colIndex==0?
+                                                        <Checkbox
+                                                            color="primary"
+                                                            checked={value.checked}
+                                                            onChange={(ev)=>onCheckBoxChanged(ev,i)}
+                                                            // inputProps={{ checkbox: i }}
+                                                            />:[]}
+                                                    {value.item}
+                                                </div>
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)}
                                         case GROUP_STRING:
@@ -435,10 +604,20 @@ function DataGrid(props: Props) {
                                             <div onClick={(ev)=>handleEdit(ev,row)} className={styles.status_button_more}><img src='/img/Dashboard/more.svg'></img></div>
                                         </div>
                                     </TableCell>) }
+                                    if(column.id=="more"&&props.delivery){
+                                        return(
+                                            <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
+                                                <div  className={styles.status_button_more}>
+                                                    <EditIcon  color="primary" classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Edit",row)}}/>
+                                                    <DeleteForeverIcon color="primary" classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Delete",row)}}/>
+                                                    {i==props.rows.length-1? <AddCircleIcon classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Add",row)}} color="primary"/>:[]}
+                                                </div>
+                                        </TableCell>)
+                                    }
                                 }
                                 // return (
                                 
-                                // );
+                                // );onClick={(ev)=>handleEdit(ev,row)}
                             })}
                             </TableRow>
                         );
@@ -462,7 +641,8 @@ function DataGrid(props: Props) {
                     <div  className={styles.popper_content_more}>
                         <MenuItem key={"Add"} onClick={(ev)=>{handleAction(ev,"Add")}} classes={{root:styles.sales_opt}} value="Add">{ t("dashboard.acc.productSche.Add")}</MenuItem>
                         <MenuItem key={"Edit"} onClick={(ev)=>{handleAction(ev,"Edit")}} className={styles.sales_opt} value="Edit">{ t("dashboard.acc.productSche.Edit")}</MenuItem>
-                        <MenuItem key={"Hide"} onClick={(ev)=>{handleAction(ev,"Hide")}} className={styles.sales_opt} value="Hide">{ t("dashboard.acc.productSche.hideStatus")}</MenuItem>
+                        {props.delivery?<MenuItem key={"Save"} onClick={(ev)=>{handleAction(ev,"Save")}} className={styles.sales_opt} value="Edit">{ t("common.save")}</MenuItem>:<MenuItem key={"Hide"} onClick={(ev)=>{handleAction(ev,"Hide")}} className={styles.sales_opt} value="Hide">{ t("dashboard.acc.productSche.hideStatus")}</MenuItem>}
+                        {/* {props.delivery?<MenuItem key={"Delete"} onClick={(ev)=>{handleAction(ev,"Delete")}} className={styles.sales_opt} value="Edit">{ t("dashboard.sal.Delete")}</MenuItem>:[]} */}
                     </div>
                 </Popper>
             
@@ -484,9 +664,75 @@ function DataGrid(props: Props) {
                    
                     </div>
                 </Popper>
+                <Popper className={styles.popper} open={editOpen_timePicker} anchorEl={popEditTimePickerAnchorEl} placement="bottom-end" transition>
+                    <div  className={styles.popper_content_DateTimeRangePicker}>
+                    <div className={styles.timeRangePicker_container}>
+                        {/* <TextField
+                            id="from_time"
+                            label="From"
+                            type="time"
+                            value={timeRangeData.from_time}
+                            className={styles.timePicker_textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                            inputProps={{
+                            step: 300, // 5 min
+                            }}
+                            lang="en"
+                            onChange={(ev)=>onTimeRangePickerChange(ev)}
+                        /> */}
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardTimePicker
+                            margin="normal"
+                            id="from_time"
+                            label="From"
+                            value={timeRangeData.from_time}
+                            onChange={(ev)=>onTimeRangePickerChange(ev,"from_time")}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change time',
+                            }}
+                        />
+                        <KeyboardTimePicker
+                            margin="normal"
+                            id="to_time"
+                            label="To"
+                            value={timeRangeData.to_time}
+                            onChange={(ev)=>onTimeRangePickerChange(ev,"to_time")}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change time',
+                            }}
+                        />
+                        </MuiPickersUtilsProvider>
+                        {/* <TextField
+                            id="to_time"
+                            label="To"
+                            type="time"
+                            value={timeRangeData.to_time}
+                            className={styles.timePicker_textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                            inputProps={{
+                            step: 300, // 5 min
+                            }}
+                            onChange={(ev)=>onTimeRangePickerChange(ev)}
+                        /> */}
+                    </div>
+                    <DateRangePicker
+                     onChange={(item:any) => onDateTimeRangePickerChange(item) }
+                     months={1}
+                     minDate={addDays(new Date(), -300)}
+                     maxDate={addDays(new Date(), 900)}
+                     direction="vertical"
+                     scroll={{ enabled: true }}
+                     ranges={[timeRange.selection]}
+                    />
+                    </div>
+                </Popper>
         </div>
     )
 
 }
 
-export default DataGrid
+export default  React.memo(DataGrid, (prevProps, nextProps) => nextProps.rows !== prevProps.rows)

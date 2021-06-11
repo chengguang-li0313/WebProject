@@ -16,7 +16,7 @@ const createDate = (product:any)=>{
     let rows = []
     product.forEach((element:any,index:any) => {
         element.StaffProfile = {item:element.StaffProfile,type:"img" }
-        element['Staff(NEW)'] = {item:element['Staff(NEW)'],type:"string" }
+        element['Staff_NEW'] = {item:element['Staff_NEW'],type:"string" }
         element.MostsaleProduct = {item:element.MostsaleProduct,type:"group_string" ,des:element.des}
         element.Ranking = {item:element.Ranking,type:"ranking"}
         element.YearlyCommisiion = {item:element.YearlyCommisiion,type:"price"}
@@ -32,7 +32,7 @@ const createDate = (product:any)=>{
 }
 
 const initialState = {
-    columns:[{ id: 'StaffProfile',currentLabel:1,idList:['Staff(NEW)','StaffProfile'], label: ['dashboard.acc.sale.Staff(NEW)','dashboard.acc.sale.StaffProfile'], minWidth: 100 },  
+    columns:[{ id: 'StaffProfile',currentLabel:1,idList:['Staff_NEW','StaffProfile'], label: ['dashboard.acc.sale.Staff_NEW','dashboard.acc.sale.StaffProfile'], minWidth: 100 },  
     { id: 'MostsaleProduct', label: ["dashboard.acc.sale.MostsaleProduct"],minWidth: 100 },
     { id: 'Ranking', label: ["dashboard.acc.sale.Ranking"], minWidth: 100 },
     { id: 'YearlyCommisiion',currentLabel:1,idList:['YearlyCommisiion','MonthlyCommisiion'],  label: ["dashboard.acc.sale.YearlyCommisiion","dashboard.acc.sale.MonthlyCommisiion"], minWidth: 100 },
@@ -44,7 +44,7 @@ const initialState = {
     rows:createDate(SalesData),
     // [
     //     {StaffProfile:{item:"/img/Dashboard/staff_test.svg",type:"img_view",view:true},
-    //     'Staff(NEW)':{item:"Staff(NEW)",type:"string"},
+    //     'Staff_NEW':{item:"Staff_NEW",type:"string"},
     //     MostsaleProduct:{item:"5500 Onboard Diagnostic",
     //     des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string"},
     //     Ranking:{item:1,type:"ranking"},
@@ -56,9 +56,9 @@ const initialState = {
     //     Products_New:{item:12,type:"item"}
     //     }
     // ],
-    filterList:[{column:"Staff(NEW)",ope:"Contains",val:"",logicOpe:"and"}],
+    filterList:[{column:"Staff_NEW",ope:"Contains",val:"",logicOpe:"and"}],
     filteredItem:[
-    {value:"Staff(NEW)",label:"dashboard.acc.sale.Staff(NEW)"},
+    {value:"Staff_NEW",label:"dashboard.acc.sale.Staff_NEW"},
     {value:"MostsaleProduct",label:"dashboard.acc.sale.MostsaleProduct"},
     {value:"Ranking",label:"dashboard.acc.sale.Ranking"}],
     currentEditRow:null,

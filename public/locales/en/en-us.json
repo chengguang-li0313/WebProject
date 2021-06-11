@@ -16,7 +16,8 @@
         "downloadPDF":"download the pdf report",
         "volume":"Volume",
         "weight":"Weight",
-        "edit":"Edit"
+        "edit":"Edit",
+        "addNew":"Add New"
     },
     "footer":{
         "getInTouch":"Get in Touch",
@@ -163,7 +164,7 @@
                     "careWeight":"I care about the product weight",
                     "volumeNotBig":"Volume not bigger than ",
                     "weightNotBig":"Weight not bigger than ",
-                    "meter":" meter",
+                    "meter":" cubic metres",
                     "kg":" kg",
                     "ProductOrientated":"Product Orientated",
                     "customerorientated":"Customer Orientated",
@@ -181,7 +182,23 @@
                     "consumerCustomer":"Show consumer Customer",
                     "both":"Show both",
                     "orderbySale":"Order by sale amount",
-                    "selectPostcode":"Select areas / postcodes"
+                    "selectPostcode":"Select areas / postcodes",
+                    "couponCode":"Coupon code",
+                    "period":"Period of validity",
+                    "customers":"Customers",
+                    "percentage":"Percentage",
+                    "distance":"Distance",
+                    "rate":"Rate",
+                    "from":"From",
+                    "to":"To",
+                    "setState":"Choose State",
+                    "suburb":"Suburb",
+                    "label":"Label",
+                    "scope":"Scope",
+                    "amount":"Amount",
+                    "selectedList":"Seleted Suburb",
+                    "name":"Name",
+                    "category":"Category"
                 }
             },
             "productSche":{
@@ -200,7 +217,7 @@
             },
             "sale":{
                 "StaffProfile":"Staff Profile",
-                "Staff(NEW)":"Staff (NEW)",
+                "Staff_NEW":"Staff (NEW)",
                 "MostsaleProduct":"Most sale Product",
                 "Ranking":"Ranking",
                 "YearlyCommisiion":"Yearly Commisiion",

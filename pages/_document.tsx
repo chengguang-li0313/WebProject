@@ -11,6 +11,7 @@ class MyDocument extends Document {
       <Html>
         <Head >
         <link rel="shortcut icon" href="/logo.svg" />
+        
         </Head>
         <body>
           <Main />

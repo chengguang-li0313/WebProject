@@ -29,39 +29,76 @@ const Products=[
     },
 ]
 
+const SalesData_2=[
+        {StaffProfile:{item:"/img/Dashboard/staff_test.svg",type:"img" },
+        Staff_NEW : {item:"Staff_NEW",type:"string" },
+        MostsaleProduct :{item:"5500 Onboard Diagnostic",des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string" },
+        Ranking : {item:1,type:"ranking"},
+        YearlyCommisiion :{item:125750,type:"price"},
+        MonthlyCommisiion : {item:25750,type:"price"},
+        Customer:{item:"Tom, Jim ,jenny",type:"string"},
+        Products_sale:{item:120,type:"item"},
+        TotalsolditemMonthly:{item:20,type:"item"},
+        Products_New:{item:12,type:"item"},
+        Category:{item:"business",type:"string"}},
+        
+        {StaffProfile:{item:"/img/Dashboard/staff_test.svg",type:"img" },
+        Staff_NEW : {item:"Staff_NEW",type:"string" },
+        MostsaleProduct :{item:"5500 Onboard Diagnostic",des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string" },
+        Ranking : {item:2,type:"ranking"},
+        YearlyCommisiion :{item:125750,type:"price"},
+        MonthlyCommisiion : {item:25750,type:"price"},
+        Customer:{item:"Tom, Jim ,jenny",type:"string"},
+        Products_sale:{item:120,type:"item"},
+        TotalsolditemMonthly:{item:20,type:"item"},
+        Products_New:{item:12,type:"item"},
+        Category:{item:"important",type:"string"}},
+
+        {StaffProfile:{item:"/img/Dashboard/staff_test.svg",type:"img" },
+        Staff_NEW : {item:"Staff_NEW",type:"string" },
+        MostsaleProduct :{item:"5500 Onboard Diagnostic",des:"Onboard Diagnostic Voltmeter Onboard",type:"group_string" },
+        Ranking : {item:3,type:"ranking"},
+        YearlyCommisiion :{item:125750,type:"price"},
+        MonthlyCommisiion : {item:25750,type:"price"},
+        Customer:{item:"Tom, Jim ,jenny",type:"string"},
+        Products_sale:{item:120,type:"item"},
+        TotalsolditemMonthly:{item:20,type:"item"},
+        Products_New:{item:12,type:"item"},
+        Category:{item:"consumer",type:"string"}}
+]
 
 const SalesData=[
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
     des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"business"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:2,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"business"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:3,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"consumer"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:4,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"consumer"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:5,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"important"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:6,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"important"
     },
 
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
-    Products_sale:120,TotalsolditemMonthly:20,Products_New:12
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:7,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    Products_sale:120,TotalsolditemMonthly:20,Products_New:12,Category:"important"
     },
-    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff(NEW)':"Staff(NEW)",MostsaleProduct:"5500 Onboard Diagnostic",
-    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:1,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
+    {StaffProfile:"/img/Dashboard/staff_test.svg",'Staff_NEW':"Staff_NEW",MostsaleProduct:"5500 Onboard Diagnostic",
+    des:"Onboard Diagnostic Voltmeter Onboard",Ranking:8,YearlyCommisiion:125750,MonthlyCommisiion:25750,Customer:"Tom, Jim ,jenny",
     Products_sale:120,TotalsolditemMonthly:20,Products_New:12
     },
 ]
@@ -271,30 +308,109 @@ const treeData=[
         {name:"p2"}
     ]}
 ]
+const coupon=[
+    {editable:false,
+       "index": {item:"1",type:"string"},
+       "code": {item:"SALEOF100OFF",type:"rate"},
+       "scope": {item:"p1,p2,c1,c2",type:"rate"},
+       "custom": {item:"111, 222, 221, 2222",type:"rate"},
+       "period": {item:"2021-05-21,2021-09-30",type:"Daterange"},
+       "percentage": {item:"0.00",type:"rate"}
+    },
+    {editable:false,
+        "index": {item:"2",type:"string"},
+        "code": {item:"SALEOF100OFF",type:"rate"},
+        "scope": {item:"p1,p2,c1,c2",type:"rate"},
+        "custom": {item:"111, 222, 221, 2222",type:"rate"},
+        "period": {item:"2021-05-21,2021-09-30",type:"Daterange"},
+        "percentage": {item:"0.00",type:"rate"}
+     }
+ ]
+const customer =[
+    {
+       "index": "1",
+       "scope": "111,211,121,241",
+       "rate": "0.00"
+    },
+    {
+       "index": "2",
+       "scope": "20,200,221,321",
+       "rate": "1.50"
+    }
+ ]
+ const distance= [
+    {
+        "index": {item:"1",type:"string"},
+        "distance": {item:"15",type:"slider_single"},
+        "rate": {item:"3.00",type:"rate"},
+        editable:false,
+        
+     },
+     {
+        "index": {item:"2",type:"string"},
+        "distance": {item:"15",type:"slider_single"},
+        "rate": {item:"3.00",type:"rate"},
+        editable:false,
+        
+     },
+     {
+        "index": {item:"3",type:"string"},
+        "distance": {item:"15",type:"slider_single"},
+        "rate": {item:"5.00",type:"rate"},
+        editable:false,
+        
+     }
+ ]
 
-const customerList=[
-    {name:"Business",item:[
-        {name:"Tom",id:"111"}
-    ]},
-    {name:"Consumer",item:[
-        {name:"Jerry",id:"121"}
-    ]},
-    {name:"All",item:[
-        {name:"Tom",id:"111"},
-        {name:"Jerry",id:"121"}
-    ]},
-    {name:"Important",item:[
-        {name:"Tom",id:"111"},
-        {name:"Jane",id:"131"}
-    ]}
+ const customerList =[
+    {id:1,name:111,Category:"business"},
+    {id:2,name:211,Category:"business"},
+    {id:3,name:121,Category:"business"},
+    {id:4,name:241,Category:"business"},
+    {id:5,name:20,Category:"consumer"},
+    {id:6,name:200,Category:"consumer"},
+    {id:7,name:221,Category:"consumer"},
+    {id:8,name:321,Category:"consumer"}
+ ]
+
+const order =[
+    {
+        "index": "1",
+        "amount": "50",
+        "rate": "$5.00"
+     },
+     {
+        "index": "2",
+        "amount": "100",
+        "rate": "$1.00"
+     },
+     {
+        "index": "3",
+        "amount": "200",
+        "rate": "$0.00"
+     }
 ]
 
-// const 
+const postcode=[
+    {
+       "index": "1",
+       "from": "1 mcintyre st burwood vic 3125",
+       "to": "3125,3126,3127,3171",
+       "rate": "3.00"
+    },
+    {
+       "index": "2",
+       "from": "1 mcintyre st burwood vic 3125",
+       "to": "3225,3226,3227,3271",
+       "rate": "5.00"
+    }
+ ]
+ 
 
 export {SalesApplicationRow,
         Products,SalesData,
         staffData,staffDetail,salesApplicationDetail,
         salesApplicationDataList,
         deliveryProductOrientatedData,
-        treeData,
-        customerList}
+        treeData,coupon,distance,customerList,order,
+        SalesData_2,customer,postcode}

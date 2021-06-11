@@ -6,6 +6,7 @@ import {Dialog,DialogTitle,DialogContent,Select,
     Checkbox,FormControlLabel} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useMediaQuery } from 'react-responsive'
+import deliveryData from '../../../../../public/deliveryData/account_deliveryScheme_flatRate_web.json'
 
 import DataGrid from '../../dataGrid'
 import Product from './product'
@@ -22,12 +23,14 @@ interface Props {
     open:boolean;
     handleClose:() => void;
     dialogName:String;
+    handleSave:(data:any) =>void
+
     
   }
 
 function DeliveryEditDialog(props: Props){
-    const {t,open,handleClose,dialogName} = props
-    
+    const {t,open,handleClose,dialogName,handleSave} = props
+    console.log('deliveryData',deliveryData)
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
     const FLATCONDITION = [{id:"dontCare",label:"dashboard.acc.delivery.setDelivery.dontCare"},
@@ -40,6 +43,8 @@ function DeliveryEditDialog(props: Props){
     const [volume ,setVolume] =  React.useState(10);
     const [weight ,setWeight] =  React.useState(100);
     const [state,setState] = React.useState(0);
+    const [deliveData,setDeliveData ] = React.useState(deliveryData);
+    const [checkList,setCheckList] = React.useState({product:false,customer:false,order:false,coupon:false,postcode:false,distance:false});
     const productOrientatedColumn =  [
         { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },
         { id: 'scope', label: ['dashboard.acc.delivery.setDelivery.Scope'], minWidth: 100 },
@@ -47,6 +52,9 @@ function DeliveryEditDialog(props: Props){
         { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.Rate'], minWidth: 100 },
     ]
 
+    const forceUpdate=()=>{
+        setState(prev=>prev+=1)
+    }
     const createData=(rows:Array<any>)=>{
         let tempList = []
         rows.map((row,index)=>(
@@ -94,8 +102,27 @@ function DeliveryEditDialog(props: Props){
         setState((prov)=> prov+1)
     }
     
-    const onDatachange=(rows:any)=>{
+    const onDatachange=(ev:any,cmd:string)=>{
+        
+        setCheckList(prev=>{
+            // console.log('prev[cmd]',prev[cmd])
+            prev[cmd] = !prev[cmd]
+            return prev
+        })
+        forceUpdate()
+    }
+    const getDatachange=(comd:string,data:any)=>{
+        console.log('getDatachange',comd,data)
+        setDeliveData(prev=>{
+            prev[comd] = data
+            return prev
+        })
+        forceUpdate()
+    }
+    const onSave =() =>{
 
+        handleClose()
+        // handleSave()
     }
 
     return(
@@ -165,12 +192,15 @@ function DeliveryEditDialog(props: Props){
                                 classes={{label:styles.accordionlabel_root}}
                                 onClick={(event) => event.stopPropagation()}
                                 onFocus={(event) => event.stopPropagation()}
-                                control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                control={<Checkbox onChange={ev=>onDatachange(ev,'product')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                 label={t("dashboard.acc.delivery.setDelivery.ProductOrientated")}
                             />
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Product
+                                getDatachange={getDatachange}
+                                product = {deliveData.product}
+                                // productRow={}
                                 t={t}
                                 />
                             </AccordionDetails>
@@ -191,7 +221,7 @@ function DeliveryEditDialog(props: Props){
                                 aria-label="Acknowledge"
                                 onClick={(event) => event.stopPropagation()}
                                 onFocus={(event) => event.stopPropagation()}
-                                control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                control={<Checkbox onChange={ev=>onDatachange(ev,'customer')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                 label={t("dashboard.acc.delivery.setDelivery.customerorientated")}
                             />
                             </AccordionSummary>
@@ -207,6 +237,8 @@ function DeliveryEditDialog(props: Props){
                                     weight={weight}
                                 /> */}
                             <Customer
+                            getDatachange={getDatachange}
+                            customer = {deliveData.customer}
                             t={t}/>
                             {/* <Typography color="textSecondary">
                                 The click event of the nested action will propagate up and expand the accordion unless
@@ -230,12 +262,14 @@ function DeliveryEditDialog(props: Props){
                                 classes={{label:styles.accordionlabel_root}}
                                 onClick={(event) => event.stopPropagation()}
                                 onFocus={(event) => event.stopPropagation()}
-                                control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                control={<Checkbox onChange={ev=>onDatachange(ev,'order')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                 label={t("dashboard.acc.delivery.setDelivery.orderOrientated")}
                             />
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Order
+                                getDatachange={getDatachange}
+                                order = {deliveData.order}
                                 t={t}
                                 />
                             {/* <Typography color="textSecondary">
@@ -261,12 +295,14 @@ function DeliveryEditDialog(props: Props){
                                     classes={{label:styles.accordionlabel_root}}
                                     onClick={(event) => event.stopPropagation()}
                                     onFocus={(event) => event.stopPropagation()}
-                                    control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                    control={<Checkbox onChange={ev=>onDatachange(ev,'coupon')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                     label={t("dashboard.acc.delivery.setDelivery.couponOrientated")}
                                 />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Coupon
+                                    getDatachange={getDatachange}
+                                    coupon = {deliveData.coupon}
                                     t={t}/>
                                 {/* <Typography color="textSecondary">
                                     The click event of the nested action will propagate up and expand the accordion unless
@@ -290,12 +326,14 @@ function DeliveryEditDialog(props: Props){
                                     classes={{label:styles.accordionlabel_root}}
                                     onClick={(event) => event.stopPropagation()}
                                     onFocus={(event) => event.stopPropagation()}
-                                    control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                    control={<Checkbox onChange={ev=>onDatachange(ev,'distance')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                     label={t("dashboard.acc.delivery.setDelivery.distanceOrientated")}
                                 />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Distance
+                                    getDatachange={getDatachange}
+                                    distance = {deliveData.distance}
                                     t={t}/>
                                 {/* <Typography color="textSecondary">
                                     The click event of the nested action will propagate up and expand the accordion unless
@@ -319,12 +357,14 @@ function DeliveryEditDialog(props: Props){
                                     classes={{label:styles.accordionlabel_root}}
                                     onClick={(event) => event.stopPropagation()}
                                     onFocus={(event) => event.stopPropagation()}
-                                    control={<Checkbox classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                                    control={<Checkbox onChange={ev=>onDatachange(ev,'postcode')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                                     label={t("dashboard.acc.delivery.setDelivery.postcodeOrientated")}
                                 />
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Postcode
+                                    getDatachange={getDatachange}
+                                    postcode = {deliveData.postcode}
                                         t={t}
                                     />
                                 {/* <Typography color="textSecondary">
@@ -335,7 +375,7 @@ function DeliveryEditDialog(props: Props){
                             </Accordion>
                         </div>
                         <div className={styles.button_group}>
-                            <Button classes={{root:styles.dialog_bt}}>{t("common.save")}</Button>
+                            <Button onClick={onSave} classes={{root:styles.dialog_bt}}>{t("common.save")}</Button>
                             <Button onClick={handleClose} classes={{root:styles.dialog_bt}}>{t("common.cancel")}</Button>
                         </div>
                     </div>

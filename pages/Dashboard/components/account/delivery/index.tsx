@@ -12,6 +12,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
 
 export interface Props {
     t:(params: String) => String;
+    order:any
 
     
 }
@@ -112,7 +113,9 @@ class Delivery extends React.Component<Props, object> {
                 break;
         }
     }
+    private handleSave =(data:any)=>{
 
+    }
     // onDialotOpen()
     // private handleSwitchLogic=()=>{
 
@@ -251,6 +254,7 @@ class Delivery extends React.Component<Props, object> {
                     open={this.state.open}
                     handleClose={this.handleClose}
                     dialogName={this.state.currentDialogName}
+                    handleSave={this.handleSave}
                 />
             </div>
         )

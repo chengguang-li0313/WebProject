@@ -60,8 +60,8 @@ function Stafftag(props: Props){
                 },
                 { id: 'Status', label:["common.blank"], minWidth: 20 },
         ]);
-        const [filterList,setFilterList] = React.useState([{column:"Staff(NEW)",ope:"Contains",val:"",logicOpe:"and"}]);
-    const [filteredItem,setFilteredItem] = React.useState([{value:"Staff(NEW)",label:"dashboard.acc.sale.Staff(NEW)"},
+        const [filterList,setFilterList] = React.useState([{column:"Staff_NEW",ope:"Contains",val:"",logicOpe:"and"}]);
+    const [filteredItem,setFilteredItem] = React.useState([{value:"Staff_NEW",label:"dashboard.acc.sale.Staff_NEW"},
     {value:"MostsaleProduct",label:"dashboard.acc.sale.MostsaleProduct"},
     {value:"Ranking",label:"dashboard.acc.sale.Ranking"}]);
         const [detailData , setDetailData] = React.useState({name:"Tom Williams",
@@ -119,7 +119,8 @@ function Stafftag(props: Props){
             //     editOpen:!this.state.editOpen,
             //     currentEditRow:row})
         }
-        const handleAction=(event: any,ope:any) =>{
+        const handleAction=(event: any,ope:any,row?:any)=>{
+
             switch(ope){
                 case ope.EDIT:
                     // this.setState({dialogOpen:true})
