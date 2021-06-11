@@ -22,7 +22,6 @@ interface Props {
         console.log(tempRow)
     }
 
-
     return(
         <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
