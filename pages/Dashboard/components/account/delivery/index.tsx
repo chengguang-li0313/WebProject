@@ -13,8 +13,6 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
 export interface Props {
     t:(params: String) => String;
     order:any
-
-    
 }
 
 interface CusSwitchProps{
@@ -116,10 +114,6 @@ class Delivery extends React.Component<Props, object> {
     private handleSave =(data:any)=>{
 
     }
-    // onDialotOpen()
-    // private handleSwitchLogic=()=>{
-
-    // }
 
     render(){
         const {t} = this.props
@@ -145,7 +139,6 @@ class Delivery extends React.Component<Props, object> {
             },
             '&$focusVisible $thumb': {
                 color: '#3464DC',
-                // border: '6px solid #fff',
             },
             },
             thumb: {
@@ -154,7 +147,6 @@ class Delivery extends React.Component<Props, object> {
             },
             track: {
             borderRadius: 26 / 2,
-            // border: `1px solid ${theme.palette.grey[400]}`,
             backgroundColor: '#B4B6BA',
             opacity: 1,
             transition: theme.transitions.create(['background-color', 'border']),
@@ -167,7 +159,6 @@ class Delivery extends React.Component<Props, object> {
             <Switch
             focusVisibleClassName={classes.focusVisible}
             disableRipple
-            // checked={checked}
             classes={{
                 root: classes.root,
                 switchBase: classes.switchBase,
@@ -239,11 +230,9 @@ class Delivery extends React.Component<Props, object> {
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
                             handleSetupDialogOpen={this.handleSetupDialogOpen}
-                            // handleClose={this.handleClose}
                         >
                         </MethodTable>
                     </div>
-                    {/* <Divider/> */}
                 </div>
                 <div className={styles.paymentMethod_update_bt}>
                     <Button classes={{root:styles.paymentMethod_update}}>{t("common.upload")}</Button>

@@ -5,7 +5,6 @@ import styles from './index.module.css';
 
 interface Props {
     t:(params: String) => String;
-    // testFunction:() => void;
     handleClose:(event:any,params:any) =>void;
     open:boolean;
     currentRow:Object;
@@ -14,10 +13,8 @@ interface Props {
   
   function EditDialog(props: Props) {
     const {t,currentRow,handleClose,open} = props
-    // console.log('currentRow',currentRow)
     let tempRow ={}
     Object.assign(tempRow, currentRow);
-
     const setChange=(event:any)=>{
         
         tempRow[event.target.id] = event.target.value
@@ -30,12 +27,7 @@ interface Props {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{ t("dashboard.sal.Edit")}</DialogTitle>
                 <DialogContent>
-                {/* <DialogContentText>
-                    To subscribe to this website, please enter your email address here. We will send updates
-                    occasionally.
-                </DialogContentText> */}
                 <TextField
-                    // autoFocus
                     onChange={setChange}
                     margin="dense"
                     id="products"
@@ -44,7 +36,6 @@ interface Props {
                     fullWidth
                 />
                 <TextField
-                    // autoFocus
                     onChange={setChange}
                     margin="dense"
                     id="ProductName"
@@ -53,7 +44,6 @@ interface Props {
                     fullWidth
                 />
                  <TextField
-                    // autoFocus
                     onChange={setChange}
                     margin="dense"
                     id="Category"
@@ -62,7 +52,6 @@ interface Props {
                     fullWidth
                 />
                 <TextField
-                    // autoFocus
                     onChange={setChange}
                     margin="dense"
                     id="Price"

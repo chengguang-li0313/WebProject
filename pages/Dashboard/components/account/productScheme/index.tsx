@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import DataGrid from '../../dataGrid';
-// import {Popper,MenuItem,Select,TextField} from '@material-ui/core';
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DataFilter from '../../dataFilter';
 import EditDialog from './EditDialog';
 import {Products} from '../../../../../public/fakeData';
@@ -10,10 +8,6 @@ import {Products} from '../../../../../public/fakeData';
 export interface Props {
     t:(params: String) => String;
 }
-
-// const isDesktopOrLaptop = useMediaQuery({
-//     query: '(max-width: 1440px)'
-//   })
 
 const createDate = (product:any)=>{
     let rows = []
@@ -28,7 +22,6 @@ const createDate = (product:any)=>{
         element.Sold={item:element.Sold,type:"item"}
         rows.push(element)
     });
-    // console.log
     return rows
 }
 
@@ -96,7 +89,6 @@ class ProductScheme extends React.Component<Props, object> {
         }
         this.setState({
             editOpen:!this.state.editOpen})
-            // console.log("currentEditRow",this.state.currentEditRow)
             
     }
 
@@ -129,9 +121,6 @@ class ProductScheme extends React.Component<Props, object> {
         let temfilterList = this.state.filterList
         temfilterList.push(newfilter)
         this.setState({filterList:temfilterList})
-        // setFilterList(temfilterList)
-        // forceUpdate()
-        // console.log('filterList',filterList)
     }
 
     private handleDialogClose= ()=>{
@@ -161,7 +150,6 @@ class ProductScheme extends React.Component<Props, object> {
                         handleAction={this.handleAction}
                         editMenuListAnchorEl={this.state.editMenuListAnchorEl}
                         editOpen={this.state.editOpen}
-                        // onEditDialog={this.onEditDialog}
                     />
                     <EditDialog
                     t={t}

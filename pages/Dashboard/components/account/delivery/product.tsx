@@ -1,11 +1,4 @@
 import * as React from 'react';
-// import styles from './index.module.css';
-// import {Dialog,DialogTitle,DialogContent,Select,
-//     MenuItem,TextField, Divider, Button,
-//     Accordion,AccordionSummary,AccordionDetails,
-//     Checkbox,FormControlLabel} from '@material-ui/core';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import BoardlineChart from './boardLineChart'
 import { useMediaQuery } from 'react-responsive'
 import DataGrid from '../../dataGrid'
 import {deliveryProductOrientatedData,treeData} from '../../../../../public/fakeData'
@@ -48,7 +41,6 @@ function Product(props: Props){
     if(row){
         setCurrentRow(row)
     }
-    // anchorEl ? null : event.currentTarget
     setEditMenuListAnchorEl(editMenuListAnchorEl?null : event.currentTarget)
 
     }
@@ -74,9 +66,9 @@ function Product(props: Props){
             index:{item:row.index,type:"string"},
             scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:row.rate,type:"rate"},
             vw:{item:{volume:row.vw.volume,weight:row.vw.weight},type:"slider"}})
-            // tempList.push()
+
         ))
-        // console.log('tempList',tempList)
+
         return tempList
     }
     const setScope = (scope:any) =>{    
@@ -87,14 +79,14 @@ function Product(props: Props){
         return nodesList
     }
     const setnode = (nodes:any,scopeList:any) =>{
-        // let tempNodesList = []
+
         nodes.forEach((n,i) => {
             scopeList.forEach(element => {
                 if(element==n.name){
                     n.checked = true
                 }else if(n.children){
                     n.checked = false
-                    // console.log("setnode(treeData,scope)",n.name)
+
                     n.children=setnode(n.children,scopeList)
                 }else{
                     n.checked = false
@@ -111,24 +103,16 @@ function Product(props: Props){
     const [productOrientatedRow ,setProductOrientatedRow] = React.useState(createData(props.product));
 
     const handleAction =(ev:any,command:string,row?:any)=>{
-        // console.log('row',row)
-        // if(row){
-        //     setCurrentRow(prev=>row)
-        //     // forceUpdate()
-        // }
+
         switch(command){
             case commandList.ADD:
-                // console.log('commend',command)
                 addNewRow()
                 break;
             case commandList.EDIT:
 
                 enableEdit(ev,row)
                 break;
-            // case commandList.SAVE:
 
-            //     saveEdit(ev,row)
-            //     break;
             case commandList.DELETE:
                 deleteEdit(ev,row)
                 break;
@@ -138,7 +122,6 @@ function Product(props: Props){
     }
     const deleteEdit=(ev:any,row:any)=>{
         setProductOrientatedRow(prev=>{
-            // let id = null
             let temp = JSON.parse(JSON.stringify(prev))
             temp.map((p,i)=>{
                 if(p.index.item ==row.index.item){
@@ -168,24 +151,19 @@ function Product(props: Props){
     }
     const onEditValue=(ev:any,command:string,row:any)=>{
         
-        // if(command==='rate'){
             setProductOrientatedRow(prev=>{
                 prev.map(p=>{
                     if(p.index.item==row.index.item){
                         p[command].item = ev.target.value
-                        // console.log("onEditValue", ev.target.value)
                     }
                 })
                 return prev
             })
 
-        // }
         forceUpdate()
 
     }
     const enableEdit=(ev:any,row:any)=>{
-        // currentRow
-        console.log('row',row)
         setProductOrientatedRow(prev=>{
             prev.forEach((p,i)=>{
                 if(p.index.item ==row.index.item){
@@ -200,22 +178,14 @@ function Product(props: Props){
     const addNewRow = ()=>{
 
         setProductOrientatedRow(prev=>{
-            // let temp = prev
             prev.push({ editable: true,index:{item:prev.length+1,type:"string"},
             scope:{item:'',treeList:setScope(""),type:"scope"},rate:{item:"0",type:"rate"},
             vw:{item:{volume:0,weight:0},type:"slider"}})
-            // prev.push(prev[0])
-            // prev[0].editable = true
-            
             return prev
         })
         forceUpdate()
-        // console.log('productOrientatedRow',productOrientatedRow)
-        
     }
     React.useEffect(() => {
-        // forceUpdate()
-        console.log(" updated")
         if(productOrientatedRow){
             
             let clean = []
@@ -229,12 +199,10 @@ function Product(props: Props){
             props.getDatachange("product",clean)
         }
         
-        // setProductOrientatedRow(productOrientatedRow)
     },[]);
 
 
     return(
-        // <div>
             <DataGrid
                 t={t}
                 columns={productOrientatedColumn}
@@ -252,7 +220,6 @@ function Product(props: Props){
                 onEditValue={onEditValue}
                 
                                 />
-        // </div>
     )
 }
 

@@ -21,9 +21,6 @@ interface CusSwitchProps{
     name?:any;
     classes?: Styles;
 }
-// const isDesktopOrLaptop = useMediaQuery({
-//     query: '(max-width: 1440px)'
-//   })
 
 const initialState = {
     noPayment:false,
@@ -68,7 +65,6 @@ class PaymentMethod extends React.Component<Props, object> {
     }
 
     private handleContentChange =(event:any,i:any,tableName:string)=>{
-        // console.log('event',i,tableName)
         let tempObj = null
         switch(tableName){
             case this.OWNPAYMENTOBJ:
@@ -107,7 +103,6 @@ class PaymentMethod extends React.Component<Props, object> {
             },
             '&$focusVisible $thumb': {
                 color: '#3464DC',
-                // border: '6px solid #fff',
             },
             },
             thumb: {
@@ -116,7 +111,6 @@ class PaymentMethod extends React.Component<Props, object> {
             },
             track: {
             borderRadius: 26 / 2,
-            // border: `1px solid ${theme.palette.grey[400]}`,
             backgroundColor: '#B4B6BA',
             opacity: 1,
             transition: theme.transitions.create(['background-color', 'border']),
@@ -129,7 +123,6 @@ class PaymentMethod extends React.Component<Props, object> {
             <Switch
             focusVisibleClassName={classes.focusVisible}
             disableRipple
-            // checked={checked}
             classes={{
                 root: classes.root,
                 switchBase: classes.switchBase,
@@ -201,8 +194,6 @@ class PaymentMethod extends React.Component<Props, object> {
                         >
                         </MethodTable>
                     </div>
-                    {/* <Divider/> */}
-
                     
                 </div>
                 <div className={styles.paymentMethod_update_bt}>

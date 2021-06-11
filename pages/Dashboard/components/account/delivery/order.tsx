@@ -2,22 +2,14 @@ import * as React from 'react';
 import styles from './index.module.css';
 import {FormControlLabel,RadioGroup,Radio, Button,Popper,
     Collapse,List,ListItem,ListItemText,ListSubheader} from '@material-ui/core';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import BoardlineChart from './boardLineChart'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-// import { useMediaQuery } from 'react-responsive'
 import DataGrid from '../../dataGrid'
-// import {order} from '../../../../../public/fakeData'
 
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
     order:any
-    // open:boolean;
-    // handleClose:() => void;
-    // dialogName:String;
-    
   }
   
   function Order(props: Props){
@@ -33,8 +25,6 @@ interface Props {
       label: "",
       minWidth: 10,
       align: "center",
-    //   align: 'right',
-    //   format: (value) => value.toFixed(2),
     } ]
 
   const createData = (order:any)=>{
@@ -44,7 +34,6 @@ interface Props {
         amount:{item:element.amount,type:'rate'},
         rate:{item:element.rate,type:'rate'}})
     });
-    // console.log
     return rows
 }
 
@@ -56,7 +45,6 @@ const [expandOpen, setExpandOpen] = React.useState(false);
 const [editMenuListAnchorEl,setEditMenuListAnchorEl]= React.useState(null);
 const [editOpen,setEditOpen] = React.useState(false);
 const [state,setState] = React.useState(0);
-// const [editOpen,setEditOpen] = React.useState(false);
 const [currentRow,setCurrentRow] = React.useState(null);
 
 const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
@@ -67,7 +55,6 @@ const forceUpdate =()=>{
 const handleEdit=(event: any,row:any) => {
   setEditOpen(prev => !prev)
   setCurrentRow(row)
-  // anchorEl ? null : event.currentTarget
   setEditMenuListAnchorEl(editMenuListAnchorEl?null : event.currentTarget)
 
 }
@@ -92,7 +79,6 @@ const handleEdit=(event: any,row:any) => {
   }
     switch(command){
         case commandList.ADD:
-            console.log('commend',command)
             addNewRow()
             break;
         case commandList.EDIT:
@@ -114,7 +100,7 @@ const deleteEdit=(ev:any,row:any)=>{
   setEditMenuListAnchorEl(null)
   setEditOpen(false)
   setRows(prev=>{
-        // let id = null
+
         let temp = JSON.parse(JSON.stringify(prev))
         temp.map((p,i)=>{
             if(p.index.item ==row.index.item){
@@ -142,7 +128,6 @@ const saveEdit=(ev:any)=>{
     forceUpdate()
 }
 const enableEdit=(ev:any,row:any)=>{
-    // currentRow
     setRows(prev=>{
         prev.forEach((p,i)=>{
             if(p.index.item ==row.index.item){
@@ -156,47 +141,27 @@ const enableEdit=(ev:any,row:any)=>{
 }
 const onEditValue=(ev:any,command:string,row:any)=>{
         
-    // if(command==='rate'){
-        setRows(prev=>{
-            prev.map(p=>{
-                if(p.index.item==row.index.item){
-                    p[command].item = ev.target.value
-                    console.log("onEditValue", ev.target.value)
-                }
-            })
-            return prev
+    setRows(prev=>{
+        prev.map(p=>{
+            if(p.index.item==row.index.item){
+                p[command].item = ev.target.value
+            }
         })
+        return prev
+    })
 
-    // }else if(command==='amount'){
-    //     setRows(prev=>{
-    //         prev.map(p=>{
-    //             if(p.index.item==row.index.item){
-    //                 p.amount.item = ev.target.value
-    //                 console.log("onEditValue", ev.target.value)
-    //             }
-    //         })
-    //         return prev
-    //     })
-
-    // }
     forceUpdate()
 
 }
 const addNewRow = ()=>{
 
     setRows(prev=>{
-        // let temp = prev
         prev.push({index:{item:prev.length,type:'string'},
         amount:{item:0,type:'rate'},
         rate:{item:0,type:'rate'}})
-        // prev.push(prev[0])
-        // prev[0].editable = true
-        
         return prev
     })
     forceUpdate()
-    // console.log('productOrientatedRow',productOrientatedRow)
-    
 }
 React.useEffect(() => {
     // forceUpdate()
@@ -210,12 +175,9 @@ React.useEffect(() => {
         props.getDatachange("order",clean)
     }
     
-    // setProductOrientatedRow(productOrientatedRow)
 },[rows]);
     return(
         <div className={styles.customer_container}>
-            {/* <Button onClick={addNewRow} classes={{root:styles.setSelect_bt}}>{t('common.addNew')}</Button> */}
-            {/* {rows.length>0? */}
             <DataGrid
                 t={t}
                 columns={customerOrientatedColumn}
@@ -227,9 +189,7 @@ React.useEffect(() => {
                 delivery={true}
                 handleAction={handleAction}
                 onEditValue={onEditValue}
-                // onEditDialog={this.onEditDialog}
             />
-            {/* :[]} */}
         </div>
     )
 }
