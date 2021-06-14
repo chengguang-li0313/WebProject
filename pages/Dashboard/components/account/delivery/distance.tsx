@@ -5,7 +5,7 @@ import {FormControlLabel,RadioGroup,Radio, Button,Popper,
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
-import {distance} from '../../../../../public/fakeData'
+
 
 interface Props {
     t:(params: String) => String;

@@ -5,7 +5,6 @@ import {FormControlLabel,RadioGroup,Radio, Button,Dialog,DialogContent,
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
-import {postcode} from '../../../../../public/fakeData';
 import Map from './map'
 
 
