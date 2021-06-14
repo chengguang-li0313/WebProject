@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import {FormControlLabel,RadioGroup,Radio, Button,TextField,Popper,Checkbox,Dialog,DialogContent,
     Collapse,List,ListItem,ListItemText,ListSubheader} from '@material-ui/core';
 import DataGrid from '../../dataGrid'
-import {customerList,customer} from '../../../../../public/fakeData'
+import {customerList} from '../../../../../public/fakeData'
 import { id } from 'date-fns/locale';
 
 interface Props {
@@ -15,10 +15,12 @@ interface Props {
 const createData=(data:any)=>{
     let temp = []
     data.map((d:any,i:any)=>{
-        temp.push({editable:false,index:{item:d.index,type:"string"},scope:{item:d.scope,type:"cus-scope"},rate:{item:d.rate,type:"rate"}})
+        temp.push({editable:false,index:{item:d.index,type:"string"},scope:{item:d.scope,type:"cus-scope"},rate:{item:d.rate.includes("$")?d.rate.replace("$",""):d.rate,type:"rate"}})
     })
     return temp
 }
+
+
 const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
 
 const createCustomerListData=(data:any)=>{
@@ -41,7 +43,7 @@ const initialState = {
         {name:"Important",id:"important",checked:false}
     ],
     customerRow:createCustomerListData(customerList),
-    rowsList:createData(customer),
+    rowsList:[],
     open:false,
     editMenuListAnchorEl:null,
     editOpen:false,
@@ -79,11 +81,12 @@ class Customer extends React.Component<Props, object> {
             tmp.push(cus)
         })
         this.setState({customerLi:tmp})
+        this.setState({rowsList:createData(this.props.customer)})
     }
 
-    componentDidUpdate(prevProps:any, prevState:any) {
+    componentWillUnmount() {
         
-  }
+    }
     private customerColumn =[
         { id: 'id', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },
         { id: 'name', label: ['dashboard.acc.delivery.setDelivery.name'], minWidth: 100 },  
@@ -125,6 +128,7 @@ class Customer extends React.Component<Props, object> {
                 }
             
             })
+            this.update(preState['rowsList'])
             return {rowsList:preState['rowsList'],editOpen:false,editMenuListAnchorEl:false}})   
     }
 
@@ -146,18 +150,24 @@ class Customer extends React.Component<Props, object> {
                     })
                 }    
         })
-        return {rowsList:preState['rowsList'],editOpen:false,editMenuListAnchorEl:false,customerRow:preState['customerRow']}})   
-
+        this.update(preState['rowsList'])
+        return {rowsList:preState['rowsList'],currentRow:row,editOpen:false,editMenuListAnchorEl:false,customerRow:preState['customerRow']}})   
+        // this.update()
     }
 
     private onCusSeteditOpen=(event:any,row:any)=>{
+        console.log('event',event.target.value)
         this.handleClick(event)
+        
     }
 
     private addNewRow =()=>{
         this.setState((preState,props)=>{
-            preState['rowsList'].push({editable:true,index:{item:preState['rowsList'].length+1,type:"string"},scope:{item:this.state.newRate,type:"cus-scope"},rate:{item:this.state.newRate,type:"rate"}})
-                return {rowsList:preState['rowsList']}
+            let temp = {editable:true,index:{item:preState['rowsList'].length+1,type:"string"},scope:{item:this.state.newRate,type:"cus-scope"},rate:{item:this.state.newRate,type:"rate"}}
+            preState['rowsList'].push(temp)
+            preState['currentRow'] = temp//{editable:true,index:{item:preState['rowsList'].length+1,type:"string"},scope:{item:this.state.newRate,type:"cus-scope"},rate:{item:this.state.newRate,type:"rate"}}
+            this.update(preState['rowsList'])
+            return {rowsList:preState['rowsList'],currentRow:preState['currentRow']}
         })
 
 
@@ -172,20 +182,31 @@ class Customer extends React.Component<Props, object> {
                         p.rate.item = ev.target.value
                     }
                 })
+                this.update(prevState['rowsList'])
                 return {rowsList: prevState['rowsList']}
             })
         }
     }
 
-    private handleCheckBoxChanged=(ev:any,i:any)=>{
-
+    private handleCheckBoxChanged=(ev:any,i:any,row:any)=>{
+        // this.setState((preState,props)=>{
+            
+        // })
         this.setState((preState,props)=>{
+            
             preState['customerRow'].map((cus:any,index:any)=>{
                 if(index ==i){
                     preState['customerRow'][i].id.checked = !preState['customerRow'][i].id.checked
                     preState['newScope']+=`${preState['customerRow'][i].name.item},`
                 }
             })
+            console.log('this.state.currentRow',this.state.currentRow)
+            preState["rowsList"].map(r=>{
+                if(r.index.item==this.state.currentRow.index.item){
+                    r.scope.item=preState['newScope']
+                }
+            })
+            
             return {customerRow:preState['customerRow'],newScope: preState['newScope']}
         })
 
@@ -233,7 +254,7 @@ class Customer extends React.Component<Props, object> {
             customerRow:createCustomerListData(customerList),
             open:!this.state.open,
             editOpen:false})
-        
+
     };
 
 
@@ -242,8 +263,8 @@ class Customer extends React.Component<Props, object> {
     
         let temp=[]
         let tempData = {}
-        Object.assign(tempData,customer)
-        customer.map(item=>{
+        // Object.assign(tempData,customer)
+        this.props.customer.map(item=>{
             let tempcusList = item.scope.split(',')
             let added = false
             tempcusList.map((cus,i)=>{
@@ -262,11 +283,24 @@ class Customer extends React.Component<Props, object> {
                 })
             })
         })
-        this.setState({rowsList:createData(temp),value:event.target.value})
+        
+        this.setState({rowsList:createData(createData(temp)),value:event.target.value})
+        // this.update()
 
   };
 
-
+  private update = (data) =>{
+        if(data){
+            let clean = []
+            data.map((p,i)=>{
+                clean.push({index:p.index.item,
+                    scope:p.scope.item,
+                    rate:p.rate.item})
+            })
+            this.props.getDatachange("customer",clean)
+        }
+        
+    }
 
     render(){
         const {t} = this.props

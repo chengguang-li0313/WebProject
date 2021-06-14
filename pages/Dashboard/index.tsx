@@ -276,27 +276,32 @@ class Dashboard extends React.Component<Props, object> {
                     <TabPanel value={this.state.currentPannel} index={"home"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"sales"}>
                         <MediaQuery minDeviceWidth={1440}>
-                            <Sales lay={"flex"} t={t}/>
+                          <div><Sales lay={"flex"} t={t}/></div>
+                            
                         </MediaQuery>
                         <MediaQuery maxDeviceWidth={1440} >
-                            <Sales lay={"grid"} t={t}/>
+                          <div><Sales lay={"grid"} t={t}/></div>
                         </MediaQuery>
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"staff"}>
                         <MediaQuery minDeviceWidth={1440}>
-                            <Staff lay={"flex"} t={t}/>
+                            <div><Staff lay={"flex"} t={t}/></div>
+                            
                         </MediaQuery>
                         <MediaQuery maxDeviceWidth={1440} >
-                            <Staff lay={"grid"} t={t}/>
+                          <div><Staff lay={"grid"} t={t}/></div>
+                            
                         </MediaQuery>
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"account"}>
                         {/* <></div> */}
                         <MediaQuery minDeviceWidth={1440}>
-                            <Account lay={"flex"} t={t}/>
+                          <div><Account lay={"flex"} t={t}/></div>
+                            
                         </MediaQuery>
                         <MediaQuery maxDeviceWidth={1440} >
-                            <Account lay={"grid"} t={t}/>
+                          <div><Account lay={"grid"} t={t}/></div>
+                            
                         </MediaQuery>
                         
 

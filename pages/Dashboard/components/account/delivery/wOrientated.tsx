@@ -5,24 +5,22 @@ import {FormControlLabel,RadioGroup,Radio, Button,Dialog,DialogContent,
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
-import {postcode} from '../../../../../public/fakeData';
-import Map from './map'
 
 
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    postcode:any
+    vwdata:any
   }
   
-  function Postcode(props: Props){
+
+function WOrientated(props: Props){
     const {t} = props
 
     
   const customerOrientatedColumn =  [
       { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },  
-      { id: 'from', label: ['dashboard.acc.delivery.setDelivery.from'], minWidth: 100 },  
-      { id: 'to', label: ['dashboard.acc.delivery.setDelivery.to'], minWidth: 100 },  
+      { id: 'weight', label: ['common.weight'], minWidth: 100 },  
       { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100 },  
       {
         id: 'more',
@@ -32,19 +30,19 @@ interface Props {
       }
   ]
 
-    const createData = (post:any)=>{
+    const createData = (data:any)=>{
         let rows = []
-        post.forEach((element:any,index:any) => {
-            // let rate = element.rate.replace("$",'')
+
+        data.forEach((element:any,index:any) => {
+            let rate = element.rate.replace("$",'')
             rows.push({index:{item:element.index,type:'string'},
-                        from:{item:element.from,type:'es'},
-                        to:{item:element.to,type:'map'},
-                        rate:{item:element.rate,type:'rate'}})
+                        weight:{item:element.w,type:'rs'},
+                        rate:{item:rate,type:'rate'}})
         });
         return rows
     }
 
-    const [rows, setRows] = React.useState(createData(props.postcode));
+    const [rows, setRows] = React.useState(createData(props.vwdata));
     const [value, setValue] = React.useState('female');
     const [open, setOpen] = React.useState(false);
     const [expandOpen, setExpandOpen] = React.useState(false);
@@ -101,10 +99,6 @@ interface Props {
 
             enableEdit(ev,row)
             break;
-        case commandList.SAVE:
-
-            saveEdit(ev,row)
-            break;
         case commandList.DELETE:
             deleteEdit(ev,row)
             break;
@@ -122,10 +116,9 @@ interface Props {
                 }
             
             })
-            update(prev)
             return prev
         })
-
+        update()
         setEditMenuListAnchorEl(null)
         setEditOpen(false)
         forceUpdate()
@@ -140,10 +133,9 @@ interface Props {
                 }
 
             })
-            update(prev)
             return prev
         })
-
+        update()
         forceUpdate()
         setOpen(false)
     }
@@ -164,10 +156,9 @@ interface Props {
                     }
                     
                 })
-                update(prev)
                     return prev
         })
-
+        update()
         setOpen(false)
     }
     const onselectedSub=(list:string)=>{
@@ -183,10 +174,9 @@ interface Props {
                 }
 
             })
-            update(prev)
             return prev
         })
-
+        update()
         forceUpdate()
     }
     const onCusSeteditOpen =()=>{
@@ -196,12 +186,11 @@ interface Props {
 
         setRows(prev=>{
             prev.push({index:{item:prev.length+1,type:'string'},
-            from:{item:"1 mcintyre st burwood vic 3125",type:'rate'},
-            to:{item:"",type:'map'},
-            rate:{item:0,type:'rate'}})  
-            update(prev)
+            weight:{item:0.00,type:'rs'},
+            rate:{item:0.00,type:'rate'}})  
             return prev
         })
+        update()
         forceUpdate()
 
         
@@ -210,46 +199,30 @@ interface Props {
 
         setRows(prev=>{
             prev.map(p=>{
-                console.log('p.index.item==row.index.item',p.index.item==therow.index.item)
+
                 if(p.index.item==therow.index.item){
                     p[command].item = ev.target.value
                 }
             })
-            update(prev)
             return prev
         })
-        
+        update()
         forceUpdate()
     }
 
-    const update = (data) =>{
-        if(data){
+    const update = () =>{
+        if(rows){
             let clean = []
-            data.map((p,i)=>{
+            rows.map((p,i)=>{
                 clean.push({"index":p.index.item,
-                    "from":p.from.item,
-                    "to":p.to.item,
+                    "w":p.weight.item,
                     "percentage":p.rate.item})
             })
-            props.getDatachange("postcode",clean)
+            props.getDatachange("witems",clean)
         }
     }
     return(
         <div className={styles.customer_container}>
-            <Dialog classes={{paperWidthSm:styles.paper_WidthXs_map}}  onClose={handleClose} id={id} open={open} >
-                <DialogContent>
-                    <div className={styles.customer_poppers_content}>
-                        <Map
-                            onselectedSub={onselectedSub}
-                            t={t}/>
-                    </div>
-                    <div className={styles.map_dialog_bt_container}>
-                        <Button onClick={onSave} classes={{root:styles.dialog_bt}}>{t("common.save")}</Button>
-                        <Button onClick={handleNaoDialogClose} classes={{root:styles.dialog_bt}}>{t("common.cancel")}</Button>
-                    </div>
-                </DialogContent>
-                
-            </Dialog>
             <DataGrid
                 t={t}
                 columns={customerOrientatedColumn}
@@ -267,4 +240,4 @@ interface Props {
     )
 }
 
-export default Postcode
+export default WOrientated

@@ -17,45 +17,58 @@ interface Props {
     const {t} = props
 
     
-  const customerOrientatedColumn =  [
-      { id: 'index',label:["dashboard.acc.delivery.setDelivery.index"], minWidth: 100 },  
-      { id: 'code',label:["dashboard.acc.delivery.setDelivery.couponCode"], minWidth: 100 },
-      { id: 'scope',label:["dashboard.acc.delivery.setDelivery.scope"], minWidth: 100 },    
-      { id: 'period',label:["dashboard.acc.delivery.setDelivery.period"], minWidth: 100 },  
-      { id: 'custom',label:["dashboard.acc.delivery.setDelivery.customers"], minWidth: 100 },
-      { id: 'percentage',label:["dashboard.acc.delivery.setDelivery.percentage"], minWidth: 100 } ,
-      {
-        id: 'more',
-        label: "",
-        minWidth: 10,
-        align: "center",
-      }
-  ]
+    const customerOrientatedColumn =  [
+        { id: 'index',label:["dashboard.acc.delivery.setDelivery.index"], minWidth: 100 },  
+        { id: 'code',label:["dashboard.acc.delivery.setDelivery.couponCode"], minWidth: 100 },
+        { id: 'scope',label:["dashboard.acc.delivery.setDelivery.scope"], minWidth: 100 },    
+        { id: 'period',label:["dashboard.acc.delivery.setDelivery.period"], minWidth: 100 },  
+        { id: 'custom',label:["dashboard.acc.delivery.setDelivery.customers"], minWidth: 100 },
+        { id: 'percentage',label:["dashboard.acc.delivery.setDelivery.percentage"], minWidth: 100 } ,
+        {
+          id: 'more',
+          label: "",
+          minWidth: 10,
+          align: "center",
+        }
+    ]
+
+    const createData = (data:any) =>{
+        let temp = []
+        data.map(d=>{
+          temp.push({editable: false,index: { item: d.index, type: 'string' },
+          code: { item: d.code, type: 'es' },
+          scope: { item: d.scope, type: 'es' },
+          custom: { item: d.custom, type: 'es' },
+          period: { item: d.period, type: 'Daterange' },
+          percentage: { item: d.percentage, type: 'rate' }})
+        })
+
+        return temp
+    }
 
 
+    const [rows, setRows] = React.useState(createData(props.coupon));
+    const [value, setValue] = React.useState('female');
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [expandOpen, setExpandOpen] = React.useState(false);
+    const [editMenuListAnchorEl,setEditMenuListAnchorEl]= React.useState(null);
+    const [editOpen,setEditOpen] = React.useState(false);
+    const [currentRow,setCurrentRow] = React.useState(null);
+    const [state ,setState] = React.useState(0);
 
-const [rows, setRows] = React.useState(props.coupon);
-const [value, setValue] = React.useState('female');
-const [anchorEl, setAnchorEl] = React.useState(null);
-const [expandOpen, setExpandOpen] = React.useState(false);
-const [editMenuListAnchorEl,setEditMenuListAnchorEl]= React.useState(null);
-const [editOpen,setEditOpen] = React.useState(false);
-const [currentRow,setCurrentRow] = React.useState(null);
-const [state ,setState] = React.useState(0);
+    const forceUpdate=()=>{
+      setState(prev=>prev+=1)
+    }
+    const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
 
-const forceUpdate=()=>{
-  setState(prev=>prev+=1)
-}
-const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
-
-const handleEdit=(event: any,row:any) => {
-  setEditOpen(prev => !prev)
-  setCurrentRow(row)
-  setEditMenuListAnchorEl(editMenuListAnchorEl?null : event.currentTarget)
-}
-  const handleexpandOpenClick = () => {
-    setExpandOpen(!expandOpen);
-  };
+    const handleEdit=(event: any,row:any) => {
+      setEditOpen(prev => !prev)
+      setCurrentRow(row)
+      setEditMenuListAnchorEl(editMenuListAnchorEl?null : event.currentTarget)
+    }
+    const handleexpandOpenClick = () => {
+      setExpandOpen(!expandOpen);
+    };
 
 
   
@@ -100,10 +113,6 @@ const handleEdit=(event: any,row:any) => {
 
             enableEdit(ev,row)
             break;
-        case commandList.SAVE:
-
-            saveEdit(ev)
-            break;
         case commandList.DELETE:
             deleteEdit(ev,row)
             break;
@@ -122,20 +131,11 @@ const deleteEdit=(ev:any,row:any)=>{
         }
     
     })
+    update(prev)
     return prev
     })
 }
-  const saveEdit=(ev:any)=>{
-    setRows(prev=>{
-          prev.forEach((p,i)=>{
-              if(p.index.item ==currentRow.index.item){
-                  p.editable = false
-              }
 
-          })
-          return prev
-      })
-  }
   const enableEdit=(ev:any,row:any)=>{
       setRows(prev=>{
           prev.forEach((p,i)=>{
@@ -150,8 +150,16 @@ const deleteEdit=(ev:any,row:any)=>{
   const addNewRow = ()=>{
 
       setRows(prev=>{
+          prev.push({editable: false,index: { item: prev.length, type: 'string' },
+          code: { item: "", type: 'rate' },
+          scope: { item: "", type: 'rate' },
+          custom: { item: "", type: 'rate' },
+          period: { item: "", type: 'Daterange' },
+          percentage: { item: "", type: 'rate' }})
+          update(prev)
           return prev
       })
+
   }
   const onEditValue=(ev:any,command:string,therow:any)=>{
     setRows(prev=>{
@@ -161,12 +169,14 @@ const deleteEdit=(ev:any,row:any)=>{
                 p[command].item = ev.target.value
             }
         })
+        update(prev)
         return prev
     })
+    
     forceUpdate()
 
   }
-  React.useEffect(() => {
+  const update = (data) =>{
     if(rows){
         let clean = []
         rows.map((p,i)=>{
@@ -179,7 +189,8 @@ const deleteEdit=(ev:any,row:any)=>{
                 "percentage": p.percentage.item})}
         })
         props.getDatachange("coupon",clean)
-  }},[rows]);
+    }
+  }
     return(
         <div className={styles.customer_container}>
             <DataGrid

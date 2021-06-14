@@ -16,8 +16,6 @@ import Coupon from './coupon'
 import Distance from './distance'
 import Postcode from './postcode'
 
-import {deliveryProductOrientatedData,treeData} from '../../../../../public/fakeData'
-
 interface Props {
     t:(params: String) => String;
     open:boolean;
@@ -54,17 +52,6 @@ function DeliveryEditDialog(props: Props){
     const forceUpdate=()=>{
         setState(prev=>prev+=1)
     }
-    const createData=(rows:Array<any>)=>{
-        let tempList = []
-        rows.map((row,index)=>(
-            tempList.push({index:{item:row.index,type:"string"},
-            scope:{item:row.scope,type:"scope"},rate:{item:row.rate,type:"price"},
-            vw:{item:{volume:row.vw.volume,weight:row.vw.weight},type:"slider"}})
-        ))
-        return tempList
-    }
-    const [productOrientatedRow ,setProductOrientatedRow] = React.useState(createData(deliveryProductOrientatedData));
-
 
     const handleflatRateConditionChange =(event:any) =>{
         setFlatRateCondition(event.target.value)
@@ -91,11 +78,20 @@ function DeliveryEditDialog(props: Props){
 
     const handleVolumechange=(event:any)=>{
         setVolume(event.target.value)
+        
+        setDeliveData(prev=>{
+            prev.vw.volume = event.target.value
+            return prev
+        })
         setState((prov)=> prov+1)
     }
     
     const handleWeightchange=(event:any)=>{
         setWeight(event.target.value)
+        setDeliveData(prev=>{
+            prev.vw.weight = event.target.value
+            return prev
+        })
         setState((prov)=> prov+1)
     }
     
@@ -108,6 +104,7 @@ function DeliveryEditDialog(props: Props){
         forceUpdate()
     }
     const getDatachange=(comd:string,data:any)=>{
+        console.log(comd,data)
         setDeliveData(prev=>{
             prev[comd] = data
             return prev
@@ -116,6 +113,8 @@ function DeliveryEditDialog(props: Props){
     }
     const onSave =() =>{
         handleClose()
+
+        handleSave(deliveData)
     }
 
     return(

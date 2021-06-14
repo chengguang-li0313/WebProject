@@ -32,7 +32,7 @@ interface Props {
     order.forEach((element:any,index:any) => {
         rows.push({index:{item:element.index,type:'string'},
         amount:{item:element.amount,type:'rate'},
-        rate:{item:element.rate,type:'rate'}})
+        rate:{item:element.rate.includes("$")?element.rate.replace("$",""):element.rate,type:'rate'}})
     });
     return rows
 }
@@ -85,10 +85,6 @@ const handleEdit=(event: any,row:any) => {
 
             enableEdit(ev,row)
             break;
-        case commandList.SAVE:
-
-            saveEdit(ev)
-            break;
         case commandList.DELETE:
             deleteEdit(ev,row)
             break;
@@ -96,86 +92,81 @@ const handleEdit=(event: any,row:any) => {
             break
     }
 }
-const deleteEdit=(ev:any,row:any)=>{
-  setEditMenuListAnchorEl(null)
-  setEditOpen(false)
-  setRows(prev=>{
-
-        let temp = JSON.parse(JSON.stringify(prev))
-        temp.map((p,i)=>{
-            if(p.index.item ==row.index.item){
-                prev.splice(i,1)
-            }
-        
-        })
-        return prev
-        
-        
-    })
-    
-    forceUpdate()
-}
-const saveEdit=(ev:any)=>{
-  setRows(prev=>{
-        prev.forEach((p,i)=>{
-            if(p.index.item ==currentRow.index.item){
-                p.editable = false
-            }
-
-        })
-        return prev
-    })
-    forceUpdate()
-}
-const enableEdit=(ev:any,row:any)=>{
+    const deleteEdit=(ev:any,row:any)=>{
+    setEditMenuListAnchorEl(null)
+    setEditOpen(false)
     setRows(prev=>{
-        prev.forEach((p,i)=>{
-            if(p.index.item ==row.index.item){
-                p.editable = true
-            }
 
+            let temp = JSON.parse(JSON.stringify(prev))
+            temp.map((p,i)=>{
+                if(p.index.item ==row.index.item){
+                    prev.splice(i,1)
+                }
+            
+            })
+            update(prev)
+            return prev
+            
+            
         })
-        return prev
-    })
-    forceUpdate()
-}
-const onEditValue=(ev:any,command:string,row:any)=>{
-        
-    setRows(prev=>{
-        prev.map(p=>{
-            if(p.index.item==row.index.item){
-                p[command].item = ev.target.value
-            }
-        })
-        return prev
-    })
 
-    forceUpdate()
-
-}
-const addNewRow = ()=>{
-
-    setRows(prev=>{
-        prev.push({index:{item:prev.length,type:'string'},
-        amount:{item:0,type:'rate'},
-        rate:{item:0,type:'rate'}})
-        return prev
-    })
-    forceUpdate()
-}
-React.useEffect(() => {
-    // forceUpdate()
-    if(rows){
-        let clean = []
-        rows.map((p,i)=>{
-            clean.push({index:p.index.item,
-                amount:p.amount.item,
-                rate:p.rate.item})
-        })
-        props.getDatachange("order",clean)
+        forceUpdate()
     }
-    
-},[rows]);
+
+    const enableEdit=(ev:any,row:any)=>{
+        setRows(prev=>{
+            prev.forEach((p,i)=>{
+                if(p.index.item ==row.index.item){
+                    p.editable = true
+                }
+
+            })
+            update(prev)
+            return prev
+        })
+
+        forceUpdate()
+    }
+    const onEditValue=(ev:any,command:string,row:any)=>{
+            
+        setRows(prev=>{
+            prev.map(p=>{
+                if(p.index.item==row.index.item){
+                    p[command].item = ev.target.value
+                }
+            })
+            update(prev)
+            return prev
+        })
+
+        forceUpdate()
+
+    }
+    const addNewRow = ()=>{
+
+        setRows(prev=>{
+            prev.push({index:{item:prev.length,type:'string'},
+            amount:{item:0,type:'rate'},
+            rate:{item:0,type:'rate'}})
+            update(prev)
+            return prev
+        })
+        
+        forceUpdate()
+    }
+    const update = (data) =>{
+        // forceUpdate()
+        if(data){
+            let clean = []
+            data.map((p,i)=>{
+                clean.push({index:p.index.item,
+                    amount:p.amount.item,
+                    rate:p.rate.item})
+            })
+            props.getDatachange("order",clean)
+        }
+        
+    }
     return(
         <div className={styles.customer_container}>
             <DataGrid

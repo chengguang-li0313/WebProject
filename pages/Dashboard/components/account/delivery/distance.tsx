@@ -28,11 +28,13 @@ function Distance(props: Props){
         } ]
 
     const createData = (product:any)=>{
+        
         let rows = []
         product.forEach((element:any,index:any) => {
+            console.log(element)
             rows.push({"index": {item:element.index,type:"string"},
             "distance": {item:element.distance,type:"slider_single"},
-            "rate": {item:element.rate,type:"rate"},editable:false})
+            "rate": {item:element.rate?element.rate:element.percentage,type:"rate"},editable:false})
         });
         return rows
     }
@@ -73,7 +75,15 @@ function Distance(props: Props){
     };
 
     const onDatachange = (type:string,data:any,currentRow:any)=>{
-
+        setRows(prev=>{
+            prev.map(p=>{
+                if(p.index.item == currentRow.index.item){
+                    p.distance.item = data
+                }
+            })
+            update(prev)
+            return prev
+        })
     }
     const handleAction =(ev:any,command:string,row?:any)=>{
 
@@ -104,6 +114,7 @@ function Distance(props: Props){
                 }
             
             })
+            update(prev)
             return prev
             
             
@@ -119,6 +130,7 @@ function Distance(props: Props){
                     p[command].item = ev.target.value
                 }
             })
+            update(prev)
             return prev
         })
 
@@ -134,31 +146,40 @@ function Distance(props: Props){
                 }
 
             })
+            update(prev)
             return prev
         })
+
         forceUpdate()
     }
     const addNewRow = ()=>{
 
         setRows(prev=>{
-            
+            prev.push({"index": {item:prev.length,type:"string"},
+            "distance": {item:0,type:"slider_single"},
+            "rate": {item:0},editable:true})
+            update(prev)
             return prev
         })
         
     }
+    // const valuetext =(event:any,val:any,i:number,cmd:string)=>{
+        
+    // }
 
-    React.useEffect(() => {
-        if(rows){
+    const update = (data) =>{
+        if(data){
             let clean = []
-            rows.map((p,i)=>{
-                clean.push({index:p.index.item,
+            data.map((p,i)=>{
+                clean.push({
+                    index:p.index.item,
                     "distance":p.distance.item,
                     "percentage":p.rate.item})
             })
             props.getDatachange("distance",clean)
         }
         
-    },[rows]);
+    }
     return(
         <div className={styles.customer_container}>
             
@@ -174,6 +195,7 @@ function Distance(props: Props){
                 delivery={true}
                 handleAction={handleAction}
                 onEditValue={onEditValue}
+
             />
         </div>
     )

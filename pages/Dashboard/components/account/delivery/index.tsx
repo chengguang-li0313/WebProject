@@ -5,6 +5,8 @@ import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MethodTable from '../../methodTable'
 import DeliveryEditDialog from './deliveryEditDialog'
+import VWDeliveryEditDialog from './vwdeliveryEditdialog'
+import deliveryData from '../../../../../public/deliveryData/account_deliveryScheme_flatRate_web.json'
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
@@ -38,7 +40,9 @@ const initialState = {
         {icon:"",name:"dashboard.acc.delivery.CustomDelivery",des:"dashboard.acc.delivery.CustomDelivery_des",enable:false}
     ],
     open:false,
-    currentDialogName:""
+    currentDialogName:"",
+    vwOpen:false,
+    deliverData:deliveryData
 }
 
 type State = {
@@ -48,7 +52,9 @@ type State = {
     ownDeliveryObj:any,
     bubDeliveryObj:any,
     open:boolean,
+    vwOpen:boolean,
     currentDialogName:string
+    deliverData:any,
 }
 
 class Delivery extends React.Component<Props, object> {
@@ -57,6 +63,8 @@ class Delivery extends React.Component<Props, object> {
 
     private OWNDELIVERYOBJ = "ownDeliveryObj"
     private BUBDELIVERYOBJ = "bubDeliveryObj"
+    private FLATRATE = "dashboard.acc.delivery.Flatrate"
+    private VW = "dashboard.acc.delivery.WeightShipping"
 
     private handleChangeNoPayment=()=>{
         this.setState({noDelivery:!this.state.noDelivery})
@@ -83,7 +91,15 @@ class Delivery extends React.Component<Props, object> {
     }
 
     private handleSetupDialogOpen =(item: string)=>{
-        this.setState({open:true,currentDialogName:item})
+        switch(item){
+            case(this.FLATRATE):
+                this.setState({open:true,currentDialogName:item})
+                break;
+            case(this.VW):
+                this.setState({vwOpen:true,currentDialogName:item})
+                break;
+        }
+        
         // console.log("item",item)
 
     }
@@ -112,7 +128,15 @@ class Delivery extends React.Component<Props, object> {
         }
     }
     private handleSave =(data:any)=>{
+        this.setState({deliverData:data})
+    }
 
+    private vwhandleSave = (data:any) =>{
+
+    }
+
+    private vwhandleClose = () =>{
+        this.setState({vwOpen:false})
     }
 
     render(){
@@ -244,6 +268,15 @@ class Delivery extends React.Component<Props, object> {
                     handleClose={this.handleClose}
                     dialogName={this.state.currentDialogName}
                     handleSave={this.handleSave}
+                />
+
+                <VWDeliveryEditDialog
+                    t={t}
+                    open={this.state.vwOpen}
+                    handleClose={this.vwhandleClose}
+                    dialogName={this.state.currentDialogName}
+                    handleSave={this.vwhandleSave}
+                    data={this.state.deliverData}
                 />
             </div>
         )

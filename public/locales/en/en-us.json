@@ -198,7 +198,12 @@
                     "amount":"Amount",
                     "selectedList":"Seleted Suburb",
                     "name":"Name",
-                    "category":"Category"
+                    "category":"Category",
+                    "biggerVolume":"Volume is bigger than: ",
+                    "biggerWeight":"Weight is bigger than: ",
+                    "wo":"Weight orientated",
+                    "vwo":"Weight and Volume orientated",
+                    "vo":"Volume orientated"
                 }
             },
             "productSche":{

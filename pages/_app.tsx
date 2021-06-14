@@ -5,10 +5,6 @@ import '../i18n'
 import { useTranslation, Trans, Translation } from 'react-i18next';
 import { Provider } from 'next-auth/client'
 
-
-
-
-
 function MyApp({ Component, pageProps }: AppProps) {
   const { t ,i18n} = useTranslation()
   const test = { a: 1 };

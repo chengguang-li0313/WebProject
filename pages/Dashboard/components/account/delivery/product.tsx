@@ -64,7 +64,7 @@ function Product(props: Props){
             tempList.push({
             editable:false,
             index:{item:row.index,type:"string"},
-            scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:row.rate,type:"rate"},
+            scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:row.rate.includes("$")?row.rate.replace("$",""):row.rate,type:"rate"},
             vw:{item:{volume:row.vw.volume,weight:row.vw.weight},type:"slider"}})
 
         ))
@@ -129,13 +129,16 @@ function Product(props: Props){
                 }
             
             })
+            update(prev)
             return prev
             
             
         })
         setEditMenuListAnchorEl(null)
         setEditOpen(false)
+        
         forceUpdate()
+        
     }
     const saveEdit=(ev:any,row:any)=>{
         setProductOrientatedRow(prev=>{
@@ -145,9 +148,12 @@ function Product(props: Props){
                 }
 
             })
+            update(prev)
             return prev
         })
+        
         forceUpdate()
+
     }
     const onEditValue=(ev:any,command:string,row:any)=>{
         
@@ -157,10 +163,12 @@ function Product(props: Props){
                         p[command].item = ev.target.value
                     }
                 })
+                update(prev)
                 return prev
             })
-
+        
         forceUpdate()
+
 
     }
     const enableEdit=(ev:any,row:any)=>{
@@ -171,9 +179,12 @@ function Product(props: Props){
                 }
 
             })
+            update(prev)
             return prev
         })
+        
         forceUpdate()
+
     }
     const addNewRow = ()=>{
 
@@ -181,16 +192,22 @@ function Product(props: Props){
             prev.push({ editable: true,index:{item:prev.length+1,type:"string"},
             scope:{item:'',treeList:setScope(""),type:"scope"},rate:{item:"0",type:"rate"},
             vw:{item:{volume:0,weight:0},type:"slider"}})
+            update(prev)
             return prev
         })
+        
         forceUpdate()
+        
     }
-    React.useEffect(() => {
-        if(productOrientatedRow){
-            
+    
+    const update = (data) =>{
+        // console.log('productOrientatedRow')
+        if(data){
+            console.log('productOrientatedRow')
             let clean = []
-            productOrientatedRow.map((p,i)=>{
-                clean.push({"index":p.index.item,
+            data.map((p,i)=>{
+                clean.push({
+                    "index":p.index.item,
                     "scope":p.scope.item,
                     "vw":{"volume":p.vw.item.volume,
                         "weight":p.vw.item.weight},
@@ -199,8 +216,18 @@ function Product(props: Props){
             props.getDatachange("product",clean)
         }
         
-    },[]);
-
+    }
+    const onDatachange =(type:string,data:any,currentRow:any)=>{
+        setProductOrientatedRow(prev=>{
+            prev.map(p=>{
+                if(p.index.item == currentRow.index.item){
+                    p.vw[type] = data
+                }
+            })
+            update(prev)
+            return prev
+        })
+    }
 
     return(
             <DataGrid
@@ -218,9 +245,10 @@ function Product(props: Props){
                 delivery={true}
                 handleAction={handleAction}
                 onEditValue={onEditValue}
+                onDatachange={onDatachange}
                 
                                 />
     )
 }
 
-export default Product
+export default React.memo(Product)

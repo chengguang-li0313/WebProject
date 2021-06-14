@@ -13,8 +13,8 @@ interface Props {
 
 function Map(props: Props){
     const {t} = props
-    const API_KEY =  process.env.GOOGLE_API_KEY
-
+    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY
+    
     const [state,setState] =React.useState(0)
     const [currentState,setCurrentState] =React.useState(null)
     const [selectSuburb,setSelectSuburb] = React.useState('')
@@ -75,6 +75,7 @@ function Map(props: Props){
 
       React.useEffect(() => {
         if (map) {
+          console.log("map")
           forceUpdate()
           loadGeoJsonString()
         }

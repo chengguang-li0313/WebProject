@@ -233,3 +233,13 @@ margin: 5px !important;
     width: 150px;
     
 }
+
+.display_group{
+    font-size: 1.25rem;
+    padding: 34px;
+    font-family: roboto;
+}
+
+.display_line{
+    margin-bottom: 30px;
+}

@@ -42,7 +42,7 @@ interface Props {
     treeData?:any,
     delivery?:boolean,
     checkedLine?:boolean,
-    handleCheckBoxChanged?:(event: any,i:any) => void;
+    handleCheckBoxChanged?:(event: any,i:any,row:any) => void;
     onCusSeteditOpen?:(event: any,row:any) => void;
     onEditValue?:(ev:any,commend:string,row:any) => void;
     // onEditDialog:(addNew:boolean,row?:any)=>void;
@@ -80,19 +80,11 @@ function DataGrid(props: Props) {
         from_time:new Date(),
         to_time:new Date()
     })
-    // const [DateTimeRangePickervalue, onDateTimeRangePickerChange] = React.useState([new Date(), new Date()]);
-    // console.log('rowsPerPage',rowsPerPage)
-    // const [editOpen, setEditOpen] = React.useState(false);
-    // const [editMenuListAnchorEl,setEditMenuListAnchorEl] = React.useState(null);
-    const isItemSelected=(event:any)=>{
 
-    } 
-    console.log('rows',props.rows)
 // 
     React.useEffect(() => {
         props.delivery?setRowsPerPage(props.singlePage?props.rows.length:10):[]
     });
-    // setRowsPerPage(props.singlePage?props.rows.length:10)
 
     const IMG = "img"
     const STRING = "string"
@@ -114,6 +106,7 @@ function DataGrid(props: Props) {
     const RATE = "rate"
     const CUS_SCOPE = "cus-scope"
     const MAP = "map"
+    const ES= "es"
 
     // const [checked, setChecked] = React.useState(false);
 
@@ -228,7 +221,11 @@ function DataGrid(props: Props) {
             // console.log('tempRowList',tempRowList)
             if(save){
                 setRowsList(tempRowList)
-                if(type=="distance"){onDatachange("distance",value,rows[index])}
+                if(type=="distance"){
+                    onDatachange("distance",value,rows[index])
+                }else if(type=="volume"|| type=="weight"){
+                    onDatachange(type,value,rows[index])
+                }
             }
             
         // }else{
@@ -313,8 +310,8 @@ function DataGrid(props: Props) {
   const handleDateChange = (date:any) => {
     setSelectedDate(date);
   };
-  const onCheckBoxChanged = (ev:any,i:any) =>{
-    props.handleCheckBoxChanged(ev,i)
+  const onCheckBoxChanged = (ev:any,i:any,row:any) =>{
+    props.handleCheckBoxChanged(ev,i,row)
     // console.log('props.handleCheckBoxChanged',props.handleCheckBoxChanged)
   }
     // const maxDate = moment(start).add(24, "hour")
@@ -390,12 +387,14 @@ function DataGrid(props: Props) {
                                                
                                                 {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>)
+                                        case ES:
+                                        case "rs":
                                         case RATE:
                                             return(
                                                 <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 
                                                      <div className={styles.dataGrad_string_center}>
-                                                     <TextField disabled={!row.editable} onChange ={(ev)=>props.onEditValue(ev,column.id,row)} value={value.item} />
+                                                     {value.type==RATE?'$':[]}<TextField disabled={!row.editable} type={value.type==ES?'text':"number"} onChange ={(ev)=>props.onEditValue(ev,column.id,row)} value={value.item} />
                                                      </div>
                                                 </TableCell>
                                             );
@@ -524,7 +523,7 @@ function DataGrid(props: Props) {
                                                         <Checkbox
                                                             color="primary"
                                                             checked={value.checked}
-                                                            onChange={(ev)=>onCheckBoxChanged(ev,i)}
+                                                            onChange={(ev)=>onCheckBoxChanged(ev,i,row)}
                                                             // inputProps={{ checkbox: i }}
                                                             />:[]}
                                                     {value.item}
@@ -609,8 +608,8 @@ function DataGrid(props: Props) {
                                             <TableCell classes={{root:styles.tableCell_container}} key={column.id} align={column.align}>
                                                 <div  className={styles.status_button_more}>
                                                     <EditIcon  color="primary" classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Edit",row)}}/>
-                                                    <DeleteForeverIcon color="primary" classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Delete",row)}}/>
-                                                    {i==props.rows.length-1? <AddCircleIcon classes={{root:styles.group_bt}} onClick={(ev)=>{handleAction(ev,"Add",row)}} color="primary"/>:[]}
+                                                    <DeleteForeverIcon color="primary" classes={{root:styles.group_bt_DeleteForeverIcon}} onClick={(ev)=>{handleAction(ev,"Delete",row)}}/>
+                                                    {i==props.rows.length-1? <AddCircleIcon classes={{root:styles.group_bt_add}} onClick={(ev)=>{handleAction(ev,"Add",row)}} color="primary"/>:[]}
                                                 </div>
                                         </TableCell>)
                                     }
