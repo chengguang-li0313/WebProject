@@ -209,8 +209,8 @@ interface Props {
 
     }
 
-      const handleAction=(event:any,action:string)=>{
-
+      const handleAction=(event:any,action:string,row?:any)=>{
+      
         // console.log("action",action,currentEditRow)
         onCloseActionMenu()
         if(action){

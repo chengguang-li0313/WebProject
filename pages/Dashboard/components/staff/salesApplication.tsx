@@ -19,12 +19,12 @@ interface Props {
     const [isCollapsed ,setIsCollapsed]= React.useState(true)
     const [detailData, setDetailData] = React.useState(salesApplicationDetail)
     const [states, setStates] = React.useState(0);
-    const [filterList,setFilterList] = React.useState([{column:"Staff(NEW)",ope:"Contains",val:"",logicOpe:"and"}]);
+    const [filterList,setFilterList] = React.useState([{column:"Staff_NEW",ope:"Contains",val:"",logicOpe:"and"}]);
     const [currentItemId,setCurrentItemId] = React.useState(0);
-    const [filteredItem,setFilteredItem] = React.useState([{value:"Staff(NEW)",label:"dashboard.acc.sale.Staff(NEW)"},
+    const [filteredItem,setFilteredItem] = React.useState([{value:"Staff_NEW",label:"dashboard.acc.sale.Staff_NEW"},
     {value:"MostsaleProduct",label:"dashboard.acc.sale.MostsaleProduct"},
     {value:"Ranking",label:"dashboard.acc.sale.Ranking"}]);
-    // filterList:[{column:"Staff(NEW)",ope:"Contains",val:"",logicOpe:"and"}],
+    // filterList:[{column:"Staff_NEW",ope:"Contains",val:"",logicOpe:"and"}],
     // filteredItem:
     
     const forceUpdate=()=>{
@@ -145,7 +145,8 @@ interface Props {
         //     editOpen:!this.state.editOpen,
         //     currentEditRow:row})
     }
-    const handleAction=(event: any,ope:any) =>{
+    const handleAction=(event: any,ope:any,row?:any)=>{
+    
         switch(ope){
             case ope.EDIT:
                 // this.setState({dialogOpen:true})

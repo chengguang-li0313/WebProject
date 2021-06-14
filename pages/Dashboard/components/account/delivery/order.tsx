@@ -2,20 +2,14 @@ import * as React from 'react';
 import styles from './index.module.css';
 import {FormControlLabel,RadioGroup,Radio, Button,Popper,
     Collapse,List,ListItem,ListItemText,ListSubheader} from '@material-ui/core';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import BoardlineChart from './boardLineChart'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-// import { useMediaQuery } from 'react-responsive'
 import DataGrid from '../../dataGrid'
-import {SalesData} from '../../../../../public/fakeData'
 
 interface Props {
     t:(params: String) => String;
-    // open:boolean;
-    // handleClose:() => void;
-    // dialogName:String;
-    
+    getDatachange:(comd:string,data:any)=>void
+    order:any
   }
   
   function Order(props: Props){
@@ -23,41 +17,50 @@ interface Props {
 
     
   const customerOrientatedColumn =  [
-      { id: 'StaffProfile',currentLabel:1,idList:['Staff(NEW)','StaffProfile'], label: ['dashboard.acc.sale.Staff(NEW)','dashboard.acc.sale.StaffProfile'], minWidth: 100 },  
-  { id: 'MostsaleProduct', label: ["dashboard.acc.sale.MostsaleProduct"],minWidth: 100 },
-  { id: 'Ranking', label: ["dashboard.acc.sale.Ranking"], minWidth: 100 },
-  { id: 'YearlyCommisiion',currentLabel:1,idList:['YearlyCommisiion','MonthlyCommisiion'],  label: ["dashboard.acc.sale.YearlyCommisiion","dashboard.acc.sale.MonthlyCommisiion"], minWidth: 100 },
-  { id: 'Customer', label: ["dashboard.acc.sale.Customer"], minWidth: 100 },
-  { id: 'Products_sale',currentLabel:1,idList:['Products_sale','TotalsolditemMonthly','Products_New'], label: ["dashboard.acc.sale.Products_sale","dashboard.acc.sale.TotalsolditemMonthly","dashboard.acc.sale.Products_New"], minWidth: 100 }]
+    { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },  
+    { id: 'amount', label: ['dashboard.acc.delivery.setDelivery.amount'], minWidth: 100 },  
+    { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100 },
+    {
+      id: 'more',
+      label: "",
+      minWidth: 10,
+      align: "center",
+    } ]
 
-  const createData = (product:any)=>{
+  const createData = (order:any)=>{
     let rows = []
-    product.forEach((element:any,index:any) => {
-        element.StaffProfile = {item:element.StaffProfile,type:"img" }
-        element['Staff(NEW)'] = {item:element['Staff(NEW)'],type:"string" }
-        element.MostsaleProduct = {item:element.MostsaleProduct,type:"group_string" ,des:element.des}
-        element.Ranking = {item:element.Ranking,type:"ranking"}
-        element.YearlyCommisiion = {item:element.YearlyCommisiion,type:"price"}
-        element.MonthlyCommisiion = {item:element.MonthlyCommisiion,type:"price"}
-        element.Customer={item:element.Customer,type:"string"}
-        element.Products_sale={item:element.Products_sale,type:"item"}
-        element.TotalsolditemMonthly={item:element.TotalsolditemMonthly,type:"item"}
-        element.Products_New={item:element.Products_New,type:"item"}
-        rows.push(element)
+    order.forEach((element:any,index:any) => {
+        rows.push({index:{item:element.index,type:'string'},
+        amount:{item:element.amount,type:'rate'},
+        rate:{item:element.rate.includes("$")?element.rate.replace("$",""):element.rate,type:'rate'}})
     });
-    // console.log
     return rows
 }
 
-const [rows, setRows] = React.useState([]);
+
+const [rows, setRows] = React.useState(createData(props.order));
 const [value, setValue] = React.useState('female');
 const [anchorEl, setAnchorEl] = React.useState(null);
 const [expandOpen, setExpandOpen] = React.useState(false);
+const [editMenuListAnchorEl,setEditMenuListAnchorEl]= React.useState(null);
+const [editOpen,setEditOpen] = React.useState(false);
+const [state,setState] = React.useState(0);
+const [currentRow,setCurrentRow] = React.useState(null);
 
+const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
+
+const forceUpdate =()=>{
+  setState(prev=>prev+=1)
+}
+const handleEdit=(event: any,row:any) => {
+  setEditOpen(prev => !prev)
+  setCurrentRow(row)
+  setEditMenuListAnchorEl(editMenuListAnchorEl?null : event.currentTarget)
+
+}
   const handleexpandOpenClick = () => {
     setExpandOpen(!expandOpen);
   };
-
 
   const handleClick = (event:any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -70,18 +73,114 @@ const [expandOpen, setExpandOpen] = React.useState(false);
     setValue(event.target.value);
   };
 
+  const handleAction =(ev:any,command:string,row?:any)=>{
+    if(row){
+      setCurrentRow(row)
+  }
+    switch(command){
+        case commandList.ADD:
+            addNewRow()
+            break;
+        case commandList.EDIT:
+
+            enableEdit(ev,row)
+            break;
+        case commandList.DELETE:
+            deleteEdit(ev,row)
+            break;
+        default:
+            break
+    }
+}
+    const deleteEdit=(ev:any,row:any)=>{
+    setEditMenuListAnchorEl(null)
+    setEditOpen(false)
+    setRows(prev=>{
+
+            let temp = JSON.parse(JSON.stringify(prev))
+            temp.map((p,i)=>{
+                if(p.index.item ==row.index.item){
+                    prev.splice(i,1)
+                }
+            
+            })
+            update(prev)
+            return prev
+            
+            
+        })
+
+        forceUpdate()
+    }
+
+    const enableEdit=(ev:any,row:any)=>{
+        setRows(prev=>{
+            prev.forEach((p,i)=>{
+                if(p.index.item ==row.index.item){
+                    p.editable = true
+                }
+
+            })
+            update(prev)
+            return prev
+        })
+
+        forceUpdate()
+    }
+    const onEditValue=(ev:any,command:string,row:any)=>{
+            
+        setRows(prev=>{
+            prev.map(p=>{
+                if(p.index.item==row.index.item){
+                    p[command].item = ev.target.value
+                }
+            })
+            update(prev)
+            return prev
+        })
+
+        forceUpdate()
+
+    }
+    const addNewRow = ()=>{
+
+        setRows(prev=>{
+            prev.push({index:{item:prev.length,type:'string'},
+            amount:{item:0,type:'rate'},
+            rate:{item:0,type:'rate'}})
+            update(prev)
+            return prev
+        })
+        
+        forceUpdate()
+    }
+    const update = (data) =>{
+        // forceUpdate()
+        if(data){
+            let clean = []
+            data.map((p,i)=>{
+                clean.push({index:p.index.item,
+                    amount:p.amount.item,
+                    rate:p.rate.item})
+            })
+            props.getDatachange("order",clean)
+        }
+        
+    }
     return(
         <div className={styles.customer_container}>
-            
-            {/* {rows.length>0? */}
             <DataGrid
                 t={t}
                 columns={customerOrientatedColumn}
                 rows={rows}
                 singlePage={true}
-                // onEditDialog={this.onEditDialog}
+                editMenuListAnchorEl={editMenuListAnchorEl}
+                editOpen={editOpen}
+                handleEdit={handleEdit}
+                delivery={true}
+                handleAction={handleAction}
+                onEditValue={onEditValue}
             />
-            {/* :[]} */}
         </div>
     )
 }

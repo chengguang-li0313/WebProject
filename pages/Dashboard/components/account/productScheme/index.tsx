@@ -211,6 +211,7 @@ function ProductScheme(props: Props) {
                   src="/img/Dashboard/vector.svg"
                 ></img>
               </div>
+
             </div>
           </div>
           <div className={styles.productScheme_section_content}>

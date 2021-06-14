@@ -5,6 +5,8 @@ import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MethodTable from '../../methodTable'
 import DeliveryEditDialog from './deliveryEditDialog'
+import VWDeliveryEditDialog from './vwdeliveryEditdialog'
+import deliveryData from '../../../../../public/deliveryData/account_deliveryScheme_flatRate_web.json'
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
     focusVisible?: string;
@@ -12,8 +14,7 @@ interface Styles extends Partial<Record<SwitchClassKey, string>> {
 
 export interface Props {
     t:(params: String) => String;
-
-    
+    order:any
 }
 
 interface CusSwitchProps{
@@ -39,7 +40,9 @@ const initialState = {
         {icon:"",name:"dashboard.acc.delivery.CustomDelivery",des:"dashboard.acc.delivery.CustomDelivery_des",enable:false}
     ],
     open:false,
-    currentDialogName:""
+    currentDialogName:"",
+    vwOpen:false,
+    deliverData:deliveryData
 }
 
 type State = {
@@ -49,7 +52,9 @@ type State = {
     ownDeliveryObj:any,
     bubDeliveryObj:any,
     open:boolean,
+    vwOpen:boolean,
     currentDialogName:string
+    deliverData:any,
 }
 
 class Delivery extends React.Component<Props, object> {
@@ -58,6 +63,8 @@ class Delivery extends React.Component<Props, object> {
 
     private OWNDELIVERYOBJ = "ownDeliveryObj"
     private BUBDELIVERYOBJ = "bubDeliveryObj"
+    private FLATRATE = "dashboard.acc.delivery.Flatrate"
+    private VW = "dashboard.acc.delivery.WeightShipping"
 
     private handleChangeNoPayment=()=>{
         this.setState({noDelivery:!this.state.noDelivery})
@@ -84,7 +91,15 @@ class Delivery extends React.Component<Props, object> {
     }
 
     private handleSetupDialogOpen =(item: string)=>{
-        this.setState({open:true,currentDialogName:item})
+        switch(item){
+            case(this.FLATRATE):
+                this.setState({open:true,currentDialogName:item})
+                break;
+            case(this.VW):
+                this.setState({vwOpen:true,currentDialogName:item})
+                break;
+        }
+        
         // console.log("item",item)
 
     }
@@ -112,11 +127,17 @@ class Delivery extends React.Component<Props, object> {
                 break;
         }
     }
+    private handleSave =(data:any)=>{
+        this.setState({deliverData:data})
+    }
 
-    // onDialotOpen()
-    // private handleSwitchLogic=()=>{
+    private vwhandleSave = (data:any) =>{
 
-    // }
+    }
+
+    private vwhandleClose = () =>{
+        this.setState({vwOpen:false})
+    }
 
     render(){
         const {t} = this.props
@@ -142,7 +163,6 @@ class Delivery extends React.Component<Props, object> {
             },
             '&$focusVisible $thumb': {
                 color: '#3464DC',
-                // border: '6px solid #fff',
             },
             },
             thumb: {
@@ -151,7 +171,6 @@ class Delivery extends React.Component<Props, object> {
             },
             track: {
             borderRadius: 26 / 2,
-            // border: `1px solid ${theme.palette.grey[400]}`,
             backgroundColor: '#B4B6BA',
             opacity: 1,
             transition: theme.transitions.create(['background-color', 'border']),
@@ -164,7 +183,6 @@ class Delivery extends React.Component<Props, object> {
             <Switch
             focusVisibleClassName={classes.focusVisible}
             disableRipple
-            // checked={checked}
             classes={{
                 root: classes.root,
                 switchBase: classes.switchBase,
@@ -236,11 +254,9 @@ class Delivery extends React.Component<Props, object> {
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
                             handleSetupDialogOpen={this.handleSetupDialogOpen}
-                            // handleClose={this.handleClose}
                         >
                         </MethodTable>
                     </div>
-                    {/* <Divider/> */}
                 </div>
                 <div className={styles.paymentMethod_update_bt}>
                     <Button classes={{root:styles.paymentMethod_update}}>{t("common.upload")}</Button>
@@ -251,6 +267,16 @@ class Delivery extends React.Component<Props, object> {
                     open={this.state.open}
                     handleClose={this.handleClose}
                     dialogName={this.state.currentDialogName}
+                    handleSave={this.handleSave}
+                />
+
+                <VWDeliveryEditDialog
+                    t={t}
+                    open={this.state.vwOpen}
+                    handleClose={this.vwhandleClose}
+                    dialogName={this.state.currentDialogName}
+                    handleSave={this.vwhandleSave}
+                    data={this.state.deliverData}
                 />
             </div>
         )

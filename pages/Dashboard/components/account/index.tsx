@@ -14,12 +14,8 @@ export interface Props {
     lay:string
 }
 
-// const isDesktopOrLaptop = useMediaQuery({
-//     query: '(max-width: 1440px)'
-//   })
-
 const initialState = {
-    currentBoard:"setting",//"companyInfo",
+    currentBoard:"setting",
     card_1_state:true,
     card_2_state:true,
 }
@@ -49,9 +45,9 @@ class Account extends React.Component<Props, object> {
 
 
     private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
-        // test(newValue)
+
         this.setState({currentBoard:newValue})
-        // this.handlePointPosition(newValue)
+
     };
     render(){
         const {t,lay} = this.props
@@ -114,7 +110,6 @@ class Account extends React.Component<Props, object> {
                         onChange={this.handleChange}
                         classes={{ indicator:styles.indicator,flexContainer:styles.account_tabsList}}
                     >
-                        {/* <div className={styles.group}> */}
                             <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}} 
                             label={t("dashboard.acc.companyInfo")} 
                             value="companyInfo" 
@@ -122,10 +117,7 @@ class Account extends React.Component<Props, object> {
                             <img src={this.state.currentBoard=="companyInfo"?"/img/Dashboard/Polygon_5_blue.svg":"/img/Dashboard/Polygon_5.svg"}></img>
                         </div>}
                             />
-                            {/* <div onClick={this.test} className={styles.account_down_icon}>
-                                <img src={this.state.currentBoard=="companyInfo"?"/img/Dashboard/Polygon_5_blue.svg":"/img/Dashboard/Polygon_5.svg"}></img>
-                            </div> */}
-                        {/* </div> */}
+      
                         <Tab classes={{selected:styles.tabSelected,root:styles.tabRoot}}  
                             label={t("dashboard.acc.paymentMethod")} 
                             value="paymentMethod" 
@@ -171,37 +163,37 @@ class Account extends React.Component<Props, object> {
                             
                             <CompanyInfo
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"paymentMethod"}>
                             <PaymentMethod
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"productScheme"}>
                             <ProductScheme
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"sales"}>
                             <Sales
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"setting"}>
                             <Delivery
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                         <TabPanel value={this.state.currentBoard} index={"more"}>
                             <CompanyInfo
                                 t={t}
-                                // testFunction={this.test}
+                                
                             />
                         </TabPanel>
                     </div>

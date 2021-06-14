@@ -46,60 +46,48 @@ function CompanyInfo(props: Props) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setBankAccount(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangebsb = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBsb(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeaccountNumber = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setAccountNumber(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeabn = (event: React.ChangeEvent<HTMLInputElement>) => {
     setABN(event.target.value);
-    // console.log(event.target.value)
   };
-  // const [test, setTest] = React.useState('test');
   const handleChangeverify = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVerify(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeCompanyName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCompanyName(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeContactPerson = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setContactPerson(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeContactNumber = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setContactNumber(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangeaboutyourbusiness = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setAboutyourbusiness(event.target.value);
-    // console.log(event.target.value)
   };
   const handleChangecompanyAdress = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCompanyAdress(event.target.value);
-    // console.log(event.target.value)
   };
 
   const [newUserInfo, setNewUserInfo] = useState({
@@ -174,31 +162,6 @@ function CompanyInfo(props: Props) {
     }
   }
 
-
-    // const handleSubmit=()=>{
-        
-    //     const data = {companyName:companyName,
-    //         companyAdress:companyAdress,
-    //         contactPerson:contactPerson,
-    //         contactNumber:contactNumber,
-    //         email:email,
-    //         aboutyourbusiness:aboutyourbusiness,
-    //         abn:abn,
-    //         bankAccount:bankAccount,
-    //         bsb:bsb,
-    //         accountNumber:accountNumber,
-    //         verify:verify
-    //     }
-    //     submitCompanBasicInfo(data)
-    //     .then(res =>{
-    //         console.log("res",res)
-    //     })
-    //     .catch((err)=>{
-    //         alert(err)
-    //     })
-    //     // console.log("data",data)
-    // }
-
     return(
         <div className={styles.companyInfo_container}>
              <form onSubmit={handleSubmit} className={styles.companyInfo_form} noValidate={false} autoComplete="off">
@@ -233,7 +196,7 @@ function CompanyInfo(props: Props) {
               <div className={styles.inputLabel_root}>
                 {t("dashboard.acc.company.logo")}
               </div>
-              {/* <InputBase classes={{root:styles.company_Form_input,input:styles.company_base_input}} value={logo} onChange={handleChange} /> */}
+
               <div>
                 <LogoDragandDrop
                     accept=".jpg,.png,.jpeg,"
@@ -313,18 +276,7 @@ function CompanyInfo(props: Props) {
               />
             </div>
           </Grid>
-          {/* <Grid item md={3} sm={2}> */}
-            {/* <div className={styles.formControl_avatar}> */}
-            {/* <div>
-                <LogoDragandDrop
-                    accept=".jpg,.png,.jpeg,"
-                    label="Profile Image(s)"
-                    updateFilesCb={updateUploadedFiles}
-                    getLogo={setUploadedLogo}
-                />
-              </div> */}
-            {/* </div> */}
-          {/* </Grid> */}
+
         </Grid>
 
         <div className={styles.board_title_container}>
@@ -339,10 +291,6 @@ function CompanyInfo(props: Props) {
           </div>
         </div>
         <Divider />
-        {/* <div  className={styles.formControl_Aboutyourbusiness}>
-                            <div className={styles.inputLabel_root_multiline} >{t("dashboard.acc.company.Aboutyourbusiness")}</div>
-                            <InputBase multiline={true} rows="15" classes={{root:styles.company_Form_input_Aboutyourbusiness,input:styles.company_base_input}} value={companyAdress} onChange={handleChangecompanyAdress} />
-                        </div> */}
         <div className={styles.board_title_container}>
           <Grid className={styles.company_basic_for_row} container>
             <Grid item xs={8}>
@@ -363,7 +311,7 @@ function CompanyInfo(props: Props) {
                 <div className={styles.inputLabel_root}>
                   {t("dashboard.acc.certificate.BusinessCertificate")}
                 </div>
-                {/* <InputBase classes={{root:styles.company_Form_input,input:styles.company_base_input}} value={companyName} onChange={handleChangeCompanyName} /> */}
+
                 <div>
                     <FileUpload
                         accept=".jpg,.png,.jpeg,.pdf"
@@ -372,10 +320,7 @@ function CompanyInfo(props: Props) {
                         getFile={setUploadedFiles}
                     />
                 </div>
-                
-                {/* <div className={styles.saveButton_wrapper}>
-                    <Button type="submit" className={styles.saveButton}>{t("common.save")}</Button>
-                </div> */}
+
               </div>
             </Grid>
             <Grid item xs={4}>
@@ -437,7 +382,6 @@ function CompanyInfo(props: Props) {
             </div>
           </Grid>
           <Grid item xs={5}>
-            {/* <div  className={styles.cert_img}> */}
             <InputBase
               placeholder="*We will verify your account within 48 hours."
               multiline={true}
@@ -449,7 +393,6 @@ function CompanyInfo(props: Props) {
               value={verify}
               onChange={handleChangeverify}
             />
-            {/* </div> */}
           </Grid>
         </Grid>
         <div className={styles.saveButton_wrapper}>

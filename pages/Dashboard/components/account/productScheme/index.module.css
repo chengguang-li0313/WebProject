@@ -11,6 +11,18 @@
     width: 85%;
     margin: 0 auto;
 }
+
+.editDialog_button{
+    font-family: Roboto !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    line-height: 21px !important;
+    color: #FFFFFF !important;
+    background: #3464DC !important;
+    border-radius: 5px !important;
+    text-transform: capitalize !important;
+}
 .productScheme_section_title_container{
     display: flex;
     margin-bottom: 23px;
@@ -123,4 +135,3 @@
     font-weight: 700;
     font-size: 1.3rem;
     color: #3464DC;
-}
