@@ -1,13 +1,15 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import {Dialog,DialogTitle,DialogContent,Accordion,AccordionSummary,AccordionDetails,
-    Checkbox,FormControlLabel,Radio,Button} from '@material-ui/core';
+    Checkbox,FormControlLabel,Radio,Button,Snackbar,IconButton} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
 import vwData from '../../../../../public/deliveryData/account_deliveryScheme_volumeWeight_web.json'
 import VWOrientated from './vwOrientated'
 import WOrientated from './wOrientated'
 import VOrientated from './vOrientated'
+import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from "@material-ui/icons/Close";
 
 interface Props {
     t:(params: String) => String;
@@ -22,17 +24,42 @@ function VWDeliveryEditDialog(props: Props){
     const {t,open,handleClose,dialogName,handleSave,data} = props
     const [state,setState] = React.useState(0);
     const [delivVWData,setDelivVWData ] = React.useState(vwData);
+    const [openSnackbar,setOpenSnackbar] = React.useState(false);
+    const [checkList,setCheckList] = React.useState({vw:false,v:false,w:false});
 
     const forceUpdate=()=>{
         setState(prev=>prev+=1)
     }
 
-    const onDatachange = (event:any, cmd:string) =>{
+    const handleCloseSnackbar = (
+        event: React.SyntheticEvent | React.MouseEvent,
+        reason?: string
+    ) =>{
+        if (reason === "clickaway") {
+            return;
+          }
+      
+          setOpenSnackbar(false);
+    }
 
+    const onDatachange = (event:any, cmd:string) =>{
+        
+        setCheckList(prev => {
+            prev[cmd] = !prev[cmd]
+            // Object.keys(prev).map(checked => {
+            //     if(checked !== cmd){
+            //         prev[checked] = false
+            //     }
+            // })
+            return prev
+        })
+
+        forceUpdate()
+        // console.log()
     }
 
     const getDatachange = (comd:string,data:any) =>{
-        console.log(comd,data)
+
         setDelivVWData(prev=>{
             prev[comd] = data
             return prev
@@ -41,14 +68,30 @@ function VWDeliveryEditDialog(props: Props){
     }
 
     const onSave =() =>{
-        handleClose()
+        if(checkValidation('vwitems') && checkValidation('vitems') && checkValidation('witems')){
+            handleClose()
+            handleSave(delivVWData)
+        }else{
 
-        handleSave(delivVWData)
+        }
+        
+    }
+    const checkValidation = (cmd:string) => {
+        let pass = true
+        delivVWData[cmd].map((item,index) => {
+            if(item.v<props.data.vw.volume && item.w<props.data.vw.weight){
+                pass = false
+            }else{
+                setOpenSnackbar(true)
+            }
+        })
+
+        return pass
     }
 
     return(
         <Dialog classes={{paperWidthSm:styles.paper_WidthXs}}  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle classes={{root:styles.dialogTitle_root}} id="form-dialog-title">{ t("dashboard.sal.Edit")+" "+t(dialogName)}</DialogTitle>
+            <DialogTitle classes={{root:styles.dialogTitle_root}} id="form-dialog-title">{ t("dashboard.sal.Edit")+" "+t(dialogName)} <CancelIcon onClick={handleClose} className={styles.closed_bt}/> </DialogTitle>
             <DialogContent classes={{root:styles.dialog_root}}>
                 <div className={styles.display_group}>
                     <div className={styles.display_line}>{t("dashboard.acc.delivery.setDelivery.biggerVolume")}{props.data.vw.volume}{t("dashboard.acc.delivery.setDelivery.meter")}</div>
@@ -68,18 +111,21 @@ function VWDeliveryEditDialog(props: Props){
                             classes={{label:styles.accordionlabel_root}}
                             onClick={(event) => event.stopPropagation()}
                             onFocus={(event) => event.stopPropagation()}
-                            control={<Radio onChange={ev=>onDatachange(ev,'a')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                            control={<Checkbox onChange={ev=>onDatachange(ev,'vw')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                             label={t("dashboard.acc.delivery.setDelivery.vwo")}
                         />
+                        {/* checked={checkedList}  */}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <VWOrientated
-                                t={t}
-                                getDatachange={getDatachange}
-                                vwdata={delivVWData.vwitems}
+                        {checkList.vw?
+                            <AccordionDetails>
+                                <VWOrientated
+                                    t={t}
+                                    getDatachange={getDatachange}
+                                    vwdata={delivVWData.vwitems}
+                                    limitation={props.data.vw}
 
-                            />
-                        </AccordionDetails>
+                                />
+                            </AccordionDetails>:[]}
                     </Accordion>
                     <Accordion>
                         <AccordionSummary
@@ -94,19 +140,20 @@ function VWDeliveryEditDialog(props: Props){
                             classes={{label:styles.accordionlabel_root}}
                             onClick={(event) => event.stopPropagation()}
                             onFocus={(event) => event.stopPropagation()}
-                            control={<Radio onChange={ev=>onDatachange(ev,"a")} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                            control={<Checkbox onChange={ev=>onDatachange(ev,'w')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                             label={t("dashboard.acc.delivery.setDelivery.wo")}
                         />
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <WOrientated
-                                t={t}
-                                getDatachange={getDatachange}
-                                vwdata={delivVWData.witems}
-
-                            />
-                        
-                        </AccordionDetails>
+                        {checkList.w?
+                            <AccordionDetails>
+                                <WOrientated
+                                    t={t}
+                                    getDatachange={getDatachange}
+                                    vwdata={delivVWData.witems}
+                                    limitation={props.data.vw}
+                                />
+                            
+                            </AccordionDetails>:[]}
                     </Accordion>
                     <Accordion>
                         <AccordionSummary
@@ -121,25 +168,48 @@ function VWDeliveryEditDialog(props: Props){
                             classes={{label:styles.accordionlabel_root}}
                             onClick={(event) => event.stopPropagation()}
                             onFocus={(event) => event.stopPropagation()}
-                            control={<Radio onChange={ev=>onDatachange(ev,'a')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
+                            control={<Checkbox onChange={ev=>onDatachange(ev,'v')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                             label={t("dashboard.acc.delivery.setDelivery.vo")}
                         />
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <VOrientated
-                                t={t}
-                                getDatachange={getDatachange}
-                                vwdata={delivVWData.vitems}
+                        {checkList.v?
+                            <AccordionDetails>
+                                <VOrientated
+                                    t={t}
+                                    getDatachange={getDatachange}
+                                    vwdata={delivVWData.vitems}
+                                    limitation={props.data.vw}
+                                />
 
-                            />
-
-                        </AccordionDetails>
+                            </AccordionDetails>:[]}
                     </Accordion>
 
                     <div className={styles.button_group}>
                         <Button onClick={onSave} classes={{root:styles.dialog_bt}}>{t("common.save")}</Button>
                         <Button onClick={handleClose} classes={{root:styles.dialog_bt}}>{t("common.cancel")}</Button>
                     </div>
+                    <Snackbar
+                        anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                        }}
+                        open={openSnackbar}
+                        autoHideDuration={6000}
+                        onClose={handleCloseSnackbar}
+                        message="Please enter right value."
+                        action={
+                            <React.Fragment>
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="inherit"
+                                onClick={handleCloseSnackbar}
+                            >
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                            </React.Fragment>
+                        }
+                        />
             </DialogContent>
         </Dialog>
     

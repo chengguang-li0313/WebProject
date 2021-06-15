@@ -77,7 +77,7 @@
     } ,
 
     "dashboard":{
-        "home":"Home",
+        "home":"Event",
         "sales":"Sales",
         "account":"Account",
         "products":"Products",
@@ -203,7 +203,16 @@
                     "biggerWeight":"Weight is bigger than: ",
                     "wo":"Weight orientated",
                     "vwo":"Weight and Volume orientated",
-                    "vo":"Volume orientated"
+                    "vo":"Volume orientated",
+                    "multMatch":"Multiple products or categories matching",
+                    "minRate":"use the matching items minimum rate",
+                    "minRate_exp":"(for instance, p1, p2 are in the order and also been setup as rate as $3.5, $5.5, the total rate will be $3.5)",
+                    "maxRate":"use the matching items maximum rate",
+                    "maxRate_exp":"(for instance, p1, p2 are in the order and also been setup as rate as $3.5, $5.5, the total rate will be $5.5)",
+                    "avgRate":"use the matching items rate average",
+                    "avgRate_exp":"(for instance, p1, p2 are in the order and also been setup as rate as $3.5, $5.5, the average rate will be ($3.5 + $5.5) /2  = $4.5)",
+                    "rateSum":"use the matching items rate sum",
+                    "rateSum_exp":"(for instance, p1, p2 are in the order and also been setup as rate as $3.5,$5.5, the total rate will be $3.5 + $5.5 = $9.00)"
                 }
             },
             "productSche":{

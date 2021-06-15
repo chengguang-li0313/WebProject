@@ -75,7 +75,6 @@ function Map(props: Props){
 
       React.useEffect(() => {
         if (map) {
-          console.log("map")
           forceUpdate()
           loadGeoJsonString()
         }

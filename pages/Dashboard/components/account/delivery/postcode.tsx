@@ -22,7 +22,7 @@ interface Props {
       { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },  
       { id: 'from', label: ['dashboard.acc.delivery.setDelivery.from'], minWidth: 100 },  
       { id: 'to', label: ['dashboard.acc.delivery.setDelivery.to'], minWidth: 100 },  
-      { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100 },  
+      { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100},  
       {
         id: 'more',
         label: "",
@@ -30,7 +30,23 @@ interface Props {
         align: "center"
       }
   ]
-
+  const toDecimal2 = (x:any) => {
+    let f = parseFloat(x)
+    if (isNaN(f)) {
+     return false
+    }
+    f = Math.round(x*100)/100
+    let s = f.toString()
+    let rs = s.indexOf('.')
+    if (rs < 0) {
+     rs = s.length
+     s += '.'
+    }
+    while (s.length <= rs + 2) {
+     s += '0'
+    }
+    return s
+   }
     const createData = (post:any)=>{
         let rows = []
         post.forEach((element:any,index:any) => {
@@ -38,7 +54,7 @@ interface Props {
             rows.push({index:{item:element.index,type:'string'},
                         from:{item:element.from,type:'es'},
                         to:{item:element.to,type:'map'},
-                        rate:{item:element.rate,type:'rate'}})
+                        rate:{item:element.rate?toDecimal2(element.rate):element.rate,type:'rate'}})
         });
         return rows
     }
@@ -150,11 +166,19 @@ interface Props {
         let newList = ''
         if(subList!=""){
             let temp = subList.split(', ')
-            temp.forEach(t=>{
+            temp.forEach((t,i)=>{
                 let templ = t.split(" ")
-                newList+=templ[templ.length-1]+" "
+                console.log('templ',templ)
+                if(templ[templ.length-2]!=" "){
+                    let next = i==temp.length-1?"":", "
+                    newList+=templ[templ.length-1]+next
+                    console.log('templ[templ.length-1]',templ[templ.length-1])
+
+                }
+                
 
             })
+            
         }
         setRows(prev=>{
                 prev.map(p=>{
@@ -221,6 +245,18 @@ interface Props {
         forceUpdate()
     }
 
+    const formated = (cmd:string,id:any) =>{
+        console.log('cmd',cmd)
+        console.log("row",rows)
+        setRows(prev => {
+            if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+            return prev
+        })
+        forceUpdate()
+    }
+    
+    
+
     const update = (data) =>{
         if(data){
             let clean = []
@@ -261,6 +297,7 @@ interface Props {
                 handleAction={handleAction}
                 onEditValue={onEditValue}
                 onCusSeteditOpen={onCusSeteditOpen}
+                formated={formated}
             />
         </div>
     )

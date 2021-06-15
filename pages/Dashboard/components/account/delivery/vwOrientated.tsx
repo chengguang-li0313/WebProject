@@ -1,16 +1,17 @@
 import * as React from 'react';
 import styles from './index.module.css';
 import {FormControlLabel,RadioGroup,Radio, Button,Dialog,DialogContent,
-    Collapse,List,ListItem,ListItemText,ListSubheader} from '@material-ui/core';
+    Collapse,List,ListItem,ListItemText,ListSubheader,Snackbar,IconButton} from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
-
+import CloseIcon from "@material-ui/icons/Close";
 
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    vwdata:any
+    vwdata:any,
+    limitation:any
   }
   
 
@@ -31,14 +32,32 @@ function VWOrientated(props: Props){
       }
   ]
 
+  const toDecimal2 = (x:any) => {
+    let f = parseFloat(x)
+    if (isNaN(f)) {
+     return false
+    }
+    f = Math.round(x*100)/100
+    let s = f.toString()
+    let rs = s.indexOf('.')
+    if (rs < 0) {
+     rs = s.length
+     s += '.'
+    }
+    while (s.length <= rs + 2) {
+     s += '0'
+    }
+    return s
+   }
+
     const createData = (data:any)=>{
         let rows = []
         data.forEach((element:any,index:any) => {
-            let rate = element.rate.replace("$",'')
+            let rate = element.rate?element.rate.replace("$",''):""
             rows.push({index:{item:element.index,type:'string'},
                         volume:{item:element.v,type:'rs'},
                         weight:{item:element.w,type:'rs'},
-                        rate:{item:rate,type:'rate'}})
+                        rate:{item:toDecimal2(rate),type:'rate'}})
         });
         return rows
     }
@@ -52,11 +71,24 @@ function VWOrientated(props: Props){
     const [currentRow,setCurrentRow] = React.useState(null);
     const [state,setState] = React.useState(0);
     const [subList,setSubList] = React.useState('');
+    const [openSnackbar,setOpenSnackbar] = React.useState(false);
+
 
     const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
 
     const forceUpdate =()=>{
         setState(prev=>prev+=1)
+    }
+
+    const handleCloseSnackbar = (
+        event: React.SyntheticEvent | React.MouseEvent,
+        reason?: string
+    ) =>{
+        if (reason === "clickaway") {
+            return;
+          }
+      
+          setOpenSnackbar(false);
     }
     const handleEdit=(event: any,row:any) => {
     setEditOpen(prev => !prev)
@@ -117,9 +149,10 @@ function VWOrientated(props: Props){
                 }
             
             })
+            update(prev)
             return prev
         })
-        update()
+        
         setEditMenuListAnchorEl(null)
         setEditOpen(false)
         forceUpdate()
@@ -134,9 +167,10 @@ function VWOrientated(props: Props){
                 }
 
             })
+            update(prev)
             return prev
         })
-        update()
+        
         forceUpdate()
         setOpen(false)
     }
@@ -157,9 +191,10 @@ function VWOrientated(props: Props){
                     }
                     
                 })
-                    return prev
+                update(prev)
+                return prev
         })
-        update()
+        
         setOpen(false)
     }
     const onselectedSub=(list:string)=>{
@@ -175,9 +210,10 @@ function VWOrientated(props: Props){
                 }
 
             })
+            update(prev)
             return prev
         })
-        update()
+
         forceUpdate()
     }
     const onCusSeteditOpen =()=>{
@@ -190,9 +226,10 @@ function VWOrientated(props: Props){
             volume:{item:"",type:'rs'},
             weight:{item:"",type:'rs'},
             rate:{item:0,type:'rate'}})  
+            update(prev)
             return prev
         })
-        update()
+
         forceUpdate()
 
         
@@ -205,16 +242,17 @@ function VWOrientated(props: Props){
                     p[command].item = ev.target.value
                 }
             })
+            update(prev)
             return prev
         })
-        update()
+
         forceUpdate()
     }
 
-    const update = () =>{
-        if(rows){
+    const update = (r) =>{
+        if(r){
             let clean = []
-            rows.map((p,i)=>{
+            r.map((p,i)=>{
                 clean.push({"index":p.index.item,
                     "v":p.volume.item,
                     "w":p.weight.item,
@@ -223,6 +261,28 @@ function VWOrientated(props: Props){
             props.getDatachange("vwitems",clean)
         }
     }
+    const formated = (cmd:string,id:any) =>{
+
+        setRows(prev => {
+            if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+            return prev
+        })
+        forceUpdate()
+    }
+
+    const valided = (cmd:string,i:any) =>{
+        console.log('props.limitation[cmd]',props.limitation[cmd])
+        if(rows[i][cmd].item>props.limitation[cmd]){
+            
+            setRows(prev=>{
+                prev[i][cmd].item = props.limitation[cmd]
+                return prev
+            })
+            setOpenSnackbar(true)
+        }
+    }
+    
+    
     return(
         <div className={styles.customer_container}>
             <DataGrid
@@ -237,7 +297,31 @@ function VWOrientated(props: Props){
                 handleAction={handleAction}
                 onEditValue={onEditValue}
                 onCusSeteditOpen={onCusSeteditOpen}
+                formated={formated}
+                valided={valided}
             />
+            <Snackbar
+                anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+                }}
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message="Please enter right value."
+                action={
+                    <React.Fragment>
+                      <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={handleCloseSnackbar}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </React.Fragment>
+                  }
+                />
         </div>
     )
 }

@@ -32,7 +32,7 @@ const createCustomerListData=(data:any)=>{
 }
 
 const initialState = {
-    value:'',
+    value:'both',
     anchorEl:null,
     expandOpen:false,
     customerLi:[],
@@ -87,6 +87,13 @@ class Customer extends React.Component<Props, object> {
     componentWillUnmount() {
         
     }
+    shouldComponentUpdate(newProps, newState) {
+        if(this.state.customerRow !==newState.customerRow){
+            // console.log('newState',)
+            this.setState(newState.customerRow)
+        }
+        return true;
+  }
     private customerColumn =[
         { id: 'id', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },
         { id: 'name', label: ['dashboard.acc.delivery.setDelivery.name'], minWidth: 100 },  
@@ -189,9 +196,7 @@ class Customer extends React.Component<Props, object> {
     }
 
     private handleCheckBoxChanged=(ev:any,i:any,row:any)=>{
-        // this.setState((preState,props)=>{
-            
-        // })
+       
         this.setState((preState,props)=>{
             
             preState['customerRow'].map((cus:any,index:any)=>{
@@ -200,7 +205,7 @@ class Customer extends React.Component<Props, object> {
                     preState['newScope']+=`${preState['customerRow'][i].name.item},`
                 }
             })
-            console.log('this.state.currentRow',this.state.currentRow)
+
             preState["rowsList"].map(r=>{
                 if(r.index.item==this.state.currentRow.index.item){
                     r.scope.item=preState['newScope']
@@ -257,35 +262,25 @@ class Customer extends React.Component<Props, object> {
 
     };
 
-
+// TODO
     private handleChange = (event:any) => {
-     
-    
-        let temp=[]
-        let tempData = {}
-        // Object.assign(tempData,customer)
-        this.props.customer.map(item=>{
-            let tempcusList = item.scope.split(',')
-            let added = false
-            tempcusList.map((cus,i)=>{
-                customerList.map((c)=>{
-                    if(c.name.toString() === cus && !added){
-                        if(c.Category === event.target.value){
-                            let tempItem = JSON.parse(JSON.stringify(item))
-                            temp.push(tempItem)
-                            added=true
-                        }else if(event.target.value=='both' ){
-                            let tempItem = JSON.parse(JSON.stringify(item))
-                            temp.push(tempItem)
-                            added=true
-                        }
-                    }
-                })
-            })
-        })
         
-        this.setState({rowsList:createData(createData(temp)),value:event.target.value})
-        // this.update()
+        this.setState((preState,props)=>{
+            // let temp=[]
+            // preState['customerRow'] = createCustomerListData(customerList)
+            preState['customerRow'].map((c,i)=>{
+                if(c.Category !== event.target.value){
+                    // let tempItem = JSON.parse(JSON.stringify(c))
+                    preState['customerRow'].splice(i,1)
+                }
+                // else if(event.target.value=='both' ){
+                //     // let tempItem = JSON.parse(JSON.stringify(c))
+                //     // temp.push(c)
+                // }
+            })
+            // preState['customerRow'] = createCustomerListData(temp)
+            return {customerRow:preState['customerRow'],value:event.target.value}
+        })
 
   };
 
@@ -301,24 +296,52 @@ class Customer extends React.Component<Props, object> {
         }
         
     }
+    private formated = (cmd:string,id:any) =>{
+        // console.log('cmd',cmd)
+        // console.log("row",rows)
+        this.setState((preState,props) => {
+            if(cmd=='rate') preState['rowsList'][id][cmd].item = this.toDecimal2(preState['rowsList'][id][cmd].item)
+            return {rowsList:preState['rowsList']}
+        })
+        // forceUpdate()
+    }
+    
+    private toDecimal2 = (x:any) => {
+        let f = parseFloat(x)
+        if (isNaN(f)) {
+         return false
+        }
+        f = Math.round(x*100)/100
+        let s = f.toString()
+        let rs = s.indexOf('.')
+        if (rs < 0) {
+         rs = s.length
+         s += '.'
+        }
+        while (s.length <= rs + 2) {
+         s += '0'
+        }
+        return s
+       }
 
     render(){
         const {t} = this.props
 
         return(
             <div className={styles.customer_container}>
-                <div className={styles.selectCustomer_container}>
-                    <div className={styles.selectCustomer_radio_container}>
-                        <RadioGroup row aria-label="selectCustomer_radio_container" name="selectCustomer_radio_container" value={this.state.value} onChange={this.handleChange}>
-                            <FormControlLabel value="business" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.businessCustomer")} />
-                            <FormControlLabel value="consumer" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.consumerCustomer")} />
-                            <FormControlLabel value="both" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.both")} />
-                        </RadioGroup>
-                    </div>  
-                </div>
-                <Popper className={styles.poppers} open={this.state.open} placement="bottom-end"  anchorEl={this.state.anchorEl} >
+                
+                <Popper className={styles.poppers} open={this.state.open} placement="right"  anchorEl={this.state.anchorEl} >
                     {/* <DialogContent> */}
                     <div className={styles.customer_poppers_content}>
+                        <div className={styles.selectCustomer_container}>
+                            <div className={styles.selectCustomer_radio_container}>
+                                <RadioGroup row aria-label="selectCustomer_radio_container" name="selectCustomer_radio_container" value={this.state.value} onChange={this.handleChange}>
+                                    <FormControlLabel value="business" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.businessCustomer")} />
+                                    <FormControlLabel value="consumer" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.consumerCustomer")} />
+                                    <FormControlLabel value="both" control={<Radio classes={{colorPrimary:styles.radio_color}} color="primary"/>} label={t("dashboard.acc.delivery.setDelivery.both")} />
+                                </RadioGroup>
+                            </div>  
+                        </div>
                     {/* <TextField type="number" id="standard-search" label="Rate" onChange={this.getnewRate}/> */}
                         <DataGrid
                             t={t}
@@ -347,6 +370,7 @@ class Customer extends React.Component<Props, object> {
                     handleAction={this.handleAction}
                     onCusSeteditOpen={this.onCusSeteditOpen}
                     onEditValue={this.onEditValue}
+                    formated={this.formated}
                 />:[]}
             </div>
         )

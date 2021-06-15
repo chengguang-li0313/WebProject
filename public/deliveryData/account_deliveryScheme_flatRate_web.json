@@ -83,7 +83,7 @@
       {
          "index": "1",
          "distance": "5",
-         "percentage": "0.00"
+         "rate": "0.00"
       },
       {
          "index": "2",
@@ -101,7 +101,7 @@
          "index": "1",
          "from": "1 mcintyre st burwood vic 3125",
          "to": "3125,3126,3127,3171",
-         "percentage": "3.00"
+         "rate": "3.00"
       },
       {
          "index": "2",
