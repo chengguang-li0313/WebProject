@@ -32,7 +32,6 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { addDays } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-
 import { MuiPickersUtilsProvider, KeyboardTimePicker } from '@material-ui/pickers';
 
 interface Props {
