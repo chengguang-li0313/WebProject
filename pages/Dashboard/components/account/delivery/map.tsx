@@ -6,7 +6,7 @@ import STATE_LIST from '../../../../../public/geoData/state_list.json'
 
 interface Props {
     t:(params: String) => String;
-    onselectedSub:(list:string)=>void
+    onselectedSub:(list:string)=>void;
   }
   
 

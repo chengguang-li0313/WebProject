@@ -9,11 +9,12 @@ import DataGrid from '../../dataGrid'
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    order:any
+    order:any;
+    toDecimal2:(x:any) => any
   }
   
   function Order(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
   const customerOrientatedColumn =  [
@@ -27,23 +28,6 @@ interface Props {
       align: "center",
     } ]
 
-    const toDecimal2 = (x:any) => {
-        let f = parseFloat(x)
-        if (isNaN(f)) {
-         return false
-        }
-        f = Math.round(x*100)/100
-        let s = f.toString()
-        let rs = s.indexOf('.')
-        if (rs < 0) {
-         rs = s.length
-         s += '.'
-        }
-        while (s.length <= rs + 2) {
-         s += '0'
-        }
-        return s
-       }
 
   const createData = (order:any)=>{
     let rows = []
@@ -187,8 +171,6 @@ const handleEdit=(event: any,row:any) => {
         
     }
     const formated = (cmd:string,id:any) =>{
-        console.log('cmd',cmd)
-        console.log("row",rows)
         setRows(prev => {
             if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
             return prev

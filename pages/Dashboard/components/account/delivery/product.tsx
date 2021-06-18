@@ -11,14 +11,11 @@ interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
     product:any
-    // open:boolean;
-    // handleClose:() => void;
-    // dialogName:String;
-    
+    toDecimal2:(x:any) => any
   }
 
 function Product(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
     const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
@@ -61,23 +58,6 @@ function Product(props: Props){
             align: "center",
           } 
     ]
-    const toDecimal2 = (x:any) => {
-        let f = parseFloat(x)
-        if (isNaN(f)) {
-         return false
-        }
-        f = Math.round(x*100)/100
-        let s = f.toString()
-        let rs = s.indexOf('.')
-        if (rs < 0) {
-         rs = s.length
-         s += '.'
-        }
-        while (s.length <= rs + 2) {
-         s += '0'
-        }
-        return s
-       }
        
     const createData=(rows:Array<any>)=>{
         let tempList = []
@@ -95,13 +75,11 @@ function Product(props: Props){
         return tempList
     }
     const setScope = (scope:any) =>{    
-        // if(scope){
-            let scopeList = scope.split(',')
-            
-            let tempNode = JSON.parse(JSON.stringify(treeData));
-            let nodesList = setnode(tempNode,scopeList)
-            return nodesList
-        // }
+        let scopeList = scope.split(',')
+        
+        let tempNode = JSON.parse(JSON.stringify(treeData));
+        let nodesList = setnode(tempNode,scopeList)
+        return nodesList
     }
     const setnode = (nodes:any,scopeList:any) =>{
 
@@ -259,7 +237,6 @@ function Product(props: Props){
                     }
                 })
                 update(prev)
-                console.log(type,prev)
                 return prev
             })
             

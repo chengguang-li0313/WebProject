@@ -11,11 +11,12 @@ import Map from './map'
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    postcode:any
+    postcode:any;
+    toDecimal2:(x:any) => any
   }
   
   function Postcode(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
   const customerOrientatedColumn =  [
@@ -30,23 +31,7 @@ interface Props {
         align: "center"
       }
   ]
-  const toDecimal2 = (x:any) => {
-    let f = parseFloat(x)
-    if (isNaN(f)) {
-     return false
-    }
-    f = Math.round(x*100)/100
-    let s = f.toString()
-    let rs = s.indexOf('.')
-    if (rs < 0) {
-     rs = s.length
-     s += '.'
-    }
-    while (s.length <= rs + 2) {
-     s += '0'
-    }
-    return s
-   }
+
     const createData = (post:any)=>{
         let rows = []
         post.forEach((element:any,index:any) => {
@@ -129,7 +114,6 @@ interface Props {
 }
     const deleteEdit=(ev:any,row:any)=>{
         setRows(prev=>{
-            // let id = null
             let temp = JSON.parse(JSON.stringify(prev))
             temp.map((p,i)=>{
                 if(p.index.item ==row.index.item){
@@ -168,11 +152,9 @@ interface Props {
             let temp = subList.split(', ')
             temp.forEach((t,i)=>{
                 let templ = t.split(" ")
-                console.log('templ',templ)
                 if(templ[templ.length-2]!=" "){
                     let next = i==temp.length-1?"":", "
                     newList+=templ[templ.length-1]+next
-                    console.log('templ[templ.length-1]',templ[templ.length-1])
 
                 }
                 
@@ -233,7 +215,6 @@ interface Props {
 
         setRows(prev=>{
             prev.map(p=>{
-                console.log('p.index.item==row.index.item',p.index.item==therow.index.item)
                 if(p.index.item==therow.index.item){
                     p[command].item = ev.target.value
                 }
@@ -246,8 +227,6 @@ interface Props {
     }
 
     const formated = (cmd:string,id:any) =>{
-        console.log('cmd',cmd)
-        console.log("row",rows)
         setRows(prev => {
             if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
             return prev

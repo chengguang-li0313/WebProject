@@ -31,6 +31,24 @@ function VWDeliveryEditDialog(props: Props){
         setState(prev=>prev+=1)
     }
 
+    const toDecimal2 = (x:any) => {
+        let f = parseFloat(x)
+        if (isNaN(f)) {
+         return false
+        }
+        f = Math.round(x*100)/100
+        let s = f.toString()
+        let rs = s.indexOf('.')
+        if (rs < 0) {
+         rs = s.length
+         s += '.'
+        }
+        while (s.length <= rs + 2) {
+         s += '0'
+        }
+        return s
+       }
+
     const handleCloseSnackbar = (
         event: React.SyntheticEvent | React.MouseEvent,
         reason?: string
@@ -46,16 +64,10 @@ function VWDeliveryEditDialog(props: Props){
         
         setCheckList(prev => {
             prev[cmd] = !prev[cmd]
-            // Object.keys(prev).map(checked => {
-            //     if(checked !== cmd){
-            //         prev[checked] = false
-            //     }
-            // })
             return prev
         })
 
         forceUpdate()
-        // console.log()
     }
 
     const getDatachange = (comd:string,data:any) =>{
@@ -123,7 +135,7 @@ function VWDeliveryEditDialog(props: Props){
                                     getDatachange={getDatachange}
                                     vwdata={delivVWData.vwitems}
                                     limitation={props.data.vw}
-
+                                    toDecimal2={toDecimal2}
                                 />
                             </AccordionDetails>:[]}
                     </Accordion>
@@ -151,6 +163,7 @@ function VWDeliveryEditDialog(props: Props){
                                     getDatachange={getDatachange}
                                     vwdata={delivVWData.witems}
                                     limitation={props.data.vw}
+                                    toDecimal2={toDecimal2}
                                 />
                             
                             </AccordionDetails>:[]}
@@ -179,6 +192,7 @@ function VWDeliveryEditDialog(props: Props){
                                     getDatachange={getDatachange}
                                     vwdata={delivVWData.vitems}
                                     limitation={props.data.vw}
+                                    toDecimal2={toDecimal2}
                                 />
 
                             </AccordionDetails>:[]}

@@ -97,15 +97,12 @@ class Dashboard extends React.Component<Props, object> {
       }
     }
       private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
-        // console.log("event", event);
-        // test(newValue)
         this.setState({ currentPannel: newValue });
         this.handlePointPosition(newValue);
       };
 
   render() {
     const { t } = this.props;
-    // console.log("value",value)
 
     return (
       <DashboardLayout t={t} userData={this.state.userData}>

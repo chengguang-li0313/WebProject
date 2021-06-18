@@ -9,11 +9,12 @@ import DataGrid from '../../dataGrid'
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    coupon:any
+    coupon:any;
+    toDecimal2:(x:any) => any
   }
   
   function Coupon(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
     const customerOrientatedColumn =  [
@@ -30,24 +31,6 @@ interface Props {
           align: "center",
         }
     ]
-
-    const toDecimal2 = (x:any) => {
-      let f = parseFloat(x)
-      if (isNaN(f)) {
-       return false
-      }
-      f = Math.round(x*100)/100
-      let s = f.toString()
-      let rs = s.indexOf('.')
-      if (rs < 0) {
-       rs = s.length
-       s += '.'
-      }
-      while (s.length <= rs + 2) {
-       s += '0'
-      }
-      return s
-     }
 
     const createData = (data:any) =>{
         let temp = []

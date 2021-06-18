@@ -10,6 +10,7 @@ interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
     customer:any
+    toDecimal2:(x:any) => any
   }
 
 const createData=(data:any)=>{
@@ -89,7 +90,6 @@ class Customer extends React.Component<Props, object> {
     }
     shouldComponentUpdate(newProps, newState) {
         if(this.state.customerRow !==newState.customerRow){
-            // console.log('newState',)
             this.setState(newState.customerRow)
         }
         return true;
@@ -159,11 +159,9 @@ class Customer extends React.Component<Props, object> {
         })
         this.update(preState['rowsList'])
         return {rowsList:preState['rowsList'],currentRow:row,editOpen:false,editMenuListAnchorEl:false,customerRow:preState['customerRow']}})   
-        // this.update()
     }
 
     private onCusSeteditOpen=(event:any,row:any)=>{
-        console.log('event',event.target.value)
         this.handleClick(event)
         
     }
@@ -297,32 +295,30 @@ class Customer extends React.Component<Props, object> {
         
     }
     private formated = (cmd:string,id:any) =>{
-        // console.log('cmd',cmd)
-        // console.log("row",rows)
         this.setState((preState,props) => {
-            if(cmd=='rate') preState['rowsList'][id][cmd].item = this.toDecimal2(preState['rowsList'][id][cmd].item)
+            if(cmd=='rate') preState['rowsList'][id][cmd].item = this.props.toDecimal2(preState['rowsList'][id][cmd].item)
             return {rowsList:preState['rowsList']}
         })
         // forceUpdate()
     }
     
-    private toDecimal2 = (x:any) => {
-        let f = parseFloat(x)
-        if (isNaN(f)) {
-         return false
-        }
-        f = Math.round(x*100)/100
-        let s = f.toString()
-        let rs = s.indexOf('.')
-        if (rs < 0) {
-         rs = s.length
-         s += '.'
-        }
-        while (s.length <= rs + 2) {
-         s += '0'
-        }
-        return s
-       }
+    // private toDecimal2 = (x:any) => {
+    //     let f = parseFloat(x)
+    //     if (isNaN(f)) {
+    //      return false
+    //     }
+    //     f = Math.round(x*100)/100
+    //     let s = f.toString()
+    //     let rs = s.indexOf('.')
+    //     if (rs < 0) {
+    //      rs = s.length
+    //      s += '.'
+    //     }
+    //     while (s.length <= rs + 2) {
+    //      s += '0'
+    //     }
+    //     return s
+    //    }
 
     render(){
         const {t} = this.props

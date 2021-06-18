@@ -122,6 +122,24 @@ function DeliveryEditDialog(props: Props){
         event.stopPropagation()
     }
 
+    const toDecimal2 = (x:any) => {
+        let f = parseFloat(x)
+        if (isNaN(f)) {
+         return false
+        }
+        f = Math.round(x*100)/100
+        let s = f.toString()
+        let rs = s.indexOf('.')
+        if (rs < 0) {
+         rs = s.length
+         s += '.'
+        }
+        while (s.length <= rs + 2) {
+         s += '0'
+        }
+        return s
+       }
+
     return(
 
         <Dialog classes={{paperWidthSm:styles.paper_WidthXs}}  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -191,6 +209,7 @@ function DeliveryEditDialog(props: Props){
                         {checkList.product?
                             <AccordionDetails>
                                 <Product
+                                toDecimal2={toDecimal2}
                                 getDatachange={getDatachange}
                                 product = {deliveData.product}
                                 t={t}
@@ -221,6 +240,7 @@ function DeliveryEditDialog(props: Props){
                         {checkList.customer?
                             <AccordionDetails>
                             <Customer
+                            toDecimal2={toDecimal2}
                             getDatachange={getDatachange}
                             customer = {deliveData.customer}
                             t={t}/>
@@ -250,6 +270,7 @@ function DeliveryEditDialog(props: Props){
                         {checkList.order?
                             <AccordionDetails>
                                 <Order
+                                toDecimal2={toDecimal2}
                                 getDatachange={getDatachange}
                                 order = {deliveData.order}
                                 t={t}
@@ -281,6 +302,7 @@ function DeliveryEditDialog(props: Props){
                             {checkList.coupon?
                                 <AccordionDetails>
                                     <Coupon
+                                    toDecimal2={toDecimal2}
                                     getDatachange={getDatachange}
                                     coupon = {deliveData.coupon}
                                     t={t}/>
@@ -309,6 +331,7 @@ function DeliveryEditDialog(props: Props){
                             {checkList.distance?
                                 <AccordionDetails>
                                     <Distance
+                                    toDecimal2={toDecimal2}
                                     getDatachange={getDatachange}
                                     distance = {deliveData.distance}
                                     t={t}/>
@@ -339,6 +362,7 @@ function DeliveryEditDialog(props: Props){
                             {checkList.postcode?
                                 <AccordionDetails>
                                     <Postcode
+                                    toDecimal2={toDecimal2}
                                     getDatachange={getDatachange}
                                     postcode = {deliveData.postcode}
                                         t={t}

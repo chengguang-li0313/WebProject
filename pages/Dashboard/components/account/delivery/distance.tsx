@@ -20,10 +20,11 @@ interface Props {
     t: (params: String) => String;
     getDatachange: (comd: string, data: any) => void;
     distance: any;
+    toDecimal2:(x:any) => any;
 }
 
 function Distance(props: Props) {
-    const { t } = props;
+    const { t ,toDecimal2} = props;
 
     const customerOrientatedColumn = [
         { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },
@@ -37,23 +38,6 @@ function Distance(props: Props) {
         }
     ];
 
-    const toDecimal2 = (x: any) => {
-        let f = parseFloat(x);
-        if (isNaN(f)) {
-            return false;
-        }
-        f = Math.round(x * 100) / 100;
-        let s = f.toString();
-        let rs = s.indexOf('.');
-        if (rs < 0) {
-            rs = s.length;
-            s += '.';
-        }
-        while (s.length <= rs + 2) {
-            s += '0';
-        }
-        return s;
-    };
     const createData = (product: any) => {
         let rows = [];
         product.forEach((element: any, index: any) => {

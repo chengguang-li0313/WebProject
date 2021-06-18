@@ -41,6 +41,7 @@
     "next": "^10.0.0",
     "next-auth": "^3.19.5",
     "react": "^17.0.1",
+    "react-big-calendar": "^0.33.5",
     "react-date-range": "^1.1.4",
     "react-dom": "17.0.1",
     "react-i18next": "^11.8.15",
