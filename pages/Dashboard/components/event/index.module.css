@@ -23,7 +23,7 @@
 }
 .event_card_continer_2{
     height: 100%;
-    
+    padding: 15px;
 }
 .divider_column{
     /* margin:0 auto !important; */
@@ -375,4 +375,55 @@
     width: 43px !important;
     height: 43px !important;
     margin-top: 15px !important;
+}
+.calendar_container{
+    height:450px;
+    /* width: 90%; */
+    margin:0 auto;
+    /* margin-top: 15px; */
+}
+.dialog_bt{
+    font-family: Roboto !important;
+font-style: normal !important;
+font-weight: 500 !important;
+font-size: 1.125rem !important;
+line-height: 21px !important;
+color: #FFFFFF !important;
+background: #3464DC !important;
+border-radius: 5px !important;
+text-transform: none !important;
+margin: 5px !important;
+}
+.calendar_icon{
+    width: 58px;
+    height: 58px;
+    margin:0 auto;
+}
+.dialog_container{
+    /* width: 80vw !important; */
+    /* min-width: 500px; */
+    /* min-height: 300px; */
+    padding: 30px;
+}
+.dataRange_container,.recurring_container{
+    height: 50%;
+}
+.text{
+    margin:0 auto;
+    text-align: center;
+}
+.event_WidthXs_map{
+    width: 45vw !important;
+    max-width: 1440px !important;
+    /* width: 650px !important; */
+    min-width: 600px !important;
+    margin: 0 auto !important;
+}
+.eventList_title{
+    font-family: Roboto;
+font-style: normal;
+font-weight: 500;
+font-size: 1rem;
+line-height: 23px;
+color: #282626;
 }

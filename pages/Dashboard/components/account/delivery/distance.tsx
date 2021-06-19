@@ -41,7 +41,7 @@ function Distance(props: Props) {
     const createData = (product: any) => {
         let rows = [];
         product.forEach((element: any, index: any) => {
-            // console.log(element)
+
             let rate = element.rate ? element.rate : element.percentage;
             rows.push({
                 index: { item: element.index, type: 'string' },
@@ -169,8 +169,7 @@ function Distance(props: Props) {
         });
     };
     const formated = (cmd: string, id: any) => {
-        console.log('cmd', cmd);
-        console.log('row', rows);
+
         setRows((prev) => {
             if (cmd == 'rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item);
             return prev;
@@ -178,9 +177,6 @@ function Distance(props: Props) {
         forceUpdate();
     };
 
-    // const valuetext =(event:any,val:any,i:number,cmd:string)=>{
-
-    // }
 
     const update = (data) => {
         if (data) {

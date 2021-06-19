@@ -104,7 +104,7 @@ function DeliveryEditDialog(props: Props){
         forceUpdate()
     }
     const getDatachange=(comd:string,data:any)=>{
-        console.log(comd,data)
+
         setDeliveData(prev=>{
             prev[comd] = data
             return prev
@@ -118,7 +118,7 @@ function DeliveryEditDialog(props: Props){
         
     }
     const handleclick = (event:any) =>{
-        console.log('click') 
+
         event.stopPropagation()
     }
 

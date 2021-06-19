@@ -84,10 +84,6 @@ interface Props {
       prev.map((row:any)=>{
         if(row.index.item == currentRow.index.item){
           row.period.item = data
-          // let tempR = JSON.parse(JSON.stringify(currentRow))
-          // tempR.period.item = data.toString()
-          // temp.push(tempR)
-          // row.
         }
         
       })

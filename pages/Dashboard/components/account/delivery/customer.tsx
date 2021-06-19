@@ -264,19 +264,15 @@ class Customer extends React.Component<Props, object> {
     private handleChange = (event:any) => {
         
         this.setState((preState,props)=>{
-            // let temp=[]
-            // preState['customerRow'] = createCustomerListData(customerList)
+
             preState['customerRow'].map((c,i)=>{
                 if(c.Category !== event.target.value){
-                    // let tempItem = JSON.parse(JSON.stringify(c))
+
                     preState['customerRow'].splice(i,1)
                 }
-                // else if(event.target.value=='both' ){
-                //     // let tempItem = JSON.parse(JSON.stringify(c))
-                //     // temp.push(c)
-                // }
+
             })
-            // preState['customerRow'] = createCustomerListData(temp)
+
             return {customerRow:preState['customerRow'],value:event.target.value}
         })
 
@@ -299,26 +295,7 @@ class Customer extends React.Component<Props, object> {
             if(cmd=='rate') preState['rowsList'][id][cmd].item = this.props.toDecimal2(preState['rowsList'][id][cmd].item)
             return {rowsList:preState['rowsList']}
         })
-        // forceUpdate()
     }
-    
-    // private toDecimal2 = (x:any) => {
-    //     let f = parseFloat(x)
-    //     if (isNaN(f)) {
-    //      return false
-    //     }
-    //     f = Math.round(x*100)/100
-    //     let s = f.toString()
-    //     let rs = s.indexOf('.')
-    //     if (rs < 0) {
-    //      rs = s.length
-    //      s += '.'
-    //     }
-    //     while (s.length <= rs + 2) {
-    //      s += '0'
-    //     }
-    //     return s
-    //    }
 
     render(){
         const {t} = this.props
@@ -327,7 +304,6 @@ class Customer extends React.Component<Props, object> {
             <div className={styles.customer_container}>
                 
                 <Popper className={styles.poppers} open={this.state.open} placement="right"  anchorEl={this.state.anchorEl} >
-                    {/* <DialogContent> */}
                     <div className={styles.customer_poppers_content}>
                         <div className={styles.selectCustomer_container}>
                             <div className={styles.selectCustomer_radio_container}>
@@ -338,7 +314,7 @@ class Customer extends React.Component<Props, object> {
                                 </RadioGroup>
                             </div>  
                         </div>
-                    {/* <TextField type="number" id="standard-search" label="Rate" onChange={this.getnewRate}/> */}
+
                         <DataGrid
                             t={t}
                             columns={this.customerColumn}
