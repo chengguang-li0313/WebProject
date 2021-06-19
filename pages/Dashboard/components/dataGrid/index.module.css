@@ -339,3 +339,16 @@ margin-right: 39px;
 .timePicker_textField{
     min-width: 175px !important;
 }
+.rata_TextField{
+    text-align: center !important;
+    /* border-bottom: 1px solid #000 !important; */
+}
+.rata_TextField_focused{
+    text-align: center !important;
+    border-bottom: 1px solid #000 !important;
+}
+.rata_TextField_root{
+    font-size: 0.9rem !important;
+    border-bottom: 1px solid #8d8d8d !important;
+    /* border-bottom: 1px solid #000 !important; */
+}

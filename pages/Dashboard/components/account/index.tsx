@@ -32,7 +32,7 @@ class Account extends React.Component<Props, object> {
 
 
     private test() {
-        console.log("this is test")
+        ("this is test")
     }
 
     private controlCard_1 = () =>{

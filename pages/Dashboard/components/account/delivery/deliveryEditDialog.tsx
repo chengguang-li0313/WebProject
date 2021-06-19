@@ -7,7 +7,7 @@ import {Dialog,DialogTitle,DialogContent,Select,
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useMediaQuery } from 'react-responsive'
 import deliveryData from '../../../../../public/deliveryData/account_deliveryScheme_flatRate_web.json'
-
+import CancelIcon from '@material-ui/icons/Cancel';
 import DataGrid from '../../dataGrid'
 import Product from './product'
 import Customer from './customer'
@@ -40,7 +40,7 @@ function DeliveryEditDialog(props: Props){
     const [volume ,setVolume] =  React.useState(10);
     const [weight ,setWeight] =  React.useState(100);
     const [state,setState] = React.useState(0);
-    const [deliveData,setDeliveData ] = React.useState(deliveryData);
+    const [deliveData,setDeliveData ] = React.useState(JSON.parse(JSON.stringify(deliveryData)));
     const [checkList,setCheckList] = React.useState({product:false,customer:false,order:false,coupon:false,postcode:false,distance:false});
     const productOrientatedColumn =  [
         { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },
@@ -104,7 +104,7 @@ function DeliveryEditDialog(props: Props){
         forceUpdate()
     }
     const getDatachange=(comd:string,data:any)=>{
-        console.log(comd,data)
+
         setDeliveData(prev=>{
             prev[comd] = data
             return prev
@@ -115,12 +115,35 @@ function DeliveryEditDialog(props: Props){
         handleClose()
 
         handleSave(deliveData)
+        
     }
+    const handleclick = (event:any) =>{
+
+        event.stopPropagation()
+    }
+
+    const toDecimal2 = (x:any) => {
+        let f = parseFloat(x)
+        if (isNaN(f)) {
+         return false
+        }
+        f = Math.round(x*100)/100
+        let s = f.toString()
+        let rs = s.indexOf('.')
+        if (rs < 0) {
+         rs = s.length
+         s += '.'
+        }
+        while (s.length <= rs + 2) {
+         s += '0'
+        }
+        return s
+       }
 
     return(
 
         <Dialog classes={{paperWidthSm:styles.paper_WidthXs}}  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle classes={{root:styles.dialogTitle_root}} id="form-dialog-title">{ t("dashboard.sal.Edit")+" "+t(dialogName)}</DialogTitle>
+            <DialogTitle classes={{root:styles.dialogTitle_root}} id="form-dialog-title">{ t("dashboard.sal.Edit")+" "+t(dialogName)} <CancelIcon onClick={handleClose} className={styles.closed_bt}/> </DialogTitle>
             <DialogContent classes={{root:styles.dialog_root}}>
                 <div className={styles.deliveryEditDialog_container}>
                     <div className={styles.deliveryEditDialog_item}>
@@ -166,7 +189,7 @@ function DeliveryEditDialog(props: Props){
                     <Divider/>
 
                     <div className={styles.orientated_container}>
-                    <Accordion>
+                    <Accordion >
                         <AccordionSummary
                         
                         expandIcon={<ExpandMoreIcon />}
@@ -177,19 +200,22 @@ function DeliveryEditDialog(props: Props){
                         <FormControlLabel
                             aria-label="Acknowledge"
                             classes={{label:styles.accordionlabel_root}}
-                            onClick={(event) => event.stopPropagation()}
+                            onClick={(event) => handleclick(event)}
                             onFocus={(event) => event.stopPropagation()}
                             control={<Checkbox onChange={ev=>onDatachange(ev,'product')} classes={{checked:styles.checkbox_colorPrimary}} color="primary"/>}
                             label={t("dashboard.acc.delivery.setDelivery.ProductOrientated")}
                         />
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Product
-                            getDatachange={getDatachange}
-                            product = {deliveData.product}
-                            t={t}
-                            />
-                        </AccordionDetails>
+                        {checkList.product?
+                            <AccordionDetails>
+                                <Product
+                                toDecimal2={toDecimal2}
+                                getDatachange={getDatachange}
+                                product = {deliveData.product}
+                                t={t}
+                                />
+                            </AccordionDetails>
+                        :[]}
                     </Accordion>
                     </div>
 
@@ -211,12 +237,15 @@ function DeliveryEditDialog(props: Props){
                             label={t("dashboard.acc.delivery.setDelivery.customerorientated")}
                         />
                         </AccordionSummary>
-                        <AccordionDetails>
-                        <Customer
-                        getDatachange={getDatachange}
-                        customer = {deliveData.customer}
-                        t={t}/>
-                        </AccordionDetails>
+                        {checkList.customer?
+                            <AccordionDetails>
+                            <Customer
+                            toDecimal2={toDecimal2}
+                            getDatachange={getDatachange}
+                            customer = {deliveData.customer}
+                            t={t}/>
+                            </AccordionDetails>
+                            :[]}
                     </Accordion>
                     </div>
 
@@ -238,14 +267,17 @@ function DeliveryEditDialog(props: Props){
                             label={t("dashboard.acc.delivery.setDelivery.orderOrientated")}
                         />
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Order
-                            getDatachange={getDatachange}
-                            order = {deliveData.order}
-                            t={t}
-                            />
+                        {checkList.order?
+                            <AccordionDetails>
+                                <Order
+                                toDecimal2={toDecimal2}
+                                getDatachange={getDatachange}
+                                order = {deliveData.order}
+                                t={t}
+                                />
 
-                        </AccordionDetails>
+                            </AccordionDetails>
+                        :[]}
                     </Accordion>
                     </div>
 
@@ -267,12 +299,14 @@ function DeliveryEditDialog(props: Props){
                                 label={t("dashboard.acc.delivery.setDelivery.couponOrientated")}
                             />
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <Coupon
-                                getDatachange={getDatachange}
-                                coupon = {deliveData.coupon}
-                                t={t}/>
-                            </AccordionDetails>
+                            {checkList.coupon?
+                                <AccordionDetails>
+                                    <Coupon
+                                    toDecimal2={toDecimal2}
+                                    getDatachange={getDatachange}
+                                    coupon = {deliveData.coupon}
+                                    t={t}/>
+                                </AccordionDetails>:[]}
                         </Accordion>
                     </div>
 
@@ -294,13 +328,16 @@ function DeliveryEditDialog(props: Props){
                                 label={t("dashboard.acc.delivery.setDelivery.distanceOrientated")}
                             />
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <Distance
-                                getDatachange={getDatachange}
-                                distance = {deliveData.distance}
-                                t={t}/>
+                            {checkList.distance?
+                                <AccordionDetails>
+                                    <Distance
+                                    toDecimal2={toDecimal2}
+                                    getDatachange={getDatachange}
+                                    distance = {deliveData.distance}
+                                    t={t}/>
 
-                            </AccordionDetails>
+                                </AccordionDetails>
+                                :[]}
                         </Accordion>
                     </div>
 
@@ -322,14 +359,17 @@ function DeliveryEditDialog(props: Props){
                                 label={t("dashboard.acc.delivery.setDelivery.postcodeOrientated")}
                             />
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <Postcode
-                                getDatachange={getDatachange}
-                                postcode = {deliveData.postcode}
-                                    t={t}
-                                />
+                            {checkList.postcode?
+                                <AccordionDetails>
+                                    <Postcode
+                                    toDecimal2={toDecimal2}
+                                    getDatachange={getDatachange}
+                                    postcode = {deliveData.postcode}
+                                        t={t}
+                                    />
 
-                            </AccordionDetails>
+                                </AccordionDetails>
+                            :[]}
                         </Accordion>
                     </div>
                     <div className={styles.button_group}>

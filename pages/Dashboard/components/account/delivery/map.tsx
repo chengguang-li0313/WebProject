@@ -6,7 +6,7 @@ import STATE_LIST from '../../../../../public/geoData/state_list.json'
 
 interface Props {
     t:(params: String) => String;
-    onselectedSub:(list:string)=>void
+    onselectedSub:(list:string)=>void;
   }
   
 
@@ -75,7 +75,6 @@ function Map(props: Props){
 
       React.useEffect(() => {
         if (map) {
-          console.log("map")
           forceUpdate()
           loadGeoJsonString()
         }

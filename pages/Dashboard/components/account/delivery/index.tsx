@@ -99,8 +99,6 @@ class Delivery extends React.Component<Props, object> {
                 this.setState({vwOpen:true,currentDialogName:item})
                 break;
         }
-        
-        // console.log("item",item)
 
     }
 
@@ -227,7 +225,6 @@ class Delivery extends React.Component<Props, object> {
                             IOSSwitch={IOSSwitch}
                             handleChange={this.handleContentChange}
                             handleSetupDialogOpen={this.handleSetupDialogOpen}
-                            // handleClose={this.handleClose}
                         >
                             
                         </MethodTable>

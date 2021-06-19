@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { useMediaQuery } from 'react-responsive'
 import DataGrid from '../../dataGrid'
+import style from './index.module.css';
 import {deliveryProductOrientatedData,treeData} from '../../../../../public/fakeData'
+import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
+import {FormControl,FormLabel,RadioGroup,FormControlLabel,Radio} from '@material-ui/core';
+
 
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
     product:any
-    // open:boolean;
-    // handleClose:() => void;
-    // dialogName:String;
-    
+    toDecimal2:(x:any) => any
   }
 
 function Product(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
     const commandList={ADD:"Add",EDIT:"Edit",SAVE:"Save",DELETE:"Delete"}
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
@@ -31,7 +32,7 @@ function Product(props: Props){
     const [editMenuListAnchorEl,setEditMenuListAnchorEl]= React.useState(null);
     const [editOpen,setEditOpen] = React.useState(false);
     const [currentRow,setCurrentRow] = React.useState(null);
-    // const [editable, setEditable] = React.useState(false);
+    const [value, setValue] = React.useState("minRate");
 
     const forceUpdate =()=>{
         setState(prev=>prev+=1)
@@ -57,17 +58,19 @@ function Product(props: Props){
             align: "center",
           } 
     ]
-
+       
     const createData=(rows:Array<any>)=>{
         let tempList = []
-        rows.map((row,index)=>(
+        
+        rows.map((row,index)=>{
+            let rate = row.rate.includes("$")?row.rate.replace("$",""):row.rate
             tempList.push({
             editable:false,
             index:{item:row.index,type:"string"},
-            scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:row.rate.includes("$")?row.rate.replace("$",""):row.rate,type:"rate"},
+            scope:{item:row.scope,treeList:setScope(row.scope),type:"scope"},rate:{item:rate?toDecimal2(rate):rate,type:"rate"},
             vw:{item:{volume:row.vw.volume,weight:row.vw.weight},type:"slider"}})
 
-        ))
+            })
 
         return tempList
     }
@@ -201,9 +204,7 @@ function Product(props: Props){
     }
     
     const update = (data) =>{
-        // console.log('productOrientatedRow')
         if(data){
-            console.log('productOrientatedRow')
             let clean = []
             data.map((p,i)=>{
                 clean.push({
@@ -218,18 +219,63 @@ function Product(props: Props){
         
     }
     const onDatachange =(type:string,data:any,currentRow:any)=>{
-        setProductOrientatedRow(prev=>{
-            prev.map(p=>{
-                if(p.index.item == currentRow.index.item){
-                    p.vw[type] = data
-                }
+        if(type=="vw"){
+            setProductOrientatedRow(prev=>{
+                prev.map(p=>{
+                    if(p.index.item == currentRow.index.item){
+                        p.vw[type] = data
+                    }
+                })
+                update(prev)
+                return prev
             })
-            update(prev)
-            return prev
-        })
+        }else{
+            setProductOrientatedRow(prev=>{
+                prev.map(p=>{
+                    if(p.index.item == currentRow.index.item){
+                        p[type].item = data
+                    }
+                })
+                update(prev)
+                return prev
+            })
+            
+            forceUpdate()
+        }
+        
+    }
+    const handleChange = (event:any) => {
+        setValue(event.target.value)
     }
 
+    const formated = (cmd:string,id:any) =>{
+
+        setProductOrientatedRow(prev => {
+            if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+            return prev
+        })
+        forceUpdate()
+    }
+    
+    
+
     return(
+        <div className={style.product_container}>
+            <div className={style.radioGroup_container}>
+            <FormControl component="fieldset">
+                <FormLabel classes={{root:style.formLabel_root}} component="legend">{t('dashboard.acc.delivery.setDelivery.multMatch')}</FormLabel>
+                <RadioGroup aria-label="multMatch" name="multMatch" value={value} onChange={handleChange}>
+                    <FormControlLabel classes={{label:style.formControlLabel_label}} value="minRate" control={<Radio classes={{root:style.radio_root}} color="primary" />} label={t('dashboard.acc.delivery.setDelivery.minRate')} />
+                    <div className={style.label_des}>{t('dashboard.acc.delivery.setDelivery.minRate_exp')}</div>
+                    <FormControlLabel classes={{label:style.formControlLabel_label}} value="maxRate" control={<Radio classes={{root:style.radio_root}} color="primary" />} label={t('dashboard.acc.delivery.setDelivery.maxRate')} />
+                    <div className={style.label_des}>{t('dashboard.acc.delivery.setDelivery.maxRate_exp')}</div>
+                    <FormControlLabel classes={{label:style.formControlLabel_label}} value="avgRate" control={<Radio classes={{root:style.radio_root}} color="primary" />} label={t('dashboard.acc.delivery.setDelivery.avgRate')} />
+                    <div className={style.label_des}>{t('dashboard.acc.delivery.setDelivery.avgRate_exp')}</div>
+                    <FormControlLabel classes={{label:style.formControlLabel_label}} value="rateSum" control={<Radio classes={{root:style.radio_root}} color="primary" />} label={t('dashboard.acc.delivery.setDelivery.rateSum')} />
+                    <div className={style.label_des}>{t('dashboard.acc.delivery.setDelivery.rateSum_exp')}</div>
+                </RadioGroup>
+                </FormControl>
+            </div>
             <DataGrid
                 t={t}
                 columns={productOrientatedColumn}
@@ -246,8 +292,9 @@ function Product(props: Props){
                 handleAction={handleAction}
                 onEditValue={onEditValue}
                 onDatachange={onDatachange}
-                
+                formated={formated}
                                 />
+        </div>
     )
 }
 

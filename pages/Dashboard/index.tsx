@@ -9,7 +9,7 @@ import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
 import Account from './components/account';
 import Sales from './components/sales';
 import Staff from './components/staff';
-
+import Event from './components/event';
 import MediaQuery from 'react-responsive';
 
 
@@ -23,7 +23,7 @@ export interface Props {
       userData:{username:"Dava Wang"},
     //   onFoldMenuBar:false ,
       menuBarList:[],
-      currentPannel:"account",
+      currentPannel:"event",
       pointPosition:"0",
       isFold:false,
 
@@ -57,6 +57,7 @@ class Dashboard extends React.Component<Props, object> {
     private PRODUCTS = "products"
     private POLICY = "policy"
     private SUPPORT = "support"
+    private EVENT = "event"
 
     private handleFold = ()=>{
         this.setState({isFold:!this.state.isFold})
@@ -84,24 +85,24 @@ class Dashboard extends React.Component<Props, object> {
           case this.PRODUCTS:
             this.setState({pointPosition:"420px"})
               break;
-          case this.POLICY:
+          case this.EVENT:
               this.setState({pointPosition:"503px"})
               break;
-          case this.SUPPORT:
+          case this.POLICY:
               this.setState({pointPosition:"580px"})
               break;
+          case this.SUPPORT:
+            this.setState({pointPosition:"657px"})
+            break;
       }
     }
       private handleChange = (event: React.ChangeEvent<{}>, newValue: String) => {
-        // console.log("event", event);
-        // test(newValue)
         this.setState({ currentPannel: newValue });
         this.handlePointPosition(newValue);
       };
 
   render() {
     const { t } = this.props;
-    // console.log("value",value)
 
     return (
       <DashboardLayout t={t} userData={this.state.userData}>
@@ -238,6 +239,21 @@ class Dashboard extends React.Component<Props, object> {
                       selected: styles.tabSelected,
                       root: styles.tabRoot,
                     }}
+                    value="event"
+                    className={styles.tab}
+                    icon={
+                      <div className={styles.menuBar_Item_container}>
+                        <img src="/img/Dashboard/event.svg"></img>
+                      </div>
+                    }
+                    label={t("dashboard.event")}
+                  />
+
+                  <Tab
+                    classes={{
+                      selected: styles.tabSelected,
+                      root: styles.tabRoot,
+                    }}
                     value="policy"
                     className={styles.tab}
                     icon={
@@ -273,7 +289,9 @@ class Dashboard extends React.Component<Props, object> {
                     
                 
 
-                    <TabPanel value={this.state.currentPannel} index={"home"}></TabPanel>
+                    <TabPanel value={this.state.currentPannel} index={"home"}>
+                        
+                    </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"sales"}>
                         <MediaQuery minDeviceWidth={1440}>
                           <div><Sales lay={"flex"} t={t}/></div>
@@ -307,6 +325,9 @@ class Dashboard extends React.Component<Props, object> {
 
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"products"}></TabPanel>
+                    <TabPanel value={this.state.currentPannel} index={"event"}>
+                      <div><Event t={t}/></div>
+                    </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"policy"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"support"}></TabPanel>
                 </div>

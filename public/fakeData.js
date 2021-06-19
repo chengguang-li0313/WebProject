@@ -52,7 +52,18 @@ const SalesApplicationRow = [
 ];
 
 const Products = [
-    {
+    {   id:0,
+        products: '/img/Dashboard/product_test.svg',
+        sku: 'sku',
+        FeatureProducts: 'Feature Products',
+        ProductName: 'cat',
+        des: 'Onboard Diagnostic Voltmeter Onboard',
+        Category: 'Onboard',
+        Price: 470,
+        Color: ['/img/Dashboard/blue.svg', '/img/Dashboard/black.svg', '/img/Dashboard/orange.svg'],
+        Sold: 120
+    },
+    {   id:1,
         products: '/img/Dashboard/product_test.svg',
         sku: 'sku',
         FeatureProducts: 'Feature Products',
@@ -63,7 +74,7 @@ const Products = [
         Color: ['/img/Dashboard/blue.svg', '/img/Dashboard/black.svg', '/img/Dashboard/orange.svg'],
         Sold: 120
     },
-    {
+    {   id:2,
         products: '/img/Dashboard/product_test.svg',
         sku: 'sku',
         FeatureProducts: 'Feature Products',
@@ -74,7 +85,7 @@ const Products = [
         Color: ['/img/Dashboard/blue.svg', '/img/Dashboard/black.svg', '/img/Dashboard/orange.svg'],
         Sold: 120
     },
-    {
+    {   id:3,
         products: '/img/Dashboard/product_test.svg',
         sku: 'sku',
         FeatureProducts: 'Feature Products',
@@ -85,7 +96,7 @@ const Products = [
         Color: ['/img/Dashboard/blue.svg', '/img/Dashboard/black.svg', '/img/Dashboard/orange.svg'],
         Sold: 120
     },
-    {
+    {   id:4,
         products: '/img/Dashboard/product_test.svg',
         sku: 'sku',
         FeatureProducts: 'Feature Products',
@@ -96,7 +107,7 @@ const Products = [
         Color: ['/img/Dashboard/blue.svg', '/img/Dashboard/black.svg', '/img/Dashboard/orange.svg'],
         Sold: 120
     },
-    {
+    {   id:5,
         products: '/img/Dashboard/product_test.svg',
         sku: 'sku',
         FeatureProducts: 'Feature Products',
@@ -624,14 +635,24 @@ const distance = [
 ];
 
 const customerList = [
-    { id: 1, name: 111, Category: 'business' },
-    { id: 2, name: 211, Category: 'business' },
-    { id: 3, name: 121, Category: 'business' },
-    { id: 4, name: 241, Category: 'business' },
-    { id: 5, name: 20, Category: 'consumer' },
-    { id: 6, name: 200, Category: 'consumer' },
-    { id: 7, name: 221, Category: 'consumer' },
-    { id: 8, name: 321, Category: 'consumer' }
+    { id: 1, name: 111, email:"test", Category: 'business' },
+    { id: 2, name: 211, email:"test",Category: 'business' },
+    { id: 3, name: 121,email:"test", Category: 'business' },
+    { id: 4, name: 241,email:"test", Category: 'business' },
+    { id: 5, name: 20, email:"test",Category: 'consumer' },
+    { id: 6, name: 200,email:"test", Category: 'consumer' },
+    { id: 7, name: 221,email:"test", Category: 'consumer' },
+    { id: 8, name: 321,email:"test", Category: 'consumer' }
+];
+const sellerList = [
+    { id: 1, name: 111, email:"test" ,Category: 'business' },
+    { id: 2, name: 211, email:"test" ,Category: 'business' },
+    { id: 3, name: 121, email:"test" ,Category: 'business' },
+    { id: 4, name: 241, email:"test" ,Category: 'business' },
+    { id: 5, name: 20, email:"test"  ,Category: 'consumer' },
+    { id: 6, name: 200, email:"test" ,Category: 'consumer' },
+    { id: 7, name: 221, email:"test" ,Category: 'consumer' },
+    { id: 8, name: 321, email:"test" ,Category: 'consumer' }
 ];
 
 const order = [
@@ -683,5 +704,6 @@ export {
     order,
     SalesData_2,
     customer,
-    postcode
+    postcode,
+    sellerList
 };

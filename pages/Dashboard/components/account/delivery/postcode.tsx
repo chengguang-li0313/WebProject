@@ -11,18 +11,19 @@ import Map from './map'
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    postcode:any
+    postcode:any;
+    toDecimal2:(x:any) => any
   }
   
   function Postcode(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
   const customerOrientatedColumn =  [
       { id: 'index', label: ['dashboard.acc.delivery.setDelivery.index'], minWidth: 100 },  
       { id: 'from', label: ['dashboard.acc.delivery.setDelivery.from'], minWidth: 100 },  
       { id: 'to', label: ['dashboard.acc.delivery.setDelivery.to'], minWidth: 100 },  
-      { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100 },  
+      { id: 'rate', label: ['dashboard.acc.delivery.setDelivery.rate'], minWidth: 100},  
       {
         id: 'more',
         label: "",
@@ -38,7 +39,7 @@ interface Props {
             rows.push({index:{item:element.index,type:'string'},
                         from:{item:element.from,type:'es'},
                         to:{item:element.to,type:'map'},
-                        rate:{item:element.rate,type:'rate'}})
+                        rate:{item:element.rate?toDecimal2(element.rate):element.rate,type:'rate'}})
         });
         return rows
     }
@@ -113,7 +114,6 @@ interface Props {
 }
     const deleteEdit=(ev:any,row:any)=>{
         setRows(prev=>{
-            // let id = null
             let temp = JSON.parse(JSON.stringify(prev))
             temp.map((p,i)=>{
                 if(p.index.item ==row.index.item){
@@ -150,11 +150,17 @@ interface Props {
         let newList = ''
         if(subList!=""){
             let temp = subList.split(', ')
-            temp.forEach(t=>{
+            temp.forEach((t,i)=>{
                 let templ = t.split(" ")
-                newList+=templ[templ.length-1]+" "
+                if(templ[templ.length-2]!=" "){
+                    let next = i==temp.length-1?"":", "
+                    newList+=templ[templ.length-1]+next
+
+                }
+                
 
             })
+            
         }
         setRows(prev=>{
                 prev.map(p=>{
@@ -209,7 +215,6 @@ interface Props {
 
         setRows(prev=>{
             prev.map(p=>{
-                console.log('p.index.item==row.index.item',p.index.item==therow.index.item)
                 if(p.index.item==therow.index.item){
                     p[command].item = ev.target.value
                 }
@@ -220,6 +225,16 @@ interface Props {
         
         forceUpdate()
     }
+
+    const formated = (cmd:string,id:any) =>{
+        setRows(prev => {
+            if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+            return prev
+        })
+        forceUpdate()
+    }
+    
+    
 
     const update = (data) =>{
         if(data){
@@ -261,6 +276,7 @@ interface Props {
                 handleAction={handleAction}
                 onEditValue={onEditValue}
                 onCusSeteditOpen={onCusSeteditOpen}
+                formated={formated}
             />
         </div>
     )

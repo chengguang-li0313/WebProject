@@ -5,16 +5,16 @@ import {FormControlLabel,RadioGroup,Radio, Button,Popper,
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DataGrid from '../../dataGrid'
-import {coupon} from '../../../../../public/fakeData'
 
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    coupon:any
+    coupon:any;
+    toDecimal2:(x:any) => any
   }
   
   function Coupon(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
     const customerOrientatedColumn =  [
@@ -40,7 +40,7 @@ interface Props {
           scope: { item: d.scope, type: 'es' },
           custom: { item: d.custom, type: 'es' },
           period: { item: d.period, type: 'Daterange' },
-          percentage: { item: d.percentage, type: 'rate' }})
+          percentage: { item: d.percentage, type: 'es' }})
         })
 
         return temp
@@ -79,15 +79,17 @@ interface Props {
 
   const onDatachange =(dataId:string,data:any,currentRow:any)=>{
     let temp = []
-    rows.slice().map((row:any)=>{
-      if(row.index.item == currentRow.index.item){
-        let tempR = JSON.parse(JSON.stringify(currentRow))
-        tempR.period.item = data.toString()
-        temp.push(tempR)
-      }else{
-        temp.push(row)
-      }
+
+    setRows(prev =>{
+      prev.map((row:any)=>{
+        if(row.index.item == currentRow.index.item){
+          row.period.item = data
+        }
+        
+      })
+      return prev
     })
+    
 
     setRows(temp)
   }
@@ -191,6 +193,16 @@ const deleteEdit=(ev:any,row:any)=>{
         props.getDatachange("coupon",clean)
     }
   }
+  const formated = (cmd:string,id:any) =>{
+
+    setRows(prev => {
+      if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+        return prev
+    })
+    forceUpdate()
+}
+
+
     return(
         <div className={styles.customer_container}>
             <DataGrid
@@ -205,6 +217,7 @@ const deleteEdit=(ev:any,row:any)=>{
                 delivery={true}
                 handleAction={handleAction}
                 onEditValue={onEditValue}
+                formated={formated}
             />
         </div>
     )

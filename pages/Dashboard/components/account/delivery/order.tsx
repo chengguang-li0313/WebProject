@@ -9,11 +9,12 @@ import DataGrid from '../../dataGrid'
 interface Props {
     t:(params: String) => String;
     getDatachange:(comd:string,data:any)=>void
-    order:any
+    order:any;
+    toDecimal2:(x:any) => any
   }
   
   function Order(props: Props){
-    const {t} = props
+    const {t,toDecimal2} = props
 
     
   const customerOrientatedColumn =  [
@@ -27,12 +28,14 @@ interface Props {
       align: "center",
     } ]
 
+
   const createData = (order:any)=>{
     let rows = []
     order.forEach((element:any,index:any) => {
+        let rate = element.rate.includes("$")?element.rate.replace("$",""):element.rate
         rows.push({index:{item:element.index,type:'string'},
-        amount:{item:element.amount,type:'rate'},
-        rate:{item:element.rate.includes("$")?element.rate.replace("$",""):element.rate,type:'rate'}})
+        amount:{item:element.amount,type:'rs'},
+        rate:{item:toDecimal2(rate),type:'rate'}})
     });
     return rows
 }
@@ -167,6 +170,15 @@ const handleEdit=(event: any,row:any) => {
         }
         
     }
+    const formated = (cmd:string,id:any) =>{
+        setRows(prev => {
+            if(cmd=='rate') prev[id][cmd].item = toDecimal2(prev[id][cmd].item)
+            return prev
+        })
+        forceUpdate()
+    }
+    
+    
     return(
         <div className={styles.customer_container}>
             <DataGrid
@@ -180,6 +192,7 @@ const handleEdit=(event: any,row:any) => {
                 delivery={true}
                 handleAction={handleAction}
                 onEditValue={onEditValue}
+                formated={formated}
             />
         </div>
     )
