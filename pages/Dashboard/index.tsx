@@ -326,7 +326,7 @@ class Dashboard extends React.Component<Props, object> {
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"products"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"event"}>
-                      <div><Event t={t}/></div>
+                      {/* <div>   <Event t={t}/>   </div> */}
                     </TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"policy"}></TabPanel>
                     <TabPanel value={this.state.currentPannel} index={"support"}></TabPanel>
